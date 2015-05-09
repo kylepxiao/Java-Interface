@@ -1,0 +1,3 @@
+John - drag and drop code + start on "why" section of report
+Yangqi - Create graphics and layout in Illustrator
+Kyle - Set up base for program including main loop and graphics
