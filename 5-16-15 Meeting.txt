@@ -1,0 +1,3 @@
+John - Fix bugs in drag and drop code and review GUI code
+Kyle - Write next part of research paper and review drag and drop code
+Yangqi - Add JPanels, Scrollbars, Textfields, and other accessories to match design
