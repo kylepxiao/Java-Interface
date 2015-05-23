@@ -4,7 +4,7 @@ import javax.swing.*;	 // import javax.swing package
 import javax.swing.event.MouseInputAdapter; // import javax.swing.event.MouseTinputAdapter
 import java.util.*;
 
-public class GraphicDragAndDropPlusSnap extends JPanel { // public class named GraphicDragAndDrop that also extends JPanel	
+public class GraphicDragAndDrop extends JPanel { // public class named GraphicDragAndDrop that also extends JPanel	
 
 		Rectangle rectBlue = new Rectangle(5,5,75,75);		// makes a rectangle named and  
         Rectangle rectRed = new Rectangle(5,105,75,75);      // makes a rectangle named or
@@ -86,7 +86,7 @@ public class GraphicDragAndDropPlusSnap extends JPanel { // public class named G
 		}
 
 	    public static void main(String[] args) { // main method
-	        GraphicDragAndDropPlusSnap test = new GraphicDragAndDropPlusSnap(); // declare new GraphicDragAndDrop object
+	        GraphicDragAndDrop test = new GraphicDragAndDrop(); // declare new GraphicDragAndDrop object
 	        new GraphicDragController(test); 	// declare new constructor method with parameters of test
 	        JFrame f = new JFrame();		 	// declare new JFrame f
 	        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	// call setDefaultCloseOperation
@@ -100,8 +100,8 @@ public class GraphicDragAndDropPlusSnap extends JPanel { // public class named G
 	
 class GraphicDragController extends MouseInputAdapter { 	// class GraphicDragController that extends MouseInputAdapter
 		
-	GraphicDragAndDropPlusSnap gdad = new GraphicDragAndDropPlusSnap();		// create object gdad with type GraphicDragAndDrop
-	GraphicDragAndDropPlusSnap component = new GraphicDragAndDropPlusSnap();// create object component with type GraphicDragAndDrop
+	GraphicDragAndDrop gdad = new GraphicDragAndDrop();		// create object gdad with type GraphicDragAndDrop
+	GraphicDragAndDrop component = new GraphicDragAndDrop();// create object component with type GraphicDragAndDrop
 	Rectangle newRectangle = new Rectangle();				// create object newRectangle with type Rectangle
 	ArrayList<Rectangle> allRectangles = new ArrayList<Rectangle>(); // create object allRectangles with type ArrayList
 	
@@ -120,10 +120,9 @@ class GraphicDragController extends MouseInputAdapter { 	// class GraphicDragCon
     boolean dragging4 = false;
     boolean dragging5 = false;
     boolean dragging6 = false;
-	boolean needSnap = false;
    
 	// constructer method GraphicDragController
-    public GraphicDragController(GraphicDragAndDropPlusSnap gdad) {
+    public GraphicDragController(GraphicDragAndDrop gdad) {
         component = gdad;
         component.addMouseListener(this);
         component.addMouseMotionListener(this);
@@ -244,34 +243,29 @@ class GraphicDragController extends MouseInputAdapter { 	// class GraphicDragCon
         		}
         		else
         			newRectangle = new Rectangle(tempRect.x + w + 5, tempRect.y, 75, 75);
-        		
-        		// newRectangle becomes tempRect
-        		tempRect = newRectangle;
-        		
+        	
         		// makes it so that tempRect is the original rectangle that was before the snap
     	    	if(dragging == true) {
-    	    		component.rectBlue = tempRect;
+    	    		component.setRect(newRectangle.x, newRectangle.y);
     	    	}
     	    	if(dragging2 == true) {
-    	    		component.rectRed = tempRect;
+    	    		component.setRect2(newRectangle.x, newRectangle.y);
     	    	}
     	    	if(dragging3 == true) {
-    	    		component.rectGreen= tempRect;
+    	    		component.setRect3(newRectangle.x, newRectangle.y);
     	    	}
     	    	if(dragging4 == true) {
-    	    		component.rectYellow = tempRect;
+    	    		component.setRect4(newRectangle.x, newRectangle.y);
     	    	}
     	    	if(dragging5 == true) {
-    	    		component.rectBlack = tempRect;
+    	    		component.setRect5(newRectangle.x, newRectangle.y);
     	    	}
     	    	if(dragging6 == true) {
-    	    		component.rectPink = tempRect;
+    	    		component.setRect6(newRectangle.x, newRectangle.y);
     	    	}
-        		needSnap = true;
-        		// break out of the code
+         		// break out of the code
         		break;
         	}	
-        
         }
 
         // if the mouse is released dragging stops
@@ -282,15 +276,6 @@ class GraphicDragController extends MouseInputAdapter { 	// class GraphicDragCon
         dragging5 = false;
         dragging6 = false;
     }
-    
-    // creates method display with parameter ArrayList a
-    public void display(ArrayList<Rectangle> a) {
-    	
-    	for(int i = 0; i < a.size(); i++){
-    		System.out.println("Rectangle " + i + "'s point and height and width " + a.get(i).x + " " + a.get(i).y + " " + a.get(i).height +" " + a.get(i).width);
-    	}
-    	System.out.println(" --------------- \n");
-    }	
     
     // creates method mouseDragged with parameter MouseEvent e 
     public void mouseDragged(MouseEvent e) {
