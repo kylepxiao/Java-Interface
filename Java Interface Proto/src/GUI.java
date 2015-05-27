@@ -2,8 +2,6 @@ import java.awt.*;
 import java.awt.image.BufferStrategy;
 import javax.swing.*;
 
-
-@SuppressWarnings("unused")
 public class GUI extends JFrame{
 	
 	/**
@@ -14,20 +12,28 @@ public class GUI extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
 	
+	public BufferStrategy s;
+	
+	DraggableRect rect1 = new DraggableRect(510, 70, 100, 100);
+	
 	//Default constructor; Sets default attributes of window
 	public GUI(){
 		this.setLayout(new BorderLayout());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 		((Graphics2D) this.getGraphics()).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		this.createBufferStrategy(2);
 	}
 
 	//Main function
 	public static void main(String[] args){
 		GUI window = new GUI();
+		window.setBufferStrategy();
 		window.setDefaultImage();
-/*		window.createBufferStrategy(2);
-		BufferStrategy s = window.getBufferStrategy();*/
+	}
+	
+	public void setBufferStrategy(){
+		s = this.getBufferStrategy();
 	}
 	
 	//Sets default layout and preferences for window
@@ -40,8 +46,10 @@ public class GUI extends JFrame{
 		setFont(new Font("Tahoma", Font.PLAIN, 24));
 		
 		add(new JLabel("Example Message"));
+		
+		add(rect1);
 
- /*      JPanel contentPane = new JPanel();
+/*        JPanel contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout(5, 5));
 
         JScrollPane textScroller = new JScrollPane();
@@ -58,21 +66,27 @@ public class GUI extends JFrame{
 	}
 	
 	//Draw function which is called by default
-	public void setGraphics(Graphics graphics){
-		//Sets up graphics preferences
-	}
-	
-	//Overrides JFrame default paint function
-	@Override
-	public void paint(Graphics graphics){
-		super.paint(graphics);
-		Graphics2D g = (Graphics2D)graphics;
-		//draws onto window
+	public void draw(Graphics2D g){
 		g.drawString("Code Display", 20, 80);
 		g.drawString("Interface", 520, 80);
 		g.setColor(Color.BLACK);
 		g.setStroke(new BasicStroke(5));
 		g.drawLine(0, 100, 2000, 100);
 		g.drawLine(500, 100, 500, 1000);
+	}
+	
+	//Overrides JFrame default paint function
+	@Override
+	public void paint(Graphics graphics){
+		try{
+			super.paint(s.getDrawGraphics());
+			super.paintComponents(s.getDrawGraphics());
+			Graphics2D g = (Graphics2D) s.getDrawGraphics();
+			draw(g);
+			g.dispose();
+			s.show();
+			Toolkit.getDefaultToolkit().sync();
+			repaint();
+		}catch(Exception ex){}
 	}
 }
