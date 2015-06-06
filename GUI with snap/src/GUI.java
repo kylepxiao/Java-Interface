@@ -27,8 +27,8 @@ public class GUI extends JFrame{
 		this.addMouseListener(controller);
 		this.addMouseMotionListener(controller);
 		// adds default DraggableRect objects with positions
-		controller.addRect(new DraggableRect(525, 120, 100, 100, Color.GREEN));
-		controller.addRect(new DraggableRect(525, 250, 100, 100));
+		controller.addRect(new DraggableRect(525, 120, 75, 75));
+		controller.addRect(new DraggableRect(525, 250, 75, 75));
 		// sets up window attributes
 		this.setLayout(new BorderLayout());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
