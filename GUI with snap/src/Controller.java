@@ -110,33 +110,30 @@ class Controller extends MouseInputAdapter { 	// class DragController that exten
         		overlapRect = tempRect.position.intersection(tempRecti.position);
         		
         		// declares two variables that are the height and width of overlapRect
+        		
         		int h = overlapRect.height;
         		int w = overlapRect.width;
-        		
-        		
+        		int ih = 75 - overlapRect.height;
         		
         		// sees if tempRect will snap to the left or right of tempRecti
-        		if(tempRect.position.x < tempRecti.position.x){
-        			newRectangle = new Rectangle(tempRect.position.x - w - 5, tempRect.position.y, 75, 75);
-        		}
-        		else
-        			newRectangle = new Rectangle(tempRect.position.x + w + 5, tempRect.position.y, 75, 75);
-        		
-        		int nrx = newRectangle.x;
-        		int nry = newRectangle.y;
+        		if (tempRecti.position.y < tempRect.position.y){
+        			newRectangle = new Rectangle(tempRecti.position.x, tempRect.position.y + h + 10, 75, 75);
+        		}else 
+        			newRectangle = new Rectangle(tempRecti.position.x, tempRect.position.y + ih + 85, 75, 75);
         		
         		// makes it so that tempRect is the original rectangle that was before the snap
         		for(DraggableRect r : rects){
         			if(r.dragging == true) {
-        	    		r.setLocation(nrx, nry);
+        	    		r.setLocation(newRectangle.x, newRectangle.y);
         	    	}
         		}
-    	    	
-    	    	
          		// break out of the code
         		break;
         	}
         }
+    	    	
+    	    	
+         		
         
         
         
