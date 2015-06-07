@@ -1,12 +1,8 @@
 import java.awt.EventQueue;
 
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-
 import java.awt.GridLayout;
-
 import javax.swing.JPanel;
-
 import java.awt.Component;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,7 +10,6 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.BorderLayout;
-
 import javax.swing.JToolBar;
 
 
@@ -54,12 +49,11 @@ public class Interface {
 		frame.getContentPane().setBackground(Color.WHITE);
 		
 		JPanel p_main = new JPanel();
-		p_main.setVisible(true);
+		p_main.setVisible(false);
 		p_main.setRequestFocusEnabled(false);
 		p_main.setOpaque(false);
 		p_main.setFocusable(false);
 		p_main.setBackground(Color.WHITE);
-		p_main.setBorder(BorderFactory.createLineBorder(Color.black));
 		frame.getContentPane().add(p_main, BorderLayout.CENTER);
 		GridBagLayout gbl_p_main = new GridBagLayout();
 		gbl_p_main.columnWidths = new int[]{0, 0, 0, 0};
@@ -69,10 +63,8 @@ public class Interface {
 		p_main.setLayout(gbl_p_main);
 		
 		JPanel p_palette = new JPanel();
-		p_palette.setVisible(true);
 		p_palette.setForeground(Color.DARK_GRAY);
 		p_palette.setBackground(Color.DARK_GRAY);
-		p_palette.setBorder(BorderFactory.createLineBorder(Color.black));
 		GridBagConstraints gbc_p_palette = new GridBagConstraints();
 		gbc_p_palette.anchor = GridBagConstraints.WEST;
 		gbc_p_palette.gridheight = 7;
@@ -99,8 +91,6 @@ public class Interface {
 		p_main.add(toolBar, gbc_toolBar);
 		
 		JPanel p_workspace = new JPanel();
-		p_workspace.setVisible(true);
-		p_workspace.setBorder(BorderFactory.createLineBorder(Color.black));
 		GridBagConstraints gbc_p_workspace = new GridBagConstraints();
 		gbc_p_workspace.anchor = GridBagConstraints.WEST;
 		gbc_p_workspace.gridheight = 2;
@@ -117,8 +107,6 @@ public class Interface {
 		p_workspace.setLayout(gbl_p_workspace);
 		
 		JPanel p_browser = new JPanel();
-		p_browser.setVisible(true);
-		p_browser.setBorder(BorderFactory.createLineBorder(Color.black));
 		GridBagConstraints gbc_p_browser = new GridBagConstraints();
 		gbc_p_browser.anchor = GridBagConstraints.WEST;
 		gbc_p_browser.gridheight = 4;
@@ -135,8 +123,6 @@ public class Interface {
 		p_browser.setLayout(gbl_p_browser);
 		
 		JPanel p_output = new JPanel();
-		p_output.setVisible(true);
-		p_output.setBorder(BorderFactory.createLineBorder(Color.black));
 		GridBagConstraints gbc_p_output = new GridBagConstraints();
 		gbc_p_output.anchor = GridBagConstraints.WEST;
 		gbc_p_output.gridheight = 2;
@@ -153,8 +139,6 @@ public class Interface {
 		p_output.setLayout(gbl_p_output);
 		
 		JPanel p_console = new JPanel();
-		p_console.setVisible(true);
-		p_console.setBorder(BorderFactory.createLineBorder(Color.black));
 		GridBagConstraints gbc_p_console = new GridBagConstraints();
 		gbc_p_console.anchor = GridBagConstraints.WEST;
 		gbc_p_console.gridwidth = 2;
@@ -171,8 +155,6 @@ public class Interface {
 		p_console.setLayout(gbl_p_console);
 		
 		JPanel p_information = new JPanel();
-		p_information.setVisible(true);
-		p_information.setBorder(BorderFactory.createLineBorder(Color.black));
 		GridBagConstraints gbc_p_information = new GridBagConstraints();
 		gbc_p_information.gridwidth = 2;
 		gbc_p_information.anchor = GridBagConstraints.SOUTHWEST;
