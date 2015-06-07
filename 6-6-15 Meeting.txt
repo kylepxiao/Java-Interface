@@ -1,0 +1,3 @@
+John - Create menu options for when mouse hovers over an area
+Kyle - Create specialized DraggableRect with arrows
+Yangqi - Combine JPanels with Java Interface Proto and make visible
