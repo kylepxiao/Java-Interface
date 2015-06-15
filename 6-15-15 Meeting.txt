@@ -1,0 +1,4 @@
+John - Create new "for" block and fix opacity
+Kyle - Finish conditional block and begin writing to .java file code
+Yangqi - Fix error with code and send to Kyle before next meeting
+NEXT MEETING: THURSDAY, JUNE 18th @ 8PM
