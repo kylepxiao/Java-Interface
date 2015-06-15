@@ -1,0 +1,58 @@
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import javax.swing.BoxLayout;
+import java.awt.Dimension;
+import org.eclipse.wb.swing.FocusTraversalOnArray;
+import java.awt.Component;
+
+
+public class Interface {
+
+	private JFrame frame;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Interface window = new Interface();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public Interface() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.setSize(new Dimension(1200, 800));
+		frame.getContentPane().setMinimumSize(new Dimension(1200, 800));
+		frame.getContentPane().setMaximumSize(new Dimension(1200, 800));
+		frame.setBounds(100, 100, 450, 300);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
+		
+		JPanel p_palette = new JPanel();
+		p_palette.setSize(new Dimension(300, 800));
+		p_palette.setRequestFocusEnabled(false);
+		frame.getContentPane().add(p_palette);
+		frame.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{frame.getContentPane(), p_palette}));
+	}
+
+}
