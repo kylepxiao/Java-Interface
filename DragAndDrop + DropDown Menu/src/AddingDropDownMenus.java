@@ -20,14 +20,8 @@ public class AddingDropDownMenus extends JFrame {
     mItem = fileMenu.add("mItem");
     mItem2 = fileMenu.add("mItem2");
     mItem3 = fileMenu.add("mItem3");
-    
-    fileMenu.addSeparator();
-    
     mItem4 = fileMenu.add("mItem4");
     mItem5 = fileMenu.add("mItem5");
-    
-    fileMenu.addSeparator();
-    
     mItem6 = fileMenu.add("mItem6");
     
     elementMenu.add(rItem = new JRadioButtonMenuItem("rItem", true));
