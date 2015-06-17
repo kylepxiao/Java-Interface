@@ -16,7 +16,7 @@ class Controller extends MouseInputAdapter { 	// class DragController that exten
     }
     
     // getter function for rects
-    public static ArrayList<DraggableRect> getRects(){
+    public ArrayList<DraggableRect> getRects(){
     	return rects;
     }
     

@@ -1,7 +1,25 @@
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JToolBar;
 
 public class GUI extends JFrame{
 	
@@ -22,45 +40,16 @@ public class GUI extends JFrame{
 	// sets up buffer strategy for graphics
 	public BufferStrategy s;
 	
+	// sets up menubar and associated variables
+	private JMenuBar menuBar = new JMenuBar(); // Window menu bar
+	
+	private JMenuItem mItem, mItem2, mItem3, mItem4, mItem5, mItem6;
+	private JRadioButtonMenuItem rItem, rItem2, rItem3;
+	private JCheckBoxMenuItem cItem, cItem2;
 	// Default constructor; Sets default attributes of window and sets up handlers
 	public GUI(){
 		// initialises JFrame
 		this.getContentPane().setVisible(true);
-		this.getContentPane().setBackground(Color.WHITE);
-		// instantiates controller object
-		controller = new Controller();
-		// adds mouse listeners
-		this.addMouseListener(controller);
-		this.addMouseMotionListener(controller);
-		// adds default DraggableRect objects with positions
-		controller.addRect(new DraggableRect(525, 120, 75, 75));
-		controller.addRect(new DraggableRect(525, 250, 75, 75));
-		// sets up window attributes
-		this.setLayout(new BorderLayout());
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setVisible(true);
-		this.createBufferStrategy(2);
-		s = this.getBufferStrategy();
-		((Graphics2D) this.getGraphics()).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, 
-				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
-		
-	}
-
-	// main function
-	public static void main(String[] args){
-		GUI window = new GUI();
-		window.setDefaultImage();
-	}
-	
-	// Sets default layout and preferences for window
-	public void setDefaultImage(){
-		// sets basic graphical attributes for window
-		this.setTitle("Siemens Intuitive Interface");
-		this.setSize(800, 600);
-		this.setBackground(Color.GRAY);
-		this.setForeground(Color.BLACK);
-		this.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		// initialises JPanel components
 		JPanel p_main = new JPanel();
 		p_main.setVisible(true);
@@ -181,8 +170,8 @@ public class GUI extends JFrame{
 		p_console.setLayout(gbl_p_console);
 		
 		JPanel p_information = new JPanel();
-		p_information.setVisible(true);
 		p_information.setBorder(BorderFactory.createLineBorder(Color.black));
+		p_information.setVisible(true);
 		GridBagConstraints gbc_p_information = new GridBagConstraints();
 		gbc_p_information.gridwidth = 2;
 		gbc_p_information.fill = GridBagConstraints.BOTH;
@@ -198,11 +187,72 @@ public class GUI extends JFrame{
 		p_information.setLayout(gbl_p_information);
 		this.setBounds(100, 100, 800, 457);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setVisible(true);
+		// instantiates controller object
+		controller = new Controller();
+		// adds mouse listeners
+		this.addMouseListener(controller);
+		this.addMouseMotionListener(controller);
+		// adds default DraggableRect objects with positions
+		controller.addRect(new DraggableRect(525, 120, 75, 75));
+		controller.addRect(new DraggableRect(525, 250, 75, 75));
+		controller.addRect(new Conditional(50, 50));
+		// sets up window attributes
+		this.setLayout(new BorderLayout());
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.createBufferStrategy(2);
+		s = this.getBufferStrategy();
+		((Graphics2D) this.getGraphics()).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, 
+				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+	}
+
+	// main function
+	public static void main(String[] args){
+		GUI window = new GUI();
+		window.setDefaultImage();
+	}
+	
+	// Sets default layout and preferences for window
+	public void setDefaultImage(){
+		// sets basic graphical attributes for window
+		this.setTitle("Siemens Intuitive Interface");
+		this.setBackground(Color.GRAY);
+		this.setForeground(Color.BLACK);
+		this.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		// adds all DraggableRect object in controller onto the window JFrame
 		for(DraggableRect r : controller.getRects()){
 			this.add(r);
 		}
-		this.setVisible(true);
+		// adds menu items
+		setJMenuBar(menuBar);
+	    
+	    JMenu fileMenu = new JMenu("DDM Normal");
+	    JMenu elementMenu = new JMenu("DDM Radio&Check");
+	    
+	    mItem = fileMenu.add("mItem");
+	    mItem2 = fileMenu.add("mItem2");
+	    mItem3 = fileMenu.add("mItem3");
+	    mItem4 = fileMenu.add("mItem4");
+	    mItem5 = fileMenu.add("mItem5");
+	    mItem6 = fileMenu.add("mItem6");
+	    
+	    elementMenu.add(rItem = new JRadioButtonMenuItem("rItem", true));
+	    elementMenu.add(rItem2 = new JRadioButtonMenuItem("rItem2", false));
+	    elementMenu.add(rItem3 = new JRadioButtonMenuItem("rItem3", false));
+	    
+	    ButtonGroup types = new ButtonGroup();
+	    
+	    types.add(rItem);
+	    types.add(rItem2);
+	    types.add(rItem3);
+	    
+	    elementMenu.addSeparator();
+	    
+	    elementMenu.add(cItem = new JCheckBoxMenuItem("cItem", false));
+	    elementMenu.add(cItem2 = new JCheckBoxMenuItem("cItem2", false));
+	    
+	    menuBar.add(fileMenu); 
+	    menuBar.add(elementMenu);
 	}
 	
 	// Function to run handlers
