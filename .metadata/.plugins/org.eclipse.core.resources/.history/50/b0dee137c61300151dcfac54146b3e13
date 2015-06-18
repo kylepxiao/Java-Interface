@@ -1,0 +1,25 @@
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Toolkit;
+
+import javax.swing.JComponent;
+
+
+public class PaintComponent extends JComponent{
+	@Override
+	// Overrides JFrame default paint function
+	public void paint(Graphics graphics){
+		try{
+			// calls default paint functions in parent object
+			frame.paint(s.getDrawGraphics());
+			frame.paintComponents(s.getDrawGraphics());
+			// calls function to draw onto g
+			Graphics2D g = (Graphics2D) s.getDrawGraphics();
+			controller.showRects(g);
+			draw(g);
+			s.show();
+			Toolkit.getDefaultToolkit().sync();
+			frame.repaint();
+		}catch(Exception ex){}
+	}
+}
