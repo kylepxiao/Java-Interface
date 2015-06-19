@@ -1,0 +1,3 @@
+John - On break; meeting on Thursday
+Kyle - Combine code, create new block types, and polish existing code (like conditions in conditional)
+Yangqi - Create a way to import and export basic save files with variables
