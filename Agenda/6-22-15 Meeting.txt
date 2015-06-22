@@ -1,0 +1,3 @@
+Kyle - Add feature to compile .java files into JAR files and find way to set file save directory
+Yangqi - Add JTextArea to DraggableRects and implement them in GUI
+NEXT MEETING: THURSDAY JUNE 25th AT 8PM
