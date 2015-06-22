@@ -1,0 +1,13 @@
+package main;
+
+import javax.swing.JFrame;
+
+public abstract class GUI_Instance extends JFrame{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	public main.util.Controller controller;
+	
+}

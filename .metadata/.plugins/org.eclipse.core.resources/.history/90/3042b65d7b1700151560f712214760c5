@@ -1,0 +1,5 @@
+package main;
+
+public interface GUI_Instance {
+	Object main.util.Controller controller;
+}

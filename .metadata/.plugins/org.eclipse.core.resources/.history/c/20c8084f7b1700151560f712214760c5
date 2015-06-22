@@ -1,0 +1,6 @@
+package main;
+import main.*;
+
+public interface GUI_Instance {
+	main.util.Controller controller;
+}
