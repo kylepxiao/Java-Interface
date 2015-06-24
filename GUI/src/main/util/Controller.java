@@ -1,3 +1,4 @@
+package main.util;
 import java.awt.*; 		 // import java.awt package
 import java.awt.event.*; // import java.awt.event package
 import java.io.BufferedWriter;
@@ -5,9 +6,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList; // import ArrayList
+
 import javax.swing.event.MouseInputAdapter; // import javax.swing.event.MouseTinputAdapter
 
-class Controller extends MouseInputAdapter { 	// class DragController that extends MouseInputAdapter
+import main.block.DraggableRect;
+
+public class Controller extends MouseInputAdapter { 	// class DragController that extends MouseInputAdapter
 		
 	//class variables
 	private static ArrayList<DraggableRect> rects;

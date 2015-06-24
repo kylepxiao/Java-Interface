@@ -1,4 +1,9 @@
-import java.awt.*;
+package main.block;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
 
 public class Conditional extends DraggableRect{
 
@@ -84,7 +89,7 @@ public class Conditional extends DraggableRect{
 		if(childrenIDs.size() > 0 && childrenIDs.get(0) != 0){
 			//sets branch1 to encapsulate child
 			branch1Visible = false;
-			int childWidth = Controller.getRectByID(childrenIDs.get(0)).getWidth();
+			int childWidth = main.util.Controller.getRectByID(childrenIDs.get(0)).getWidth();
 			if(childWidth > branch2.x - position.x){
 				branch2.x += childWidth - branchDisplacementX + 5;
 			}

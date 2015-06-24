@@ -1,3 +1,4 @@
+package main;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -8,11 +9,17 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferStrategy;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -23,7 +30,13 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.ToolTipManager;
 
-public class GUI extends JFrame{
+import main.block.Conditional;
+import main.block.DraggableRect;
+import main.block.Start;
+import main.util.Controller;
+import main.util.Save;
+
+public class GUI extends GUI_Instance implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 
@@ -34,7 +47,10 @@ public class GUI extends JFrame{
 	 */
 	
 	// contains DraggableRect objects and handles mouse input
-	private Controller controller;
+	public Controller controller;
+	
+	// sets up private save handler
+	private Save save;
 	
 	// sets up buffer strategy for graphics
 	public BufferStrategy s;
@@ -42,15 +58,25 @@ public class GUI extends JFrame{
 	// sets up menubar and associated variables
 	private JMenuBar menuBar = new JMenuBar(); // Window menu bar
 	
+	//sets up filechoosers needed for saving and loading file
+	private JFileChooser saveFileChooser;
+	private JFileChooser loadFileChooser;
+	
+	
 	// declares items in menu
 	@SuppressWarnings("unused")
-	private JMenuItem mItem, mItem2, mItem3, mItem4, mItem5, mItem6;
+	private JMenuItem mItemSave, mItemLoad, mItemRun, mItem4, mItem5, mItem6;
 	private JRadioButtonMenuItem rItem, rItem2, rItem3;
 	@SuppressWarnings("unused")
 	private JCheckBoxMenuItem cItem, cItem2;
 	
+	//sets default directory for java JRE and is subject to change by user
+	private static String path[] = {"C:\\Program Files\\Java\\jdk1.8.0_05\\bin"};
+	
 	// Default constructor; Sets default attributes of window and sets up handlers
 	public GUI(){
+		//sets up file choosers
+		setFileChoosers();
 		// initialises JFrame
 		setContent();
 		// instantiates controller object
@@ -64,6 +90,22 @@ public class GUI extends JFrame{
 		ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
 		((Graphics2D) this.getGraphics()).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, 
 				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+	}
+	
+	//initializes and sets default attributes for file choosers
+	private void setFileChoosers(){
+		//sets default attributes for save file chooser
+		saveFileChooser = new JFileChooser();
+		saveFileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+		saveFileChooser.setCurrentDirectory(new java.io.File("."));
+	    saveFileChooser.setDialogTitle("Save As");
+		saveFileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		//sets default attributes for load file chooser
+		loadFileChooser = new JFileChooser();
+		loadFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
+		loadFileChooser.setCurrentDirectory(new java.io.File("."));
+	    loadFileChooser.setDialogTitle("Open");
+		loadFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 	}
 	
 	//sets up page layout content and menu
@@ -212,6 +254,7 @@ public class GUI extends JFrame{
 	//initiates controller and creates default rectangles
 	private void setController(){
 		controller = new Controller();
+		save = new Save();
 		// adds mouse listeners
 		this.addMouseListener(controller);
 		this.addMouseMotionListener(controller);
@@ -225,7 +268,9 @@ public class GUI extends JFrame{
 
 	// main function
 	public static void main(String[] args){
+		//creates new GUI instance
 		GUI window = new GUI();
+		//sets default characteristics of window
 		window.setDefaultImage();
 	}
 	
@@ -245,10 +290,19 @@ public class GUI extends JFrame{
 	    
 	    JMenu fileMenu = new JMenu("DDM Normal");
 	    JMenu elementMenu = new JMenu("DDM Radio&Check");
+
+	    mItemLoad = fileMenu.add("Open");
+	    mItemLoad.addActionListener(this);
+	    mItemLoad.setActionCommand("open");
 	    
-	    mItem = fileMenu.add("mItem");
-	    mItem2 = fileMenu.add("mItem2");
-	    mItem3 = fileMenu.add("mItem3");
+	    mItemSave = fileMenu.add("Save");
+	    mItemSave.addActionListener(this);
+	    mItemSave.setActionCommand("save");
+	    
+	    mItemRun = fileMenu.add("Run");
+	    mItemRun.addActionListener(this);
+	    mItemRun.setActionCommand("run");
+	    
 	    mItem4 = fileMenu.add("mItem4");
 	    mItem5 = fileMenu.add("mItem5");
 	    mItem6 = fileMenu.add("mItem6");
@@ -272,6 +326,33 @@ public class GUI extends JFrame{
 	    menuBar.add(elementMenu);
 	}
 	
+	// ActionHandler method
+	public void actionPerformed(ActionEvent e){
+		String command = e.getActionCommand();
+		switch(command){
+			case "open": 
+				int loadStatus = loadFileChooser.showOpenDialog(null);
+				if(loadStatus == JFileChooser.APPROVE_OPTION){
+					save.load(this, loadFileChooser.getSelectedFile().getAbsolutePath());
+				}
+				break;
+			case "save": 
+				int saveStatus = saveFileChooser.showSaveDialog(null);
+				if(saveStatus == JFileChooser.APPROVE_OPTION){
+					save.save(this, saveFileChooser.getCurrentDirectory().getAbsolutePath(), saveFileChooser.getSelectedFile().getName());
+				}
+				break;
+			case "run":
+				try {
+			      runProcess("javac test.java");
+			      runProcess("java test");
+			    } catch (Exception ex) {
+			      ex.printStackTrace();
+			    }
+			default:
+				break;
+		}
+	}
 	// Function to run handlers
 	public void run(){
 
@@ -297,5 +378,28 @@ public class GUI extends JFrame{
 			Toolkit.getDefaultToolkit().sync();
 			super.repaint();
 		}catch(Exception ex){}
+	}
+	
+	//prints commands and standard output from them into the console
+	private static void printLines(String name, InputStream ins) throws Exception {
+	    String line = null;
+	    BufferedReader in = new BufferedReader(new InputStreamReader(ins));
+	    while ((line = in.readLine()) != null) {
+	    	//prints command and the output in quotes
+	        System.out.println(name + "\"" + line + "\"");
+	    }
+	}
+
+	//run argument into command line
+	private static void runProcess(String command) throws Exception {
+		Process pro;
+		pro = Runtime.getRuntime().exec(command, path);
+		//prints regular output
+		printLines(command + "> stdout: ", pro.getInputStream());
+		//prints errors
+		printLines(command + "> stderr: ", pro.getErrorStream());
+		//waits until process is finished and prints return value
+		pro.waitFor();
+		System.out.println(command + "> exitValue " + pro.exitValue());
 	}
 }
