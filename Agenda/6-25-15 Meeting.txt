@@ -1,0 +1,3 @@
+Kyle - Add text box to work with JPanels and make batch file to set path variable and take change rectangle into JPanel
+Yangqi - Work on getting windows to resize automatically and look into scrollbars
+John - Impromptu meeting tomorrow on Friday, June 26 at 2pm
