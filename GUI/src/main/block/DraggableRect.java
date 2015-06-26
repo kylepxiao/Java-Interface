@@ -1,6 +1,7 @@
 package main.block;
 import java.awt.*; 		 // import java.awt package
 import java.util.ArrayList; // import java.util.ArrayList package
+
 import javax.swing.*;	 // import javax.swing package
 
 public class DraggableRect extends JPanel {
@@ -21,15 +22,26 @@ public class DraggableRect extends JPanel {
 	public int id;
 	public int parentID = 0;
 	public ArrayList<Integer> childrenIDs;
+	public String text;
 	
 	// default constructor which initializes values
 	public DraggableRect(){
+		// initizes panel
+		this.setBorder(BorderFactory.createLineBorder(Color.black));
+		this.setVisible(true);
+		
+		// initializes specific variables
 		setNumChildren(numChildren);
 		numInstancesCreated++;
 		id = numInstancesCreated;
 		position = new Rectangle();
 		c = Color.BLACK;
 		objectsHoveringAbove.add(false);
+		text = "Test";
+		
+		// adds textfield
+		JTextField t = new JTextField(text);
+		this.add(t);
 	}
 			
 	// override constructor which sets position values for rectangle
@@ -40,6 +52,10 @@ public class DraggableRect extends JPanel {
 		position = new Rectangle(x, y, w, h);
 		c = Color.BLACK;
 		objectsHoveringAbove.add(false);
+		
+		// adds textfield
+		JTextField t = new JTextField("Test");
+		this.add(t);
 	}
 	
 	// override constructor to set color as well
