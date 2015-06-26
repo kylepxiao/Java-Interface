@@ -1,0 +1,1 @@
+John - Read from test.java and output it onto one of the JPanels in the GUI
