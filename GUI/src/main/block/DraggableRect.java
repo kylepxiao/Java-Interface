@@ -1,6 +1,7 @@
 package main.block;
 import java.awt.*; 		 // import java.awt package
 import java.util.ArrayList; // import java.util.ArrayList package
+
 import javax.swing.*;	 // import javax.swing package
 
 public class DraggableRect extends JPanel {
@@ -58,7 +59,7 @@ public class DraggableRect extends JPanel {
 	}
 	
 	// mutator function to set position
-	public void setLocation(int x, int y){
+	public void setPosition(int x, int y){
 		position.setLocation(x, y);
 	}
 	
@@ -89,11 +90,13 @@ public class DraggableRect extends JPanel {
 	}
 	
 	//function that updates DraggableRect for child classes
-	public void update(){}
+	public void update(){
+		this.setBounds(getOffset(position));
+	}
 	
 	//returns width requirement for blocks to avoid overlap conflicts
-	public int getwidth(){
-		return this.position.width;
+	public int getResizeWidth(){
+		return position.width;
 	}
 	
 	//resets childrenIDs and sets the number of children
@@ -102,6 +105,11 @@ public class DraggableRect extends JPanel {
 		for(int i=0; i<n; i++){
 			childrenIDs.add(0);
 		}
+	}
+	
+	//gets offset between rect position and JPanel position
+	protected Rectangle getOffset(Rectangle r){
+		return new Rectangle(r.x - 9, r.y - 60, r.width, r.height);
 	}
 	
 	//sets parentID to 0 and clears childrenIDs
@@ -170,7 +178,7 @@ public class DraggableRect extends JPanel {
 			g.fill(position);
 		}
 		g.setPaint(c);
-		g.draw(position);
+		this.setBorder(BorderFactory.createLineBorder(Color.black));
 	}
 	
 	// returns integer to identify block type
@@ -178,6 +186,7 @@ public class DraggableRect extends JPanel {
 		return 0;
 	}
 	
+	//returns true if the draggableRect has children
 	public boolean hasChildren(){
 		for(int n : childrenIDs){
 			if(n != 0){

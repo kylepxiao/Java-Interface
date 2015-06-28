@@ -130,6 +130,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 		JPanel p_palette = new JPanel();
 		p_palette.setVisible(true);
 		p_palette.setBorder(BorderFactory.createLineBorder(Color.black));
+		p_palette.setOpaque(false);
 		GridBagConstraints gbc_p_palette = new GridBagConstraints();
 		gbc_p_palette.anchor = GridBagConstraints.WEST;
 		gbc_p_palette.gridheight = 7;
@@ -149,6 +150,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 		toolBar.setVisible(true);
 		toolBar.setBorder(BorderFactory.createLineBorder(Color.black));
 		toolBar.setFloatable(false);
+		toolBar.setOpaque(false);
 		GridBagConstraints gbc_toolBar = new GridBagConstraints();
 		gbc_toolBar.anchor = GridBagConstraints.NORTHWEST;
 		gbc_toolBar.gridwidth = 2;
@@ -161,6 +163,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 		JPanel p_workspace = new JPanel();
 		p_workspace.setVisible(true);
 		p_workspace.setBorder(BorderFactory.createLineBorder(Color.black));
+		p_workspace.setOpaque(false);
 		GridBagConstraints gbc_p_workspace = new GridBagConstraints();
 		gbc_p_workspace.anchor = GridBagConstraints.WEST;
 		gbc_p_workspace.gridheight = 2;
@@ -179,6 +182,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 		JPanel p_browser = new JPanel();
 		p_browser.setVisible(true);
 		p_browser.setBorder(BorderFactory.createLineBorder(Color.black));
+		p_browser.setOpaque(false);
 		GridBagConstraints gbc_p_browser = new GridBagConstraints();
 		gbc_p_browser.anchor = GridBagConstraints.WEST;
 		gbc_p_browser.gridheight = 4;
@@ -197,6 +201,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 		JPanel p_output = new JPanel();
 		p_output.setBorder(BorderFactory.createLineBorder(Color.black));
 		p_output.setVisible(true);
+		p_output.setOpaque(false);
 		GridBagConstraints gbc_p_output = new GridBagConstraints();
 		gbc_p_output.anchor = GridBagConstraints.WEST;
 		gbc_p_output.gridheight = 2;
@@ -215,6 +220,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 		JPanel p_console = new JPanel();
 		p_console.setBorder(BorderFactory.createLineBorder(Color.black));
 		p_console.setVisible(true);
+		p_console.setOpaque(false);
 		GridBagConstraints gbc_p_console = new GridBagConstraints();
 		gbc_p_console.anchor = GridBagConstraints.WEST;
 		gbc_p_console.gridwidth = 2;
@@ -233,6 +239,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 		JPanel p_information = new JPanel();
 		p_information.setBorder(BorderFactory.createLineBorder(Color.black));
 		p_information.setVisible(true);
+		p_information.setOpaque(false);
 		GridBagConstraints gbc_p_information = new GridBagConstraints();
 		gbc_p_information.gridwidth = 2;
 		gbc_p_information.fill = GridBagConstraints.BOTH;
@@ -264,6 +271,10 @@ public class GUI extends GUI_Instance implements ActionListener{
 		controller.addRect(new Conditional(50, 80));
 		controller.addRect(new Conditional(250, 80));
 		controller.addRect(new Start(50, 300));
+		//adds all draggableRects to the JFrame
+		for(DraggableRect r : controller.getRects()){
+			add(r);
+		}
 	}
 
 	// main function
@@ -281,10 +292,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 		this.setBackground(Color.GRAY);
 		this.setForeground(Color.BLACK);
 		this.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		// adds all DraggableRect object in controller onto the window JFrame
-		for(DraggableRect r : controller.getRects()){
-			this.add(r);
-		}
+
 		// adds menu items
 		setJMenuBar(menuBar);
 	    

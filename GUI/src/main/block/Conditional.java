@@ -1,9 +1,12 @@
 package main.block;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+
+import javax.swing.JTextArea;
 
 public class Conditional extends DraggableRect{
 
@@ -15,6 +18,7 @@ public class Conditional extends DraggableRect{
 	private boolean branch1Visible = true;
 	private boolean branch2Visible = true;
 	private static final int numChildren = 2;
+	private JTextArea condition = new JTextArea();
 	
 	//Strings used to write to java file
 	public static final String codeEncap1 = "if(";
@@ -37,6 +41,8 @@ public class Conditional extends DraggableRect{
 		branch2 = new Rectangle(0, 0, branchWidth, branchHeight);
 		objectsHoveringAbove.add(false);
 		objectsHoveringAbove.add(false);
+		condition.setText("<Condition>");
+		add(condition, BorderLayout.CENTER);
 		updateBranches();
 	}
 	
@@ -48,6 +54,8 @@ public class Conditional extends DraggableRect{
 		branch2 = new Rectangle(0, 0, branchWidth, branchHeight);
 		objectsHoveringAbove.add(false);
 		objectsHoveringAbove.add(false);
+		condition.setText("<Condition>");
+		add(condition, BorderLayout.CENTER);
 		updateBranches();
 	}
 	
@@ -59,6 +67,8 @@ public class Conditional extends DraggableRect{
 		branch2 = new Rectangle(branchWidth, branchHeight);
 		objectsHoveringAbove.add(false);
 		objectsHoveringAbove.add(false);
+		condition.setText("<Condition>");
+		add(condition, BorderLayout.CENTER);
 		updateBranches();
 	}
 	
@@ -70,6 +80,8 @@ public class Conditional extends DraggableRect{
 		branch2 = new Rectangle(0, 0, branchWidth, branchHeight);
 		objectsHoveringAbove.add(false);
 		objectsHoveringAbove.add(false);
+		condition.setText("<Condition>");
+		add(condition, BorderLayout.CENTER);
 		updateBranches();
 	}
 	
@@ -89,7 +101,7 @@ public class Conditional extends DraggableRect{
 		if(childrenIDs.size() > 0 && childrenIDs.get(0) != 0){
 			//sets branch1 to encapsulate child
 			branch1Visible = false;
-			int childWidth = main.util.Controller.getRectByID(childrenIDs.get(0)).getWidth();
+			int childWidth = main.util.Controller.getRectByID(childrenIDs.get(0)).getResizeWidth();
 			if(childWidth > branch2.x - position.x){
 				branch2.x += childWidth - branchDisplacementX + 5;
 			}
@@ -102,12 +114,13 @@ public class Conditional extends DraggableRect{
 	//overrides update to account for branches
 	@Override
 	public void update(){
+		this.setBounds(getOffset(position));
 		updateBranches();
 	}
 	
 	//overrides getWidth to account for changes in branch sizes
 	@Override
-	public int getWidth(){
+	public int getResizeWidth(){
 		return branch2.x - branch1.x + branch2.width;
 	}
 	
@@ -229,7 +242,7 @@ public class Conditional extends DraggableRect{
 	@Override
 	public void draw(Graphics2D g){
 		super.draw(g);
-		updateBranches();
+		update();
 		//fills in shadows for hovering
 		if(branch1Visible && objectsHoveringAbove.get(1)){
 			g.setPaint(shadow);

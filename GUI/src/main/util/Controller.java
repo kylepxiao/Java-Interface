@@ -40,6 +40,7 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     
     // passes position of DraggableRect into DragController
     public void addRect(DraggableRect r){
+    	r.update();
     	rects.add(r);
     }
     
@@ -170,7 +171,7 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
 			        	if (p != null){
 			        		
 			        		//sets location of rectangle being dragged to below the rectangle it overlaps
-			        		r.setLocation(p.x, p.y);
+			        		r.setPosition(p.x, p.y);
 			        		
 			        		//checks to see if rectangles are already related
 			        		if(r.parentID == tempRecti.id){
@@ -180,6 +181,7 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
 			        		//sets parent and child id based on encapsulation
 			        		r.parentID = tempRecti.id;
 			        		tempRecti.setChild(r);
+			        		r.update();
 			        		
 			        		//sets code to check again for any more overlap conflicts
 			        		hasOverlap = true;
@@ -203,13 +205,13 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     	// sets up the dragging
     	for(DraggableRect r : rects){
     		if(r.dragging){
-    			r.update();
     			int x = e.getX() - r.offset.x;
                 int y = e.getY() - r.offset.y;
-                r.setLocation(x, y);
+                r.setPosition(x, y);
                 for(DraggableRect ri : rects){
                 	ri.checkHoverOver(r);
                 }
+                r.update();
     		}
     	}
     }
