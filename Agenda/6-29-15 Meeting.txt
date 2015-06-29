@@ -1,0 +1,3 @@
+John - Experiment on new conditional block type
+Kyle - Combine code and create movement for children object when parent is dragged and take a look at John's code
+Yangqi - Fix gap and experiment on compiling with batch
