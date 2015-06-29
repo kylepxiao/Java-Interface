@@ -1,5 +1,0 @@
-package main;
-
-public interface GUI_Instance {
-	
-}
