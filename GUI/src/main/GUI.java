@@ -13,6 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferStrategy;
 import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -276,6 +278,35 @@ public class GUI extends GUI_Instance implements ActionListener{
 			add(r);
 		}
 	}
+	
+	//draws text from .java file
+	private void drawJavaString(Graphics2D g){
+		BufferedReader br = null;
+		try {	
+			g.setFont(new Font("SansSerif", Font.PLAIN, 12));
+			g.setColor(Color.MAGENTA);
+			br = new BufferedReader(new FileReader("test.java"));
+			String sCurrentLine;
+			int lineNum = 0;
+			final int lineHeight = 15;
+			final int initX = 210;
+			final int initY = 340;
+			while ((sCurrentLine = br.readLine()) != null) {
+				g.drawString(sCurrentLine, initX, lineNum * lineHeight + initY);
+				lineNum++;
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (br != null)br.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+
+	}
 
 	// main function
 	public static void main(String[] args){
@@ -380,6 +411,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 			super.paintComponents(s.getDrawGraphics());
 			// calls function to draw onto g
 			Graphics2D g = (Graphics2D) s.getDrawGraphics();
+			drawJavaString(g);
 			controller.showRects(g);
 			draw(g);
 			s.show();
