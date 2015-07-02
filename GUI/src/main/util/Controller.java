@@ -72,7 +72,8 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     		if(r.id == id){
     			return r;
     		}
-    	}return null;
+    	}
+    	return null;
     }
     
     //recirsuve function to generate code string
@@ -99,6 +100,36 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     		default:
     			return "";
     		}
+    	}
+    }
+    
+    //changes the position of a DraggableRect and all its children
+    private void setTreeLocation(DraggableRect r, int x, int y){
+    	//if the rect has children, then set the position of the children
+    	if(r.hasChildren()){
+    		//keep a record of the original position of the parent rect
+    		int oldX = r.getPosition().x;
+    		int oldY = r.getPosition().y;
+    		//set the position of the parent rect
+    		r.setPosition(x, y);
+    		r.update();
+    		//iterate through each of the first-generation child rects
+    		for(int child : r.childrenIDs){
+    			//if the child isn't empty
+    			if(child != 0){
+    				//find the child with the specified id
+    				DraggableRect childRect = getRectByID(child);
+    				//get the new coordinates
+    				int newX = childRect.getPosition().x + (x - oldX);
+    				int newY = childRect.getPosition().y + (y - oldY);
+    				//continue with the child's child
+    				setTreeLocation(childRect, newX, newY);
+    			}
+    		}
+    	//if there are no children, then just set the position of the rect
+    	}else{
+    		r.setPosition(x, y);
+    		r.update();
     	}
     }
     
@@ -133,7 +164,7 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
             		getRectByID(r.parentID).deleteChild(r.id);
             		getRectByID(r.parentID).update();
             	}
-            	r.resetFamily();
+            	r.parentID = 0;
             	//used to set up movement
                 r.offset.x = p.x - r.getPosition().x;
                 r.offset.y = p.y - r.getPosition().y;
@@ -207,7 +238,7 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     		if(r.dragging){
     			int x = e.getX() - r.offset.x;
                 int y = e.getY() - r.offset.y;
-                r.setPosition(x, y);
+                setTreeLocation(r, x, y);
                 for(DraggableRect ri : rects){
                 	ri.checkHoverOver(r);
                 }
