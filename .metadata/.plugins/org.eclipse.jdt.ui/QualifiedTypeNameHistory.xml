@@ -3,4 +3,5 @@
 <fullyQualifiedTypeName name="java.awt.GridBagLayout"/>
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="java.awt.List"/>
+<fullyQualifiedTypeName name="java.io.DataOutputStream"/>
 </qualifiedTypeNameHistroy>
