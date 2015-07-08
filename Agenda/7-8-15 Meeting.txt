@@ -1,0 +1,3 @@
+John - Review code for entire project
+Kyle - Review loop code and add window resizeability
+NEXT MEETING: SUNDAY, JULY 8 AT 2pm
