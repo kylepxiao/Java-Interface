@@ -41,6 +41,7 @@ public class Conditional extends DraggableRect{
 		branch2 = new Rectangle(0, 0, branchWidth, branchHeight);
 		objectsHoveringAbove.add(false);
 		objectsHoveringAbove.add(false);
+		condition.setOpaque(false);
 		condition.setText("<Condition>");
 		add(condition, BorderLayout.CENTER);
 		updateBranches();
@@ -54,6 +55,7 @@ public class Conditional extends DraggableRect{
 		branch2 = new Rectangle(0, 0, branchWidth, branchHeight);
 		objectsHoveringAbove.add(false);
 		objectsHoveringAbove.add(false);
+		condition.setOpaque(false);
 		condition.setText("<Condition>");
 		add(condition, BorderLayout.CENTER);
 		updateBranches();
@@ -67,6 +69,7 @@ public class Conditional extends DraggableRect{
 		branch2 = new Rectangle(branchWidth, branchHeight);
 		objectsHoveringAbove.add(false);
 		objectsHoveringAbove.add(false);
+		condition.setOpaque(false);
 		condition.setText("<Condition>");
 		add(condition, BorderLayout.CENTER);
 		updateBranches();
@@ -80,6 +83,7 @@ public class Conditional extends DraggableRect{
 		branch2 = new Rectangle(0, 0, branchWidth, branchHeight);
 		objectsHoveringAbove.add(false);
 		objectsHoveringAbove.add(false);
+		condition.setOpaque(false);
 		condition.setText("<Condition>");
 		add(condition, BorderLayout.CENTER);
 		updateBranches();

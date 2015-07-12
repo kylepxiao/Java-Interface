@@ -26,9 +26,11 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JTextPane;
 import javax.swing.JToolBar;
 import javax.swing.ToolTipManager;
 
@@ -60,10 +62,20 @@ public class GUI extends GUI_Instance implements ActionListener{
 	// sets up menubar and associated variables
 	private JMenuBar menuBar = new JMenuBar(); // Window menu bar
 	
+	// sets up content JPanels
+	private JPanel bufferPanel = new JPanel();
+	private JPanel p_main = new JPanel();
+	private JPanel p_palette = new JPanel();
+	private JToolBar toolBar = new JToolBar();
+	private JPanel p_workspace = new JPanel();
+	private JPanel p_browser = new JPanel();
+	private JPanel p_output = new JPanel();
+	private JPanel p_console = new JPanel();
+	private JPanel p_information = new JPanel();
+	
 	//sets up filechoosers needed for saving and loading file
 	private JFileChooser saveFileChooser;
 	private JFileChooser loadFileChooser;
-	
 	
 	// declares items in menu
 	@SuppressWarnings("unused")
@@ -72,8 +84,15 @@ public class GUI extends GUI_Instance implements ActionListener{
 	@SuppressWarnings("unused")
 	private JCheckBoxMenuItem cItem, cItem2;
 	
-	//sets default directory for java JRE and is subject to change by user
-	private static String path[] = {"C:\\Program Files\\Java\\jdk1.8.0_05\\bin"};
+	//sets default directory for java JDK and is subject to change by user
+	private static String path = "C:\\Program Files\\Java\\jdk1.8.0_05\\bin";
+	
+	// main function
+	public static void main(String[] args){
+		//creates new GUI instance
+		@SuppressWarnings("unused")
+		GUI window = new GUI();
+	}
 	
 	// Default constructor; Sets default attributes of window and sets up handlers
 	public GUI(){
@@ -81,15 +100,14 @@ public class GUI extends GUI_Instance implements ActionListener{
 		setFileChoosers();
 		// initialises JFrame
 		setContent();
+		//sets default window attributes
+		this.setDefaultAttributes();
 		// instantiates controller object
 		setController();
-		// sets up window attributes
-		this.setLayout(new BorderLayout());
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.createBufferStrategy(2);
-		s = this.getBufferStrategy();
+		//sets toolbar to go over frame
 		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 		ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
+		//sets antialiasing
 		((Graphics2D) this.getGraphics()).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, 
 				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 	}
@@ -110,18 +128,35 @@ public class GUI extends GUI_Instance implements ActionListener{
 		loadFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 	}
 	
-	//sets up page layout content and menu
+	//sets up page layout content and initializes JPanel components
 	private void setContent(){
+		//sets window content visible
 		this.getContentPane().setVisible(true);
-		// initialises JPanel components
-		JPanel p_main = new JPanel();
+		
+		//buffer panel between JFrame and p_main content
+		bufferPanel.setVisible(true);
+		bufferPanel.setLayout(new GridBagLayout());
+		bufferPanel.setOpaque(false);
+		this.getContentPane().add(bufferPanel);
+		
+		//GridBagConstraints for setting p_main into bufferPanel
+		GridBagConstraints gbc_p_main = new GridBagConstraints();
+		gbc_p_main.anchor =  GridBagConstraints.CENTER;
+		gbc_p_main.insets = new Insets(0, 0, 5, 5);
+		gbc_p_main.weightx = 1;
+		gbc_p_main.weighty = 1;
+		gbc_p_main.gridx = 0;
+		gbc_p_main.gridy = 0;
+		gbc_p_main.fill = GridBagConstraints.BOTH;
+		
+		//initializes JPanel encapsulating the content (p_main)
 		p_main.setVisible(true);
 		p_main.setBorder(BorderFactory.createLineBorder(Color.black));
 		p_main.setRequestFocusEnabled(false);
 		p_main.setOpaque(false);
 		p_main.setFocusable(false);
 		p_main.setBackground(Color.WHITE);
-		this.getContentPane().add(p_main, BorderLayout.CENTER);
+		bufferPanel.add(p_main, gbc_p_main);
 		GridBagLayout gbl_p_main = new GridBagLayout();
 		gbl_p_main.columnWidths = new int[]{0, 0, 0, 0};
 		gbl_p_main.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
@@ -129,7 +164,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 		gbl_p_main.rowWeights = new double[]{1.0, 2.0, 2.0, 2.0, 2.0, 4.0, 1.0, Double.MIN_VALUE};
 		p_main.setLayout(gbl_p_main);
 		
-		JPanel p_palette = new JPanel();
+		//initializes p_palette
 		p_palette.setVisible(true);
 		p_palette.setBorder(BorderFactory.createLineBorder(Color.black));
 		p_palette.setOpaque(false);
@@ -148,7 +183,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 		gbl_p_palette.rowWeights = new double[]{Double.MIN_VALUE};
 		p_palette.setLayout(gbl_p_palette);
 		
-		JToolBar toolBar = new JToolBar();
+		//initializes toolbar
 		toolBar.setVisible(true);
 		toolBar.setBorder(BorderFactory.createLineBorder(Color.black));
 		toolBar.setFloatable(false);
@@ -162,7 +197,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 		gbc_toolBar.gridy = 0;
 		p_main.add(toolBar, gbc_toolBar);
 		
-		JPanel p_workspace = new JPanel();
+		//initializes p_workspace
 		p_workspace.setVisible(true);
 		p_workspace.setBorder(BorderFactory.createLineBorder(Color.black));
 		p_workspace.setOpaque(false);
@@ -181,7 +216,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 		gbl_p_workspace.rowWeights = new double[]{Double.MIN_VALUE};
 		p_workspace.setLayout(gbl_p_workspace);
 		
-		JPanel p_browser = new JPanel();
+		//initializes p_browser
 		p_browser.setVisible(true);
 		p_browser.setBorder(BorderFactory.createLineBorder(Color.black));
 		p_browser.setOpaque(false);
@@ -200,7 +235,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 		gbl_p_browser.rowWeights = new double[]{Double.MIN_VALUE};
 		p_browser.setLayout(gbl_p_browser);
 		
-		JPanel p_output = new JPanel();
+		//initializes p_output
 		p_output.setBorder(BorderFactory.createLineBorder(Color.black));
 		p_output.setVisible(true);
 		p_output.setOpaque(false);
@@ -219,7 +254,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 		gbl_p_output.rowWeights = new double[]{Double.MIN_VALUE};
 		p_output.setLayout(gbl_p_output);
 		
-		JPanel p_console = new JPanel();
+		//initializes p_console
 		p_console.setBorder(BorderFactory.createLineBorder(Color.black));
 		p_console.setVisible(true);
 		p_console.setOpaque(false);
@@ -231,14 +266,15 @@ public class GUI extends GUI_Instance implements ActionListener{
 		gbc_p_console.gridx = 1;
 		gbc_p_console.gridy = 5;
 		p_main.add(p_console, gbc_p_console);
-		GridBagLayout gbl_p_console = new GridBagLayout();
+/*		GridBagLayout gbl_p_console = new GridBagLayout();
 		gbl_p_console.columnWidths = new int[]{0};
 		gbl_p_console.rowHeights = new int[]{0};
 		gbl_p_console.columnWeights = new double[]{Double.MIN_VALUE};
 		gbl_p_console.rowWeights = new double[]{Double.MIN_VALUE};
-		p_console.setLayout(gbl_p_console);
+		p_console.setLayout(gbl_p_console);*/
+		p_console.setLayout(new BorderLayout());
 		
-		JPanel p_information = new JPanel();
+		//initializes p_information
 		p_information.setBorder(BorderFactory.createLineBorder(Color.black));
 		p_information.setVisible(true);
 		p_information.setOpaque(false);
@@ -255,9 +291,6 @@ public class GUI extends GUI_Instance implements ActionListener{
 		gbl_p_information.columnWeights = new double[]{Double.MIN_VALUE};
 		gbl_p_information.rowWeights = new double[]{Double.MIN_VALUE};
 		p_information.setLayout(gbl_p_information);
-		this.setBounds(100, 100, 800, 457);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setVisible(true);
 	}
 	
 	//initiates controller and creates default rectangles
@@ -279,50 +312,22 @@ public class GUI extends GUI_Instance implements ActionListener{
 		}
 	}
 	
-	//draws text from .java file
-	private void drawJavaString(Graphics2D g){
-		BufferedReader br = null;
-		try {	
-			g.setFont(new Font("SansSerif", Font.PLAIN, 12));
-			g.setColor(Color.MAGENTA);
-			br = new BufferedReader(new FileReader("test.java"));
-			String sCurrentLine;
-			int lineNum = 0;
-			final int lineHeight = 15;
-			final int initX = 210;
-			final int initY = 340;
-			while ((sCurrentLine = br.readLine()) != null) {
-				g.drawString(sCurrentLine, initX, lineNum * lineHeight + initY);
-				lineNum++;
-			}
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (br != null)br.close();
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-		}
-
-	}
-
-	// main function
-	public static void main(String[] args){
-		//creates new GUI instance
-		GUI window = new GUI();
-		//sets default characteristics of window
-		window.setDefaultImage();
-	}
-	
 	// Sets default layout and preferences for window
-	public void setDefaultImage(){
-		// sets basic graphical attributes for window
+	public void setDefaultAttributes(){
+		//sets window information and basic graphical attributes
+		this.setBounds(100, 100, 800, 500);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setVisible(true);
 		this.setTitle("Siemens Intuitive Interface");
 		this.setBackground(Color.GRAY);
 		this.setForeground(Color.BLACK);
+		this.setLayout(null);
 		this.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		//creates buffer strategy for smooth window graphics
+		this.createBufferStrategy(2);
+		s = this.getBufferStrategy();
 
 		// adds menu items
 		setJMenuBar(menuBar);
@@ -365,6 +370,45 @@ public class GUI extends GUI_Instance implements ActionListener{
 	    menuBar.add(elementMenu);
 	}
 	
+	//draws text from .java file
+	private void drawJavaString(Graphics2D g){
+		BufferedReader br = null;
+		try {	
+			//opens test.java
+			br = new BufferedReader(new FileReader("test.java"));
+			//variables to keep track of message
+			String message = "<html>";
+			String sCurrentLine;
+			//loops through each line to read file
+			while ((sCurrentLine = br.readLine()) != null) {
+				message += sCurrentLine + "<br>";
+			}
+			message += "</html>";
+			//sets JTextPane codeLabel attributes
+			JTextPane codeLabel = new JTextPane();
+			codeLabel.setContentType("text/html");
+			codeLabel.setText(message);
+			codeLabel.setOpaque(false);
+			codeLabel.setEditable(true);
+			codeLabel.setText(message);
+			codeLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
+			codeLabel.setForeground(Color.MAGENTA);
+			//adds codeLabel to p_console
+			p_console.removeAll();
+			p_console.add(codeLabel);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (br != null){
+					br.close();
+				}
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
+	
 	// ActionHandler method
 	public void actionPerformed(ActionEvent e){
 		String command = e.getActionCommand();
@@ -382,12 +426,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 				}
 				break;
 			case "run":
-				try {
-			      runProcess("javac test.java");
-			      runProcess("java test");
-			    } catch (Exception ex) {
-			      ex.printStackTrace();
-			    }
+				runProject();
 			default:
 				break;
 		}
@@ -409,6 +448,8 @@ public class GUI extends GUI_Instance implements ActionListener{
 			// calls default paint functions in parent object
 			super.paint(s.getDrawGraphics());
 			super.paintComponents(s.getDrawGraphics());
+			//sets buffer panel to size of window
+			bufferPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
 			// calls function to draw onto g
 			Graphics2D g = (Graphics2D) s.getDrawGraphics();
 			drawJavaString(g);
@@ -418,6 +459,36 @@ public class GUI extends GUI_Instance implements ActionListener{
 			Toolkit.getDefaultToolkit().sync();
 			super.repaint();
 		}catch(Exception ex){}
+	}
+	
+	//function to compile and run code in project
+	private void runProject(){
+		//displays text input dialog to get user JDK path
+		String s = (String)JOptionPane.showInputDialog(
+				new JFrame(),
+				"Java JDK Path:",
+				"Run Process",
+				JOptionPane.PLAIN_MESSAGE,
+				null,
+				null,
+				path);
+		//if the user did not cancel and the string is not empty
+		if ((s != null) && (s.length() > 0)) {
+			//set the path to input
+		    path = s;
+		    //compile and run the process
+		    try{
+			    runProcess("javac test.java");
+			    runProcess("java test");
+			//catches invalid path exception
+		    }catch(IOException io){
+		    	JOptionPane.showMessageDialog(new JFrame(), "Invalid Path");
+		    	io.printStackTrace();
+		    //catches other exceptions
+		    }catch(Exception ex){
+		    	ex.printStackTrace();
+		    }
+		}
 	}
 	
 	//prints commands and standard output from them into the console
@@ -433,7 +504,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 	//run argument into command line
 	private static void runProcess(String command) throws Exception {
 		Process pro;
-		pro = Runtime.getRuntime().exec(command, path);
+		pro = Runtime.getRuntime().exec(path+"\\"+command);
 		//prints regular output
 		printLines(command + "> stdout: ", pro.getInputStream());
 		//prints errors
