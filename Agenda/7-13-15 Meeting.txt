@@ -1,0 +1,2 @@
+John - Edit drawJavaString to make text selectable for copy/paste
+Kyle - Edit loop block and create condition block if time permits
