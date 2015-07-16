@@ -133,6 +133,23 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     	}
     }
     
+    //finds the member with the greatest width starting with the parent of initID
+    public static int getMaxTreeWidth(int initID){
+    	DraggableRect r = getRectByID(initID);
+    	int width = r.getResizeWidth();
+    	if(r.hasChildren()){
+    		for(int child : r.childrenIDs){
+    			if(child != 0){
+	    			int newWidth = getMaxTreeWidth(child);
+	    			if(newWidth > width){
+	    				width = newWidth;
+	    			}
+    			}
+    		}
+    	}
+    	return width;
+    }
+    
     //writes to a file starting from specified rect
     public void writeToFile(DraggableRect r){
     	try {

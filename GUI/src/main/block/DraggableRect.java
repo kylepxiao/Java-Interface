@@ -109,7 +109,7 @@ public class DraggableRect extends JPanel {
 	
 	//gets offset between rect position and JPanel position
 	protected Rectangle getOffset(Rectangle r){
-		return new Rectangle(r.x - 9, r.y - 60, r.width, r.height);
+		return new Rectangle(r.x - 9, r.y - 61, r.width, r.height);
 	}
 	
 	//sets parentID to 0 and clears childrenIDs

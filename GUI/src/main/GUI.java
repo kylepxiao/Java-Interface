@@ -36,6 +36,7 @@ import javax.swing.ToolTipManager;
 
 import main.block.Conditional;
 import main.block.DraggableRect;
+import main.block.Loop;
 import main.block.Start;
 import main.util.Controller;
 import main.util.Save;
@@ -306,6 +307,8 @@ public class GUI extends GUI_Instance implements ActionListener{
 		controller.addRect(new Conditional(50, 80));
 		controller.addRect(new Conditional(250, 80));
 		controller.addRect(new Start(50, 300));
+		controller.addRect(new Loop(600, 300));
+		controller.addRect(new Loop(600, 600));
 		//adds all draggableRects to the JFrame
 		for(DraggableRect r : controller.getRects()){
 			add(r);
@@ -315,7 +318,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 	// Sets default layout and preferences for window
 	public void setDefaultAttributes(){
 		//sets window information and basic graphical attributes
-		this.setBounds(100, 100, 800, 500);
+		this.setBounds(50, 50, 1000, 700);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 		this.setTitle("Siemens Intuitive Interface");
