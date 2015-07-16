@@ -1,0 +1,8 @@
+John - Get familiar with multi-threaded programming
+Kyle - Complete as much of following list as possible:
+1. Put checking files onto separate thread
+2. Fix glitch to allow allow user to edit text from drawJavaString
+3. Fix glitch to allow tree to shift with right branch of conditional
+4. Fix glitch to allow tree of start to shift down with arrow
+5. Edit loop to make arrow originate from correct block
+NEXT MEETING: THURSDAY JULY 23rd AT 8PM
