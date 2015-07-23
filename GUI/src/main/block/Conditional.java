@@ -167,6 +167,12 @@ public class Conditional extends DraggableRect{
 		}
 	}
 	
+	//sets right point to right branch
+	@Override
+	public Point getRightPoint(){
+		return new Point(branch2.x + branch2.width, (int) (branch2.y + (0.25 * branch2.height)));
+	}
+	
 	//overrides deleteChild to retract the branches for missing child
 	@Override
 	public void deleteChild(int id){

@@ -9,6 +9,8 @@ import java.awt.Rectangle;
 
 import javax.swing.JTextArea;
 
+import main.util.Controller;
+
 public class Loop extends DraggableRect {
 
 	private static final long serialVersionUID = 1L;
@@ -82,6 +84,15 @@ public class Loop extends DraggableRect {
 		update();
 	}
 	
+	//returns point to the rightmost bottom portion of the while content area
+	private Point getTreePoint(DraggableRect r){
+		int childID = r.childrenIDs.get(r.childrenIDs.size()-1);
+		if(childID != 0){
+			return getTreePoint(Controller.getRectByID(childID));
+		}
+		return r.getRightPoint();
+	}
+	
 	private void updateBoxes(){
 		//sets branch location with respect to main position
 		content.setLocation(position.x, position.y + branchDisplacementY);
@@ -97,9 +108,9 @@ public class Loop extends DraggableRect {
 		if(childrenIDs.size() > 0 && childrenIDs.get(0) != 0){
 			//sets content to encapsulate child
 			contentVisible = false;
-			int childWidth = main.util.Controller.getMaxTreeWidth(childrenIDs.get(0));
-			if(childWidth > branch.x - position.x){
-				branch.x += childWidth - branchDisplacementX + 5;
+			int childX = Controller.getMaxTreeX(childrenIDs.get(0));
+			if(childX > branch.x){
+				branch.x = childX + 20;
 			}
 		}else{
 			//sets content to visible
@@ -156,6 +167,12 @@ public class Loop extends DraggableRect {
 		}
 	}
 	
+	//sets right point to right branch
+	@Override
+	public Point getRightPoint(){
+		return new Point(branch.x + branch.width, (int) (branch.y + (0.25 * branch.height)));
+	}
+	
 	@Override
 	public void deleteChild(int id){
 		super.deleteChild(id);
@@ -202,6 +219,11 @@ public class Loop extends DraggableRect {
 	
 	//draws arrows from main rectangle to branches
 	private void drawArrows(Graphics2D g){
+		Point p = new Point();
+		Boolean hasContent = this.childrenIDs.get(0) != 0;
+		if(hasContent){
+			p = getTreePoint(Controller.getRectByID(this.childrenIDs.get(0)));
+		}
 		//defines points
 		int mainMidX = position.x + (position.width/2);
 		int mainMidY = (int) (position.y + (0.75 * position.height));
@@ -209,11 +231,20 @@ public class Loop extends DraggableRect {
 		int branchTop = position.y + branchDisplacementY;
 		int mainRight = position.x + position.width;
 		int branchMidX = branch.x + (branch.width/2);
-		int branchMidY = (int) (branch.y + (0.25 * branch.height));
 		int mainToBranchMidY = (branchTop + mainBottom)/2;
 		int mainbranchMidX = (mainRight + branchMidX)/2;
-		int contentRightX = content.x + content.height;
-		int contentToBranchMidX = (contentRightX + branch.x)/2;
+		int branchMidY;
+		int contentRightX;
+		int contentToBranchMidX;
+		if(hasContent){
+			branchMidY = p.y;
+			contentRightX = p.x;
+			contentToBranchMidX = branch.x - 10;
+		}else{
+			branchMidY = (int) (branch.y + (0.25 * branch.height));
+			contentRightX = content.x + content.width;
+			contentToBranchMidX = (contentRightX + branch.x)/2;
+		}
 		int[] xPoints1 = {mainMidX - triangleSize, mainMidX + triangleSize, mainMidX};
 		int[] yPoints1 = {branchTop - triangleSize, branchTop - triangleSize, branchTop};
 		int[] xPoints2 = {branchMidX - triangleSize, branchMidX + triangleSize, branchMidX};

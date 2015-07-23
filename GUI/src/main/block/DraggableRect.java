@@ -135,6 +135,23 @@ public class DraggableRect extends JPanel {
 		}
 	}
 	
+	//returns child of highest index of childrenIDs
+	public int getLastChild(){
+		int id;
+		for(int i=childrenIDs.size(); i>0; i--){
+			id = childrenIDs.get(i-1);
+			if(id != 0){
+				return id;
+			}
+		}
+		return 0;
+	}
+	
+	//returns rightmost point for loops to refer to
+	public Point getRightPoint(){
+		return new Point(position.x + position.width, (int) (position.y + (0.25 * position.height)));
+	}
+	
 	//function to return new position to snap to during overlap
 	public Point getNewSnap(DraggableRect rect){
 		//if rectangles intersect and are not the same
