@@ -1,0 +1,6 @@
+John - Fix glitch to allow allow user to edit text from drawJavaString
+Kyle - Put checking files onto separate thread
+Future Fixes:
+1. Fix glitch to allow tree to shift with right branch of conditional
+2. Fix glitch to allow tree of start to shift down with arrow
+NEXT MEETING: MONDAY JULY 27rd AT 8PM
