@@ -31,6 +31,7 @@ public class DraggableRect extends JPanel {
 		position = new Rectangle();
 		c = Color.BLACK;
 		objectsHoveringAbove.add(false);
+		this.setBorder(BorderFactory.createLineBorder(Color.black));
 	}
 			
 	// override constructor which sets position values for rectangle
@@ -41,6 +42,7 @@ public class DraggableRect extends JPanel {
 		position = new Rectangle(x, y, w, h);
 		c = Color.BLACK;
 		objectsHoveringAbove.add(false);
+		this.setBorder(BorderFactory.createLineBorder(Color.black));
 	}
 	
 	// override constructor to set color as well
@@ -51,6 +53,7 @@ public class DraggableRect extends JPanel {
 		position = new Rectangle(x, y, w, h);
 		c = color;
 		objectsHoveringAbove.add(false);
+		this.setBorder(BorderFactory.createLineBorder(Color.black));
 	}
 	
 	// getter function for position
@@ -188,14 +191,13 @@ public class DraggableRect extends JPanel {
 	
 	// draw function for DraggableRect onto Graphics2D g
 	public void draw(Graphics2D g){
+		g.setPaint(c);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
                 RenderingHints.VALUE_ANTIALIAS_ON);		// call setRenderingHint method
 		if(objectsHoveringAbove.get(0)){
 			g.setPaint(shadow);
 			g.fill(position);
 		}
-		g.setPaint(c);
-		this.setBorder(BorderFactory.createLineBorder(Color.black));
 	}
 	
 	// returns integer to identify block type

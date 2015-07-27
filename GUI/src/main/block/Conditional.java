@@ -8,6 +8,8 @@ import java.awt.Rectangle;
 
 import javax.swing.JTextArea;
 
+import main.util.Controller;
+
 public class Conditional extends DraggableRect{
 
 	private static final long serialVersionUID = 1L;
@@ -94,14 +96,6 @@ public class Conditional extends DraggableRect{
 		//sets branch location with respect to main position
 		branch1.setLocation(position.x, position.y + branchDisplacementY);
 		branch2.setLocation(position.x + branchDisplacementX, position.y + branchDisplacementY);
-		//checks if there is something in the second branch
-		if(childrenIDs.size() > 1 && childrenIDs.get(1) != 0){
-			//sets branch2 to encapsulate child
-			branch2Visible = false;
-		}else{
-			//sets branch2 visible
-			branch2Visible = true;
-		}
 		if(childrenIDs.size() > 0 && childrenIDs.get(0) != 0){
 			//sets branch1 to encapsulate child
 			branch1Visible = false;
@@ -112,6 +106,15 @@ public class Conditional extends DraggableRect{
 		}else{
 			//sets branch1 to visible
 			branch1Visible = true;
+		}
+		//checks if there is something in the second branch
+		if(childrenIDs.size() > 1 && childrenIDs.get(1) != 0){
+			//sets branch2 to encapsulate child
+			branch2Visible = false;
+			Controller.setTreeLocation(Controller.getRectByID(childrenIDs.get(1)), branch2.x, branch2.y);
+		}else{
+			//sets branch2 visible
+			branch2Visible = true;
 		}
 	}
 	
@@ -174,10 +177,20 @@ public class Conditional extends DraggableRect{
 	}
 	
 	//overrides deleteChild to retract the branches for missing child
-	@Override
+/*	@Override
 	public void deleteChild(int id){
-		super.deleteChild(id);
-	}
+		int deletedChild = -1;
+		for(int i=0; i<childrenIDs.size(); i++){
+			if(childrenIDs.get(i) == id){
+				childrenIDs.set(i, 0);
+				deletedChild = i;
+				break;
+			}
+		}
+		if(deletedChild == 0){
+			updateBranches();
+		}
+	}*/
 	
 	//overrides checkHoverOver to account for branches
 	@Override

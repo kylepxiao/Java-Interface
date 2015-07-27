@@ -97,14 +97,6 @@ public class Loop extends DraggableRect {
 		//sets branch location with respect to main position
 		content.setLocation(position.x, position.y + branchDisplacementY);
 		branch.setLocation(position.x + branchDisplacementX, position.y + branchDisplacementY);
-		//checks if there is something in the second branch
-		if(childrenIDs.size() > 1 && childrenIDs.get(1) != 0){
-			//sets branch to encapsulate child
-			branchVisible = false;
-		}else{
-			//sets branch visible
-			branchVisible = true;
-		}
 		if(childrenIDs.size() > 0 && childrenIDs.get(0) != 0){
 			//sets content to encapsulate child
 			contentVisible = false;
@@ -115,6 +107,15 @@ public class Loop extends DraggableRect {
 		}else{
 			//sets content to visible
 			contentVisible = true;
+		}
+		//checks if there is something in the second branch
+		if(childrenIDs.size() > 1 && childrenIDs.get(1) != 0){
+			//sets branch to encapsulate child
+			branchVisible = false;
+			Controller.setTreeLocation(Controller.getRectByID(childrenIDs.get(1)), branch.x, branch.y);
+		}else{
+			//sets branch visible
+			branchVisible = true;
 		}
 	}
 	

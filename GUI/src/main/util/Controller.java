@@ -104,7 +104,7 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     }
     
     //changes the position of a DraggableRect and all its children
-    private void setTreeLocation(DraggableRect r, int x, int y){
+    public static void setTreeLocation(DraggableRect r, int x, int y){
     	//if the rect has children, then set the position of the children
     	if(r.hasChildren()){
     		//keep a record of the original position of the parent rect
@@ -219,7 +219,7 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
 			        	if (p != null){
 			        		
 			        		//sets location of rectangle being dragged to below the rectangle it overlaps
-			        		r.setPosition(p.x, p.y);
+			        		setTreeLocation(r, p.x, p.y);
 			        		
 			        		//checks to see if rectangles are already related
 			        		if(r.parentID == tempRecti.id){
