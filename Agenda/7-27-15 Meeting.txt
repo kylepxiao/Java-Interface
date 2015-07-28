@@ -1,0 +1,4 @@
+John - Create new "for" block based on "while" block
+Kyle - Optimize code and add writing to file loop
+Yangqi - Create configuration menu and get familiar with DraggableRect code
+NEXT MEETING: SATURDAY AUGUST 1ST AT 8PM
