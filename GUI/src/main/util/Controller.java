@@ -76,16 +76,30 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     	return null;
     }
     
+    // return array of rectangles by specified type
+    public static ArrayList<DraggableRect> getRectsByType(int type){
+    	ArrayList<DraggableRect> list = new ArrayList<DraggableRect>();
+    	for(DraggableRect r : rects){
+    		if(r.getType() == type){
+    			list.add(r);
+    		}
+    	}
+    	return list;
+    }
+    
     //recirsuve function to generate code string
     private String getFileMessage(DraggableRect r){
+    	if(r != null){
     	if(r.hasChildren()){
 	    	switch(r.getType()){
 	    	case 0:
 	    		return getFileMessage(getRectByID(r.childrenIDs.get(0)));
 	    	case 1:
-	    		return "public static void main(String[] args){" + getFileMessage(getRectByID(r.childrenIDs.get(0))) + "}";
+	    		return "public static void main(String[] args){\n" + getFileMessage(getRectByID(r.childrenIDs.get(0))) + "\n}";
 	    	case 2:
-	    		return "if(" + getFileMessage(getRectByID(r.childrenIDs.get(0))) + "){" + getFileMessage(getRectByID(r.childrenIDs.get(1))) + "}" + getFileMessage(getRectByID(r.childrenIDs.get(2)));
+	    		return "if(" + /*getFileMessage(getRectByID(r.childrenIDs.get(0))) + */"){\n" + getFileMessage(getRectByID(r.childrenIDs.get(0))) + "\n}" + getFileMessage(getRectByID(r.childrenIDs.get(1)));
+	    	case 3:
+	    		return "while(){\n" + getFileMessage(getRectByID(r.childrenIDs.get(0))) + "\n}" + getFileMessage(getRectByID(r.childrenIDs.get(1)));
 	    	default:
 	    		return "";
 	    	}
@@ -97,10 +111,13 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     			return "public static void main(String[] args){}";
     		case 2:
     			return "if(){}";
+    		case 3:
+    			return "while(){}";
     		default:
     			return "";
     		}
     	}
+    	}return "";
     }
     
     //changes the position of a DraggableRect and all its children
@@ -194,7 +211,6 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     
     // create method mouseReleased with parmeter MouseEvent e
     public void mouseReleased(MouseEvent e) {
-    	
     	//declaring variables
     	Point p = new Point();
     	boolean hasOverlap;

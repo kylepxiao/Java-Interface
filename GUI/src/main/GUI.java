@@ -17,6 +17,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -80,7 +81,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 	
 	// declares items in menu
 	@SuppressWarnings("unused")
-	private JMenuItem mItemSave, mItemLoad, mItemRun, mItem4, mItem5, mItem6;
+	private JMenuItem mItemSave, mItemLoad, mItemRun, mItemGenCode, mItem5, mItem6;
 	private JRadioButtonMenuItem rItem, rItem2, rItem3;
 	@SuppressWarnings("unused")
 	private JCheckBoxMenuItem cItem, cItem2;
@@ -350,7 +351,10 @@ public class GUI extends GUI_Instance implements ActionListener{
 	    mItemRun.addActionListener(this);
 	    mItemRun.setActionCommand("run");
 	    
-	    mItem4 = fileMenu.add("mItem4");
+	    mItemGenCode = fileMenu.add("Generate Code");
+	    mItemGenCode.addActionListener(this);
+	    mItemGenCode.setActionCommand("genCode");
+	    
 	    mItem5 = fileMenu.add("mItem5");
 	    mItem6 = fileMenu.add("mItem6");
 	    
@@ -430,6 +434,11 @@ public class GUI extends GUI_Instance implements ActionListener{
 				break;
 			case "run":
 				runProject();
+			case "genCode":
+				ArrayList<DraggableRect> startRects = Controller.getRectsByType(1);
+				for(DraggableRect r : startRects){
+					controller.writeToFile(r);
+				}
 			default:
 				break;
 		}
@@ -440,8 +449,8 @@ public class GUI extends GUI_Instance implements ActionListener{
 	}
 	
 	// Draw function which is called by default
-	public void draw(Graphics2D g){
-		
+	public void draw(){
+		super.repaint();
 	}
 	
 	// Overrides JFrame default paint function
@@ -457,7 +466,6 @@ public class GUI extends GUI_Instance implements ActionListener{
 			Graphics2D g = (Graphics2D) s.getDrawGraphics();
 			drawJavaString(g);
 			controller.showRects(g);
-			draw(g);
 			s.show();
 			Toolkit.getDefaultToolkit().sync();
 			super.repaint();
