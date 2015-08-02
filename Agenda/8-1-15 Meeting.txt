@@ -1,0 +1,4 @@
+John - Create condition "diamond" block
+Kyle - Create internal JFrame console with docking and take a look at screen ofsett glitch
+Yangqi - Make creating project folder functionality
+NEXT MEETING: SATURDAY AUGUST 8th AT 8PM
