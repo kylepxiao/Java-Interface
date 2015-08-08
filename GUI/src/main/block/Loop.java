@@ -121,7 +121,8 @@ public class Loop extends DraggableRect {
 	
 	@Override
 	public void update(){
-		this.setBounds(getOffset(position));
+//		this.setBounds(getOffset(position));
+		super.update();
 		updateBoxes();
 	}
 	

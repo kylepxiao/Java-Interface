@@ -121,7 +121,8 @@ public class Conditional extends DraggableRect{
 	//overrides update to account for branches
 	@Override
 	public void update(){
-		this.setBounds(getOffset(position));
+//		this.setBounds(getOffset(position));
+		super.update();
 		updateBranches();
 	}
 	

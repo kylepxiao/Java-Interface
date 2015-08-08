@@ -31,6 +31,7 @@ public class DraggableRect extends JPanel {
 		position = new Rectangle();
 		c = Color.BLACK;
 		objectsHoveringAbove.add(false);
+		this.setBackground(Color.WHITE);
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 	}
 			
@@ -42,6 +43,7 @@ public class DraggableRect extends JPanel {
 		position = new Rectangle(x, y, w, h);
 		c = Color.BLACK;
 		objectsHoveringAbove.add(false);
+		this.setBackground(Color.WHITE);
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 	}
 	
@@ -53,6 +55,7 @@ public class DraggableRect extends JPanel {
 		position = new Rectangle(x, y, w, h);
 		c = color;
 		objectsHoveringAbove.add(false);
+		this.setBackground(Color.WHITE);
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 	}
 	
@@ -112,7 +115,7 @@ public class DraggableRect extends JPanel {
 	
 	//gets offset between rect position and JPanel position
 	protected Rectangle getOffset(Rectangle r){
-		return new Rectangle(r.x - 9, r.y - 61, r.width, r.height);
+		return new Rectangle(r.x - 5, r.y - 50, r.width, r.height);
 	}
 	
 	//sets parentID to 0 and clears childrenIDs

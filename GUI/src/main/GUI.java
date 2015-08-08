@@ -1,6 +1,7 @@
 package main;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -22,8 +23,11 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
+import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -64,6 +68,9 @@ public class GUI extends GUI_Instance implements ActionListener{
 	// sets up menubar and associated variables
 	private JMenuBar menuBar = new JMenuBar(); // Window menu bar
 	
+	//sets up destop area to drag internal frame
+	private JDesktopPane desktop;
+	
 	// sets up content JPanels
 	private JPanel bufferPanel = new JPanel();
 	private JPanel p_main = new JPanel();
@@ -75,13 +82,21 @@ public class GUI extends GUI_Instance implements ActionListener{
 	private JPanel p_console = new JPanel();
 	private JPanel p_information = new JPanel();
 	
+	//sets up content JInternalPanes
+	private JInternalFrame i_console = new JInternalFrame();
+	
+	//sets up booleans to track if the JInternalPanels are Docked
+	private boolean i_console_docked = false;
+	
+	//JComponent that holds the string from the java document
+	private JTextPane codeLabel = new JTextPane();
+	
 	//sets up filechoosers needed for saving and loading file
 	private JFileChooser saveFileChooser;
 	private JFileChooser loadFileChooser;
 	
 	// declares items in menu
-	@SuppressWarnings("unused")
-	private JMenuItem mItemSave, mItemLoad, mItemRun, mItemGenCode, mItem5, mItem6;
+	private JMenuItem mItemSave, mItemLoad, mItemRun, mItemGenCode, mItemGenFrame, mItemDockFrame;
 	private JRadioButtonMenuItem rItem, rItem2, rItem3;
 	@SuppressWarnings("unused")
 	private JCheckBoxMenuItem cItem, cItem2;
@@ -91,6 +106,8 @@ public class GUI extends GUI_Instance implements ActionListener{
 	
 	// main function
 	public static void main(String[] args){
+		//sets the default look of new JFrames
+		JFrame.setDefaultLookAndFeelDecorated(true);
 		//creates new GUI instance
 		@SuppressWarnings("unused")
 		GUI window = new GUI();
@@ -114,6 +131,36 @@ public class GUI extends GUI_Instance implements ActionListener{
 				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 	}
 	
+	//creates a draggable internal frame
+	protected void createInternalFrame(){
+		JInternalFrame frame = new JInternalFrame();
+	    frame.setVisible(true);
+	    frame.setClosable(true);
+	    frame.setResizable(true);
+	    frame.setFocusable(true);
+	    frame.setSize(new Dimension(300, 200));
+	    frame.setLocation(100, 100);
+	    desktop.add(frame);
+	    try {
+	        frame.setSelected(true);
+	    } catch (java.beans.PropertyVetoException e) {}
+	}
+	
+	//returns an internal JFrame that can be added to the JDesktopFrame
+	protected JInternalFrame getNewInternalFrame(){
+		JInternalFrame frame = new JInternalFrame();
+	    frame.setVisible(true);
+	    frame.setClosable(true);
+	    frame.setResizable(true);
+	    frame.setFocusable(true);
+	    frame.setSize(new Dimension(300, 200));
+	    frame.setLocation(100, 350);
+	    try {
+	        frame.setSelected(true);
+	    } catch (java.beans.PropertyVetoException e) {}
+	    return frame;
+	}
+	
 	//initializes and sets default attributes for file choosers
 	private void setFileChoosers(){
 		//sets default attributes for save file chooser
@@ -134,6 +181,13 @@ public class GUI extends GUI_Instance implements ActionListener{
 	private void setContent(){
 		//sets window content visible
 		this.getContentPane().setVisible(true);
+		
+		//sets up desktop area inside JFrame for JInternalFrame
+		desktop = new JDesktopPane();
+		i_console = getNewInternalFrame();
+		i_console.add(codeLabel);
+		desktop.add(i_console);
+		this.setContentPane(desktop);
 		
 		//buffer panel between JFrame and p_main content
 		bufferPanel.setVisible(true);
@@ -327,7 +381,6 @@ public class GUI extends GUI_Instance implements ActionListener{
 		this.setForeground(Color.BLACK);
 		this.setLayout(null);
 		this.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		//creates buffer strategy for smooth window graphics
 		this.createBufferStrategy(2);
@@ -355,8 +408,13 @@ public class GUI extends GUI_Instance implements ActionListener{
 	    mItemGenCode.addActionListener(this);
 	    mItemGenCode.setActionCommand("genCode");
 	    
-	    mItem5 = fileMenu.add("mItem5");
-	    mItem6 = fileMenu.add("mItem6");
+	    mItemGenFrame = fileMenu.add("Show Console");
+	    mItemGenFrame.addActionListener(this);
+	    mItemGenFrame.setActionCommand("genFrame");
+	    
+	    mItemDockFrame = fileMenu.add("Dock/Undock");
+	    mItemDockFrame.addActionListener(this);
+	    mItemDockFrame.setActionCommand("dock");
 	    
 	    elementMenu.add(rItem = new JRadioButtonMenuItem("rItem", true));
 	    elementMenu.add(rItem2 = new JRadioButtonMenuItem("rItem2", false));
@@ -378,7 +436,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 	}
 	
 	//draws text from .java file
-	private void drawJavaString(Graphics2D g){
+	private void drawJavaString(JComponent frame){
 		BufferedReader br = null;
 		try {	
 			//opens test.java
@@ -392,7 +450,6 @@ public class GUI extends GUI_Instance implements ActionListener{
 			}
 			message += "</html>";
 			//sets JTextPane codeLabel attributes
-			JTextPane codeLabel = new JTextPane();
 			codeLabel.setContentType("text/html");
 			codeLabel.setText(message);
 			codeLabel.setOpaque(false);
@@ -400,9 +457,6 @@ public class GUI extends GUI_Instance implements ActionListener{
 			codeLabel.setText(message);
 			codeLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
 			codeLabel.setForeground(Color.MAGENTA);
-			//adds codeLabel to p_console
-			p_console.removeAll();
-			p_console.add(codeLabel);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -434,11 +488,27 @@ public class GUI extends GUI_Instance implements ActionListener{
 				break;
 			case "run":
 				runProject();
+				break;
 			case "genCode":
 				ArrayList<DraggableRect> startRects = Controller.getRectsByType(1);
 				for(DraggableRect r : startRects){
 					controller.writeToFile(r);
 				}
+				break;
+			case "genFrame":
+				if(i_console.isClosed()){
+					i_console = getNewInternalFrame();
+					i_console.add(codeLabel);
+					desktop.add(i_console);
+				}
+				break;
+			case "dock":
+				i_console_docked = !i_console_docked;
+				if(!i_console_docked){
+					i_console.setSize(new Dimension(300, 200));
+				    i_console.setLocation(100, 350);
+				}
+				break;
 			default:
 				break;
 		}
@@ -464,7 +534,10 @@ public class GUI extends GUI_Instance implements ActionListener{
 			bufferPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
 			// calls function to draw onto g
 			Graphics2D g = (Graphics2D) s.getDrawGraphics();
-			drawJavaString(g);
+			drawJavaString(i_console);
+			if(i_console_docked){
+				i_console.setBounds(p_console.getBounds());
+			}
 			controller.showRects(g);
 			s.show();
 			Toolkit.getDefaultToolkit().sync();
