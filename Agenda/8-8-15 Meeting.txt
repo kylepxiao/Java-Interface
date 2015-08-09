@@ -1,0 +1,4 @@
+John - Go over project and do debugging, starting with glitch with paint painting over window
+Kyle - Edit condition code and remove border code
+Yangqi - Get the configuration menu to work with the project in changing file names (add configuration menu functionality)
+NEXT MEETING: SATURDAY AUGUST 15TH AT 8PM
