@@ -1,0 +1,4 @@
+John - Create dropdown menu in dropdown menu for draggableRects
+Kyle - Get condition and assignment to work with code, and work on prototype functionality
+Yangqi - Work on save function for filechoosers for project path
+NEXT MEETING: SATURDAY, AUGUST 22nd AT 8pm
