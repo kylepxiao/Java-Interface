@@ -1,0 +1,4 @@
+John - Add scrollbars to center panel
+Kyle - Debug condition and assignment blocks and add Yangqi's save code
+Yangqi - Add functionality to settings and bug fixes
+NEXT MEETING: SATURDAY, AUGUST 29th AT 8PM
