@@ -19,7 +19,7 @@ public class Conditional extends DraggableRect{
 	private Rectangle branch2;
 	private boolean branch1Visible = true;
 	private boolean branch2Visible = true;
-	private static final int numChildren = 2;
+	private static final int numChildren = 3;
 	private JTextArea condition = new JTextArea();
 	
 	//Strings used to write to java file
@@ -116,6 +116,13 @@ public class Conditional extends DraggableRect{
 			//sets branch2 visible
 			branch2Visible = true;
 		}
+		//expands branch if condition is in place
+		if(childrenIDs.size() > 2 && childrenIDs.get(2) != 0){
+			branch2.x = position.x + branchDisplacementX + 30;
+			if(childrenIDs.get(1) != 0){
+				Controller.setTreeLocation(Controller.getRectByID(childrenIDs.get(1)), branch2.x, branch2.y);
+			}
+		}
 	}
 	
 	//overrides update to account for branches
@@ -124,6 +131,11 @@ public class Conditional extends DraggableRect{
 //		this.setBounds(getOffset(position));
 		super.update();
 		updateBranches();
+		if(internalRect){
+			this.setVisible(false);
+		}else{
+			this.setVisible(true);
+		}
 	}
 	
 	//overrides getWidth to account for changes in branch sizes
@@ -147,6 +159,9 @@ public class Conditional extends DraggableRect{
 		//if intersect main rect
 		if (position.intersects(rect.getPosition()) && id != rect.id){
 			//sets location to far right to avoid collisions
+			if(rect.getType() == 4){
+				return new Point(position.x-35, position.y+3);
+			}
 			return new Point(position.x + branchDisplacementX + branch2.width + displacement, rect.getPosition().y);
 		//if intersecting first branch
 		}else if (branch1.intersects(rect.getPosition()) && !branch1.equals(rect) && childrenIDs.get(0) == 0){
@@ -167,6 +182,9 @@ public class Conditional extends DraggableRect{
 				childrenIDs.set(0, rect.id);
 			}else if(branch2.intersects(rect.getPosition()) && childrenIDs.get(1) == 0){
 				childrenIDs.set(1, rect.id);
+			}else if(position.intersects(rect.getPosition()) && childrenIDs.get(2) == 0 && rect.getType() == 4){
+				childrenIDs.set(2, rect.id);
+				internalRect = true;
 			}
 		}
 	}

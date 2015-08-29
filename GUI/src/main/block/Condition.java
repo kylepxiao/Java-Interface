@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -13,13 +14,14 @@ public class Condition extends DraggableRect{
 
 	private static final long serialVersionUID = 1L;
 	
-	private static final int numChildren = 1; // or maybe 3 im not sure
+	private static final int numChildren = 0; // or maybe 3 im not sure
 	
 	private static final int mainWidth = 130;
 	private static final int mainHeight = 76;
 	private static final int subWidth = 20;
 	private static final int subHeight = 25;
 	private static final int subDisplacementX = 32;
+//	private static final int snapDisplacement = 50;
 	
 	private JTextField t1 = new JTextField();
 	private JTextField t2 = new JTextField();
@@ -124,7 +126,11 @@ public class Condition extends DraggableRect{
 	}
 	@Override 
 	public void update(){
-		this.setBounds(getOffset(position));
+		if(parentID == 0){
+			this.setBounds(getOffset(position));
+		}else{
+			this.setBounds(getOffset(new Rectangle(position.x, position.y, position.width, position.height)));
+		}
 	}
 	public void checkHoverOver(DraggableRect r){
 		try{
@@ -194,6 +200,8 @@ public class Condition extends DraggableRect{
 		//draws decorations
 		drawLines(g);
 	}
-
-	
+	@Override
+	public int getType(){
+		return 4;
+	}
 }

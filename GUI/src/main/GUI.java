@@ -62,6 +62,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 	
 	// sets up private save handler
 	private Save save;
+	boolean saved = false;
 	
 	// sets up buffer strategy for graphics
 	public BufferStrategy s;
@@ -483,9 +484,17 @@ public class GUI extends GUI_Instance implements ActionListener{
 				}
 				break;
 			case "save": 
-				int saveStatus = saveFileChooser.showSaveDialog(null);
-				if(saveStatus == JFileChooser.APPROVE_OPTION){
-					save.save(this, saveFileChooser.getCurrentDirectory().getAbsolutePath(), saveFileChooser.getSelectedFile().getName());
+				if(!saved){
+					int saveStatusSave = saveFileChooser.showSaveDialog(null);
+					if(saveStatusSave == JFileChooser.APPROVE_OPTION){
+						save.setPath(saveFileChooser.getCurrentDirectory().getAbsolutePath());
+						save.setFile(saveFileChooser.getSelectedFile().getName());
+						save.save(this);
+						saved = true;
+					}
+				}
+				else{
+					save.save(this);
 				}
 				break;
 			case "run":

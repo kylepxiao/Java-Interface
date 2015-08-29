@@ -222,7 +222,7 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
 	    	// makes it so that the rectangle that you are dragging and was previously dragging equal tempRect
 	    	for(DraggableRect r : rects){
 	    		
-	    		//All objects have beem placed down, so hovering is not possible
+	    		//All objects have been placed down, so hovering is not possible
 	    		r.setHoveringFalse();
 	    		
 	    		if(r.dragging == true) {
@@ -269,6 +269,12 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     	// sets up the dragging
     	for(DraggableRect r : rects){
     		if(r.dragging){
+    			if(r.getType() == 2){
+    				if(r.internalRect){
+    					r.dragging = false;
+    					r.internalRect = false;
+    				}
+    			}
     			int x = e.getX() - r.offset.x;
                 int y = e.getY() - r.offset.y;
                 setTreeLocation(r, x, y);

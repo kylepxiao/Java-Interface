@@ -21,6 +21,7 @@ public class DraggableRect extends JPanel {
 	public Point offset = new Point();
 	public int id;
 	public int parentID = 0;
+	public boolean internalRect = false;
 	public ArrayList<Integer> childrenIDs;
 	
 	// default constructor which initializes values
@@ -137,7 +138,9 @@ public class DraggableRect extends JPanel {
 	//records child under ChildrenIDs
 	public void setChild(DraggableRect r){
 		if(!childrenIDs.contains(r.id)){
-			childrenIDs.set(0, r.id);
+			if(childrenIDs.size() > 0){
+				childrenIDs.set(0, r.id);
+			}
 		}
 	}
 	
