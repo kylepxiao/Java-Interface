@@ -1,0 +1,5 @@
+John - Make more frames to bind to each part
+Kyle - Finish debugging assignment block and add Yangqi's "new" save code and John's scrollbar code
+Yangqi - Make save public and static and finish settings menu
+NOTE: Add the DraggableRects to the internal frame
+NEXT MEETING: SATURDAY SEPTEMBER 12th AT 8PM
