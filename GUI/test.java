@@ -1,5 +1,1 @@
-public static void main(String[] args){
-while(){
-if(){}
-}
-}
+public static void main(String[] args){}

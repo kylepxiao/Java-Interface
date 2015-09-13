@@ -118,7 +118,9 @@ public class Conditional extends DraggableRect{
 		}
 		//expands branch if condition is in place
 		if(childrenIDs.size() > 2 && childrenIDs.get(2) != 0){
-			branch2.x = position.x + branchDisplacementX + 30;
+			if(branch2.x < position.x + branchDisplacementX + 30){
+				branch2.x = position.x + branchDisplacementX + 30;
+			}
 			if(childrenIDs.get(1) != 0){
 				Controller.setTreeLocation(Controller.getRectByID(childrenIDs.get(1)), branch2.x, branch2.y);
 			}

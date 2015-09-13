@@ -21,7 +21,6 @@ public class Condition extends DraggableRect{
 	private static final int subWidth = 20;
 	private static final int subHeight = 25;
 	private static final int subDisplacementX = 32;
-//	private static final int snapDisplacement = 50;
 	
 	private JTextField t1 = new JTextField();
 	private JTextField t2 = new JTextField();
@@ -124,7 +123,7 @@ public class Condition extends DraggableRect{
 		objectsHoveringAbove.add(false);
 		update();
 	}
-	@Override 
+	@Override
 	public void update(){
 		if(parentID == 0){
 			this.setBounds(getOffset(position));
@@ -132,6 +131,8 @@ public class Condition extends DraggableRect{
 			this.setBounds(getOffset(new Rectangle(position.x, position.y, position.width, position.height)));
 		}
 	}
+	@Override
+	public void setChild(DraggableRect r){}
 	public void checkHoverOver(DraggableRect r){
 		try{
 			//checks hovering over main body
