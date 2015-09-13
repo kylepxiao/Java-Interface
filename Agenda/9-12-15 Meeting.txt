@@ -1,0 +1,4 @@
+John - Add Draggable Rects to internal frame
+Kyle - Combine John's format code + yangqi's preferences code + get assignment and condition to write to file and work with loop
+Yangqi - Debuggin and fixing glitch where paint appears over menu
+NEXT MEETING: SATURDAY, SEPTEMBER 19th AT 8PM
