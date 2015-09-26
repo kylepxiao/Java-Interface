@@ -269,7 +269,7 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     	// sets up the dragging
     	for(DraggableRect r : rects){
     		if(r.dragging){
-    			if(r.getType() == 2){
+    			if(r.getType() == 2 || r.getType() == 3){
     				if(r.internalRect){
     					r.dragging = false;
     					r.internalRect = false;
