@@ -1,0 +1,4 @@
+John - Create delete rect function by right clicking
+Kyle - Add draggable rects to internal frame
+Yangqi - Combine preferences code to latest version
+NEXT MEETING: SATURDAY, OCTOBER 10th AT 8PM
