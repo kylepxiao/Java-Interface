@@ -1,0 +1,4 @@
+John - Start working on switch and case blocks
+Kyle - Fix bugs with John's code (outline staying; makes another action performed every click)
+Yangqi - Fix preferences menu and debug GUI
+NEXT MEETING: SUNDAY OCTOBER 18th AT 8PM
