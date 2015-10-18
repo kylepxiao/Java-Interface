@@ -1,5 +1,6 @@
 package main.block;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -27,7 +28,6 @@ public class Assignment extends DraggableRect{
 	private static final int equalsDisplacementX = 35;
 	private static final int equalsDisplacementY = 10;
 	private static final int equalsLength = 20;
-	private static final int triangleSize = 5;
 	
 	public Assignment(){
 		super(0, 0, mainWidth, mainHeight);
@@ -161,14 +161,6 @@ public class Assignment extends DraggableRect{
 		g.drawLine(equalsLeft, sub1.y + equalsDisplacementY, equalsRight, sub1.y + equalsDisplacementY);
 		g.drawLine(equalsLeft, sub1.y + equalsDisplacementY + 5, equalsRight, sub1.y + equalsDisplacementY + 5);
 		
-		if(childrenIDs.get(0) != 0){
-			int midX = position.x + (position.width/2);
-			int bottomY = position.y + position.height;
-			int[] xPoints = {midX - triangleSize, midX + triangleSize, midX};
-			int[] yPoints = {bottomY + displacement - triangleSize, bottomY + displacement - triangleSize, bottomY + displacement};
-			g.drawLine(midX, bottomY, midX, bottomY + displacement);
-			g.fillPolygon(xPoints, yPoints, 3);
-		}
 	}
 	@Override
 	public void draw(Graphics2D g){

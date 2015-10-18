@@ -36,6 +36,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.JToolBar;
 import javax.swing.ToolTipManager;
@@ -79,26 +80,26 @@ public class GUI extends GUI_Instance implements ActionListener{
 	private JPanel bufferPanel = new JPanel();
 	private JPanel p_main = new JPanel();
 	private JPanel p_palette = new JPanel();
-	private JToolBar toolBar = new JToolBar();
 	private JPanel p_workspace = new JPanel();;
 	private JPanel p_browser = new JPanel();
-	private JPanel p_output = new JPanel();
 	private JPanel p_console = new JPanel();
-	private JPanel p_information = new JPanel();
+
+	JPanel s_workspace = new JPanel(new BorderLayout());
+	JPanel s_palette = new JPanel(new BorderLayout());
+	JPanel s_browser = new JPanel(new BorderLayout());
+	JPanel s_output = new JPanel(new BorderLayout());
      
 	//sets up content JInternalPanes
 	private JInternalFrame i_console = new JInternalFrame();
 	private JInternalFrame i_palette = new JInternalFrame();
 	private JInternalFrame i_workspace = new JInternalFrame();
 	private JInternalFrame i_browser = new JInternalFrame();
-	private JInternalFrame i_output = new JInternalFrame();
 	
 	//sets up booleans to track if the JInternalPanels are Docked
 	private boolean i_console_docked = true;
 	private boolean i_palette_docked = true;
 	private boolean i_workspace_docked = true;
 	private boolean i_browser_docked = true;
-	private boolean i_output_docked = true;
 	
 	//JComponent that holds the string from the java document
 	private JTextPane codeLabel = new JTextPane();
@@ -108,13 +109,16 @@ public class GUI extends GUI_Instance implements ActionListener{
 	private JFileChooser loadFileChooser;
 	
 	// declares items in menu
-	private JMenuItem subMenuBlock, subMenuFrameDock, subMenuGenFrame, mItemNew, mItemSave, mItemLoad, mItemRun, mItemGenCode, mItemGenFrame, mItemDockFrame, 
+	private JMenuItem subMenuBlock, subMenuFrameDock, subMenuGenFrame, mItemNew, mItemSave, mItemLoad, mItemRun, mItemGenCode, mItemGenFrame, 
 		DraggableRect, Assignment, Condition, Conditional, Loop, Start,
 		i_console_DockFrame, i_palette_DockFrame, i_workspace_DockFrame, i_browser_DockFrame, i_output_DockFrame,
 		show_i_console, show_i_palette, show_i_workspace, show_i_browser, show_i_output;
 	private JRadioButtonMenuItem rItem, rItem2, rItem3;
 	@SuppressWarnings("unused")
 	private JCheckBoxMenuItem cItem, cItem2;
+	
+	
+	DraggableRect r = new DraggableRect();
 	
 	//sets default directory for java JDK and is subject to change by user
 	private static String path = "C:\\Program Files\\Java\\jdk1.8.0_05\\bin";
@@ -204,12 +208,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 		i_palette = getNewInternalFrame();
 		i_workspace = getNewInternalFrame();
 		i_browser = getNewInternalFrame();
-		i_output = getNewInternalFrame();
 		
-		JPanel s_workspace = new JPanel(new BorderLayout());
-		JPanel s_palette = new JPanel(new BorderLayout());
-		JPanel s_browser = new JPanel(new BorderLayout());
-		JPanel s_output = new JPanel(new BorderLayout());
 		
 		JScrollPane codeScrollPane = new JScrollPane(codeLabel); // made scrollPane connecting to codeLabel
 		JScrollPane s_workspace_ScrollPane = new JScrollPane(s_workspace);
@@ -217,11 +216,12 @@ public class GUI extends GUI_Instance implements ActionListener{
 		JScrollPane s_browser_ScrollPane = new JScrollPane(s_browser);
 		JScrollPane s_output_ScrollPane = new JScrollPane(s_output);
 		
+		
 		i_console.getContentPane().add(codeScrollPane);	
 		i_palette.getContentPane().add(s_palette_ScrollPane);
 		i_workspace.getContentPane().add(s_workspace_ScrollPane);
 		i_browser.getContentPane().add(s_browser_ScrollPane);
-		i_output.getContentPane().add(s_output_ScrollPane);
+		//i_workspace.getContentPane().add(r);
 		
 		codeScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // always show Vertical scrollBar
 		s_workspace_ScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // always show Horizontal scrollBar
@@ -233,7 +233,6 @@ public class GUI extends GUI_Instance implements ActionListener{
 	    desktop.add(i_palette);
 	    desktop.add(i_workspace);
 	    desktop.add(i_browser);
-	    desktop.add(i_output);
 		this.setContentPane(desktop);
 		
 		
@@ -271,6 +270,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 		gbl_p_main.rowWeights = new double[]{1.0, 2.0, 2.0, 2.0, 2.0, 4.0, 1.0, Double.MIN_VALUE};
 		p_main.setLayout(gbl_p_main);
 		
+		
 		// this is the left panel
 		//initializes p_palette
 		p_palette.setVisible(true);
@@ -278,7 +278,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 		p_palette.setOpaque(false);
 		GridBagConstraints gbc_p_palette = new GridBagConstraints();
 		gbc_p_palette.anchor = GridBagConstraints.WEST;
-		gbc_p_palette.gridheight = 7;
+		gbc_p_palette.gridheight = 6;
 		gbc_p_palette.insets = new Insets(0, 0, 5, 5);
 		gbc_p_palette.fill = GridBagConstraints.BOTH;
 		gbc_p_palette.gridx = 0;
@@ -291,35 +291,19 @@ public class GUI extends GUI_Instance implements ActionListener{
 		gbl_p_palette.rowWeights = new double[]{Double.MIN_VALUE};
 		p_palette.setLayout(gbl_p_palette);
 		
-		// this is the top panel
-		//initializes toolbar
-		toolBar.setVisible(true);
-		toolBar.setBorder(BorderFactory.createLineBorder(Color.black));
-		toolBar.setFloatable(false);
-		toolBar.setOpaque(false);
-		GridBagConstraints gbc_toolBar = new GridBagConstraints();
-		gbc_toolBar.anchor = GridBagConstraints.NORTHWEST;
-		gbc_toolBar.gridwidth = 2;
-		gbc_toolBar.insets = new Insets(0, 0, 5, 0);
-		gbc_toolBar.fill = GridBagConstraints.BOTH;
-		gbc_toolBar.gridx = 1;
-		gbc_toolBar.gridy = 0;
-		p_main.add(toolBar, gbc_toolBar);
-		
 		// this is the top middle panel
 		//initializes p_workspace
-
 		p_workspace.setVisible(true);
 		p_workspace.setBorder(BorderFactory.createLineBorder(Color.black));
 		p_workspace.setOpaque(false);
 		
 		GridBagConstraints gbc_p_workspace = new GridBagConstraints();
 		gbc_p_workspace.anchor = GridBagConstraints.WEST;
-		gbc_p_workspace.gridheight = 2;
+		gbc_p_workspace.gridheight = 5;
 		gbc_p_workspace.insets = new Insets(0, 0, 5, 5);
 		gbc_p_workspace.fill = GridBagConstraints.BOTH;
 		gbc_p_workspace.gridx = 1;
-		gbc_p_workspace.gridy = 1;
+		gbc_p_workspace.gridy = 0;
 		p_main.add(p_workspace, gbc_p_workspace);
 		GridBagLayout gbl_p_workspace = new GridBagLayout();
 	
@@ -338,11 +322,11 @@ public class GUI extends GUI_Instance implements ActionListener{
 		p_browser.setOpaque(false);
 		GridBagConstraints gbc_p_browser = new GridBagConstraints();
 		gbc_p_browser.anchor = GridBagConstraints.WEST;
-		gbc_p_browser.gridheight = 4;
+		gbc_p_browser.gridheight = 5;
 		gbc_p_browser.insets = new Insets(0, 0, 5, 0);
 		gbc_p_browser.fill = GridBagConstraints.BOTH;
 		gbc_p_browser.gridx = 2;
-		gbc_p_browser.gridy = 1;
+		gbc_p_browser.gridy = 0;
 		p_main.add(p_browser, gbc_p_browser);
 		GridBagLayout gbl_p_browser = new GridBagLayout();
 		gbl_p_browser.columnWidths = new int[]{0};
@@ -351,25 +335,6 @@ public class GUI extends GUI_Instance implements ActionListener{
 		gbl_p_browser.rowWeights = new double[]{Double.MIN_VALUE};
 		p_browser.setLayout(gbl_p_browser);
 		
-		//this is the bottom middle panel
-		//initializes p_output
-		p_output.setBorder(BorderFactory.createLineBorder(Color.black));
-		p_output.setVisible(true);
-		p_output.setOpaque(false);
-		GridBagConstraints gbc_p_output = new GridBagConstraints();
-		gbc_p_output.anchor = GridBagConstraints.WEST;
-		gbc_p_output.gridheight = 2;
-		gbc_p_output.insets = new Insets(0, 0, 5, 5);
-		gbc_p_output.fill = GridBagConstraints.BOTH;
-		gbc_p_output.gridx = 1;
-		gbc_p_output.gridy = 3;
-		p_main.add(p_output, gbc_p_output);
-		GridBagLayout gbl_p_output = new GridBagLayout();
-		gbl_p_output.columnWidths = new int[]{0};
-		gbl_p_output.rowHeights = new int[]{0};
-		gbl_p_output.columnWeights = new double[]{Double.MIN_VALUE};
-		gbl_p_output.rowWeights = new double[]{Double.MIN_VALUE};
-		p_output.setLayout(gbl_p_output);
 		
 		// this is the bottom panel
 		//initializes p_console
@@ -391,24 +356,6 @@ public class GUI extends GUI_Instance implements ActionListener{
 		gbl_p_console.rowWeights = new double[]{Double.MIN_VALUE};
 		p_console.setLayout(gbl_p_console);*/
 		p_console.setLayout(new BorderLayout());
-		
-		//initializes p_information
-		p_information.setBorder(BorderFactory.createLineBorder(Color.black));
-		p_information.setVisible(true);
-		p_information.setOpaque(false);
-		GridBagConstraints gbc_p_information = new GridBagConstraints();
-		gbc_p_information.gridwidth = 2;
-		gbc_p_information.fill = GridBagConstraints.BOTH;
-		gbc_p_information.anchor = GridBagConstraints.SOUTHWEST;
-		gbc_p_information.gridx = 1;
-		gbc_p_information.gridy = 6;
-		p_main.add(p_information, gbc_p_information);
-		GridBagLayout gbl_p_information = new GridBagLayout();
-		gbl_p_information.columnWidths = new int[]{0};
-		gbl_p_information.rowHeights = new int[]{0};
-		gbl_p_information.columnWeights = new double[]{Double.MIN_VALUE};
-		gbl_p_information.rowWeights = new double[]{Double.MIN_VALUE};
-		p_information.setLayout(gbl_p_information);
 	}
 	
 	//initiates controller and creates default rectangles
@@ -659,7 +606,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 			
 //------------------------------------------------------------------------------------------------------------------------------
 			case "draggableRect":
-				controller.addRect(new DraggableRect(175, 80, 75, 75));
+				controller.addRect(new DraggableRect(10, 80, 75, 75));
 				this.add(controller.getRects().get(controller.getRects().size()-1));
 				break;
 			case "assignment":
@@ -686,7 +633,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 			case "show i_console":
 				if(i_console.isClosed()){
 					i_console = getNewInternalFrame();
-					i_console = getNewInternalFrame();
+					i_console_docked = true;
 					JScrollPane scrollPane = new JScrollPane(codeLabel); // made scrollPane connecting to codeLabel
 					i_console.getContentPane().add(scrollPane);			 // added scrollPane to i_console
 					scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // always show Vertical scrollBar
@@ -700,6 +647,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 			case "show i_palette":
 				if(i_palette.isClosed()){
 					i_palette = getNewInternalFrame();
+					i_palette_docked = true;
 					JPanel s_palette = new JPanel(new BorderLayout());
 					JScrollPane s_palette_ScrollPane = new JScrollPane(s_palette);
 					i_palette.getContentPane().add(s_palette_ScrollPane);
@@ -711,11 +659,11 @@ public class GUI extends GUI_Instance implements ActionListener{
 			case "show i_workspace":
 				if(i_workspace.isClosed()){
 					i_workspace = getNewInternalFrame();
+					i_workspace_docked = true;
 					JPanel s_workspace = new JPanel(new BorderLayout());
 					JScrollPane s_workspace_ScrollPane = new JScrollPane(s_workspace);
 					i_workspace.getContentPane().add(s_workspace_ScrollPane);
 					s_workspace_ScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // always show Horizontal scrollbar
-
 					desktop.add(i_workspace);
 					this.setContentPane(desktop);
 				}
@@ -723,24 +671,12 @@ public class GUI extends GUI_Instance implements ActionListener{
 			case "show i_browser":
 				if(i_browser.isClosed()){
 					i_browser = getNewInternalFrame();
+					i_browser_docked = true;
 					JPanel s_browser = new JPanel(new BorderLayout());
 					JScrollPane s_browser_ScrollPane = new JScrollPane(s_browser);
 					i_browser.getContentPane().add(s_browser_ScrollPane);
 					s_browser_ScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
 					desktop.add(i_browser);
-					this.setContentPane(desktop);
-				}
-				break;
-			case "show i_output":
-				if(i_output.isClosed()){
-					i_output = getNewInternalFrame();
-					JPanel s_output = new JPanel(new BorderLayout());
-					JScrollPane s_output_ScrollPane = new JScrollPane(s_output);
-					i_output.getContentPane().add(s_output_ScrollPane);
-					s_output_ScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-					
-					desktop.add(i_output);
 					this.setContentPane(desktop);
 				}
 				break;
@@ -760,10 +696,6 @@ public class GUI extends GUI_Instance implements ActionListener{
 			case "i_browser_Dock/Undock":
 				i_browser_docked = !i_browser_docked;
 				i_browser.setSize(new Dimension(250, 200));
-				break;
-			case "i_output_Dock/Undock":
-				i_output_docked = !i_output_docked;
-				i_output.setSize(new Dimension(250, 200));
 				break;
 //--------------------------------------------------------------------------------------------------------------------------------
 			default:
@@ -796,7 +728,6 @@ public class GUI extends GUI_Instance implements ActionListener{
 			drawJavaString(i_palette);
 			drawJavaString(i_workspace);
 			drawJavaString(i_browser);
-			drawJavaString(i_output);
 			
 			if(i_console_docked){
 				i_console.setBounds(p_console.getBounds());
@@ -809,9 +740,6 @@ public class GUI extends GUI_Instance implements ActionListener{
 			}
 			if(i_browser_docked){
 				i_browser.setBounds(p_browser.getBounds());
-			}
-			if(i_output_docked){
-				i_output.setBounds(p_output.getBounds());
 			}
 			controller.showRects(g);
 			s.show();

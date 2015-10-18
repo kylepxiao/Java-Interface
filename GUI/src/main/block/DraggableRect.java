@@ -9,7 +9,7 @@ public class DraggableRect extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	// class variables declarations
-	protected Rectangle position;
+	public Rectangle position;
 	protected static int numInstancesCreated = 0;
 	protected static final int displacement = 20;
 	protected static final Color shadow = new Color(255, 80, 10, 128);
@@ -45,7 +45,7 @@ public class DraggableRect extends JPanel {
 		c = Color.BLACK;
 		objectsHoveringAbove.add(false);
 		this.setBackground(Color.WHITE);
-		this.setBorder(BorderFactory.createLineBorder(Color.black));
+		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 	}
 	
 	// override constructor to set color as well

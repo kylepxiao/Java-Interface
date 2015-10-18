@@ -7,6 +7,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList; // import ArrayList
 
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.event.MouseInputAdapter; // import javax.swing.event.MouseTinputAdapter
 
 import main.block.DraggableRect;
@@ -15,10 +17,21 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
 		
 	//class variables
 	private static ArrayList<DraggableRect> rects;
+	private static ArrayList<Integer> ClickNum = new ArrayList<Integer>();
 	private static File file = new File("test.java");
+	private boolean newMouseStroke = true;
 	
     // declare and initialize boolean dragging
     boolean dragging = false;
+    
+    // declare and initialize a JPopupMenu
+    JPopupMenu menu = new JPopupMenu("Popup");
+    
+    // declare and initialize a JMenuItem
+    JMenuItem deleteRect = new JMenuItem("deleteRect");
+    
+    
+    int clicks = 0;
     
     // default controller constructor
     public Controller(){
@@ -50,13 +63,19 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     }
     
     // default function to delete last element in rects
-    public void deleteRect(){
-    	rects.remove(rects.size()-1);
-    }
+/*    public void deleteRect(){
+    	if(rects.size() > 0){
+    		rects.get(rects.size()-1).getParent().remove(rects.get(rects.size()-1));
+    		rects.remove(rects.size()-1);
+    	}
+    }*/
     
     // overload function to specify which element to delete in rects
     public void deleteRect(int index){
-    	rects.remove(index);
+    	if(rects.size() > index && index != -1){
+    		rects.get(index).getParent().remove(rects.get(index));
+    		rects.remove(index);
+    	}
     }
     
     // displays DraggableRect objects onto Graphics2D object g
@@ -64,7 +83,7 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     	for(DraggableRect r : rects){
     		r.draw(g);
     	}
-    }
+    } 
     
     // returns rectangle by specified id
     public static DraggableRect getRectByID(int id){
@@ -76,6 +95,52 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     	return null;
     }
     
+    public boolean findIfClicked(int mx, int my, ArrayList<DraggableRect> adr){
+    	boolean clickInRect = false;
+    	int ArrayListSize = adr.size();
+    	
+    	for(int i = 0; i < ArrayListSize; i++){
+    		int dRX = adr.get(i).position.x;
+    		int dRY = adr.get(i).position.y;
+    		int dRW = adr.get(i).position.width;
+    		int dRH = adr.get(i).position.height;
+    		if((dRX <= mx && mx <= dRX + dRW) && (dRY <= my && my <= dRY + dRH)){
+    			clickInRect = true;
+    		}
+    	}
+    	return clickInRect;
+    }
+    
+    /**
+     * @param mx	the x coordinate where the mouse clicked
+     * @param my	the y coordinate where the mouse clicked
+     * @param adr	an arrayList of DraggableRect objects, from which to find the DraggableRect containing the mouse position 
+     * @return		the DraggableRect containing the mouse position
+     * 
+     * @preconditions	1) mouse position (mx, my) is known
+     * 					2) an arrayList of DraggableRect objects is given
+     * @postconditions	return the DraggableRect containing the mouse position
+     */
+    public int getClickedRect(int mx, int my, ArrayList<DraggableRect> adr){
+    	int ArrayListSize = adr.size();
+    	//DraggableRect theClicked = new DraggableRect();
+    	int theClicked = 0;
+    	for(int i = 0; i < ArrayListSize; i++){
+    		int dRX = adr.get(i).position.x;
+    		int dRY = adr.get(i).position.y;
+    		int dRW = adr.get(i).position.width;
+    		int dRH = adr.get(i).position.height;
+    		if((dRX <= mx && mx <= dRX + dRW) && (dRY <= my && my <= dRY + dRH)){
+    			theClicked = i;
+    			//theClicked = adr.get(i);
+    			System.out.println(theClicked);
+    			return theClicked;
+    		}
+    	}
+    	return -1;
+    }
+    
+    
     // return array of rectangles by specified type
     public static ArrayList<DraggableRect> getRectsByType(int type){
     	ArrayList<DraggableRect> list = new ArrayList<DraggableRect>();
@@ -86,6 +151,7 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     	}
     	return list;
     }
+    
     
     //recirsuve function to generate code string
     private String getFileMessage(DraggableRect r){
@@ -207,14 +273,23 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
             r.update();
         }
         
+        if(e.isPopupTrigger()){
+    		menu.show(e.getComponent(), e.getX(), e.getY());
+    	}
+        
     }
+    
+    
     
     // create method mouseReleased with parmeter MouseEvent e
     public void mouseReleased(MouseEvent e) {
     	//declaring variables
+    	clicks++;
+    	ClickNum.add(clicks);
     	Point p = new Point();
     	boolean hasOverlap;
     	boolean isRelated;
+    	newMouseStroke = true;
     	
     	do{
     		hasOverlap = false;
@@ -262,6 +337,31 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     	for(DraggableRect r : rects){
     		r.dragging = false;
     	}
+    	
+    	// if the clicks is 1 then do the action
+    	//if(clicks == ClickNum.size()){
+    		final int mx = e.getX();
+    		final int my = e.getY();
+    		//System.out.println(rects.size() + " mx " + mx + " my" + my + " rects " + rects.get(0).getX() + " rects " + rects.get(0).getY() + "          " + rects.get(0).getWidth() + "      " + rects.get(0).getHeight());
+    		//System.out.println(getClickedRect(mx, my, rects));
+    		//ClickNum.clear();
+    		deleteRect.addActionListener(new ActionListener() {
+    			public void actionPerformed(ActionEvent e) {
+    				if(findIfClicked(mx, my, rects) && newMouseStroke){
+    					deleteRect(getClickedRect(mx, my, rects));
+    					newMouseStroke = false;
+    				}
+    			}
+    		});
+    	//}
+    	
+    
+    	menu.add(deleteRect);
+    	if(findIfClicked(mx, my, rects)){
+    		if(e.isPopupTrigger()){
+    			menu.show(e.getComponent(), e.getX(), e.getY());
+    		} 
+    	}
     }
     
     // creates method mouseDragged with parameter MouseEvent e 
@@ -269,7 +369,7 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     	// sets up the dragging
     	for(DraggableRect r : rects){
     		if(r.dragging){
-    			if(r.getType() == 2 || r.getType() == 3){
+    			if(r.getType() == 2){
     				if(r.internalRect){
     					r.dragging = false;
     					r.internalRect = false;
@@ -285,4 +385,7 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     		}
     	}
     }
+   
+
+    
 }

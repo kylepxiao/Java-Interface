@@ -160,10 +160,10 @@ public class Conditional extends DraggableRect{
 		updateBranches();
 		//if intersect main rect
 		if (position.intersects(rect.getPosition()) && id != rect.id){
+			//sets location to far right to avoid collisions
 			if(rect.getType() == 4){
 				return new Point(position.x-35, position.y+3);
 			}
-			//sets location to far right to avoid collisions
 			return new Point(position.x + branchDisplacementX + branch2.width + displacement, rect.getPosition().y);
 		//if intersecting first branch
 		}else if (branch1.intersects(rect.getPosition()) && !branch1.equals(rect) && childrenIDs.get(0) == 0){
