@@ -1,0 +1,4 @@
+John - Continue debugging switch/case blocks
+Kyle - Try to integrate blocks into internal frame and make function block if possible
+Yangqi - Begin making palette/browser windows
+NEXT MEETING: SUNDAY, OCTOBER 18th AT 8PM
