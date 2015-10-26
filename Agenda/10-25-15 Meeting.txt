@@ -1,0 +1,5 @@
+John - Finish the switch/case block and fix "add case" menu option
+Kyle - Add DraggableRect spawn to inside i_workspace internal frame and drag
+Yangqi - Add objects to internal frames
+Note: Work off of Yangqi's latest version
+NEXT MEETING: SUNDAY, NOVEMBER 1st AT 8PM
