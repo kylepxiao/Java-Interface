@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
@@ -47,6 +48,7 @@ import main.block.Conditional;
 import main.block.DraggableRect;
 import main.block.Loop;
 import main.block.Start;
+import main.block.Function;
 import main.util.Controller;
 import main.util.Save;
 
@@ -92,13 +94,13 @@ public class GUI extends GUI_Instance implements ActionListener{
 	//sets up content JInternalPanes
 	private JInternalFrame i_console = new JInternalFrame();
 	private JInternalFrame i_palette = new JInternalFrame();
-	private JInternalFrame i_workspace = new JInternalFrame();
+//	private JInternalFrame i_workspace = new JInternalFrame();
 	private JInternalFrame i_browser = new JInternalFrame();
 	
 	//sets up booleans to track if the JInternalPanels are Docked
 	private boolean i_console_docked = true;
 	private boolean i_palette_docked = true;
-	private boolean i_workspace_docked = true;
+//	private boolean i_workspace_docked = true;
 	private boolean i_browser_docked = true;
 	
 	//JComponent that holds the string from the java document
@@ -110,15 +112,20 @@ public class GUI extends GUI_Instance implements ActionListener{
 	
 	// declares items in menu
 	private JMenuItem subMenuBlock, subMenuFrameDock, subMenuGenFrame, mItemNew, mItemSave, mItemLoad, mItemRun, mItemGenCode, mItemGenFrame, 
-		DraggableRect, Assignment, Condition, Conditional, Loop, Start,
-		i_console_DockFrame, i_palette_DockFrame, i_workspace_DockFrame, i_browser_DockFrame, i_output_DockFrame,
-		show_i_console, show_i_palette, show_i_workspace, show_i_browser, show_i_output;
+		DraggableRect, Assignment, Condition, Conditional, Loop, Start, Function,
+		i_console_DockFrame, i_palette_DockFrame, /*i_workspace_DockFrame,*/ i_browser_DockFrame, i_output_DockFrame,
+		show_i_console, show_i_palette, /*show_i_workspace,*/ show_i_browser, show_i_output;
 	private JRadioButtonMenuItem rItem, rItem2, rItem3;
 	@SuppressWarnings("unused")
 	private JCheckBoxMenuItem cItem, cItem2;
 	
 	
 	DraggableRect r = new DraggableRect();
+//	private DraggableRect d = new DraggableRect();
+	
+	//sets starting spawn point of draggable rects
+	private final int startX = 450;
+	private final int startY = 200;
 	
 	//sets default directory for java JDK and is subject to change by user
 	private static String path = "C:\\Program Files\\Java\\jdk1.8.0_05\\bin";
@@ -156,7 +163,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 	    frame.setVisible(true);
 	    frame.setClosable(true);
 	    frame.setResizable(true);
-	    frame.setFocusable(true);
+	    frame.setFocusable(false);
 	    frame.setSize(new Dimension(300, 200));
 	    frame.setLocation(100, 100);
 	    desktop.add(frame);
@@ -172,7 +179,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 	    frame.setVisible(true);
 	    frame.setClosable(true);
 	    frame.setResizable(true);
-	    frame.setFocusable(true);
+	    frame.setFocusable(false);
 	    frame.setSize(new Dimension(300, 200));
 	    frame.setLocation(100, 400);
 	    try {
@@ -196,7 +203,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 	    loadFileChooser.setDialogTitle("Open");
 		loadFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 	}
-	
+
 	//sets up page layout content and initializes JPanel components
 	private void setContent(){
 		//sets window content visible
@@ -206,12 +213,12 @@ public class GUI extends GUI_Instance implements ActionListener{
 		desktop = new JDesktopPane();
 		i_console = getNewInternalFrame();
 		i_palette = getNewInternalFrame();
-		i_workspace = getNewInternalFrame();
+//		i_workspace = getNewInternalFrame();
 		i_browser = getNewInternalFrame();
 		
 		
 		JScrollPane codeScrollPane = new JScrollPane(codeLabel); // made scrollPane connecting to codeLabel
-		JScrollPane s_workspace_ScrollPane = new JScrollPane(s_workspace);
+//		JScrollPane s_workspace_ScrollPane = new JScrollPane(s_workspace);
 		JScrollPane s_palette_ScrollPane = new JScrollPane(s_palette);
 		JScrollPane s_browser_ScrollPane = new JScrollPane(s_browser);
 		JScrollPane s_output_ScrollPane = new JScrollPane(s_output);
@@ -219,19 +226,24 @@ public class GUI extends GUI_Instance implements ActionListener{
 		
 		i_console.getContentPane().add(codeScrollPane);	
 		i_palette.getContentPane().add(s_palette_ScrollPane);
-		i_workspace.getContentPane().add(s_workspace_ScrollPane);
+//		i_workspace.getContentPane().add(s_workspace_ScrollPane);
+/*		d = new DraggableRect(10, 80, 75, 75);
+		i_workspace.getContentPane().add(d);
+		i_workspace.setLayout(null);
+		d.setBounds(10, 10, 40, 40);
+		i_workspace.setVisible(true);*/
 		i_browser.getContentPane().add(s_browser_ScrollPane);
 		//i_workspace.getContentPane().add(r);
 		
 		codeScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // always show Vertical scrollBar
-		s_workspace_ScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // always show Horizontal scrollBar
+//		s_workspace_ScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // always show Horizontal scrollBar
 		s_palette_ScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		s_browser_ScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		s_output_ScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		
 		desktop.add(i_console);
 	    desktop.add(i_palette);
-	    desktop.add(i_workspace);
+//	    desktop.add(i_workspace);
 	    desktop.add(i_browser);
 		this.setContentPane(desktop);
 		
@@ -257,7 +269,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 		
 		//initializes JPanel encapsulating the content (p_main)
 		p_main.setVisible(true);
-		p_main.setBorder(BorderFactory.createLineBorder(Color.black));
+//		p_main.setBorder(BorderFactory.createLineBorder(Color.black));
 		p_main.setRequestFocusEnabled(false);
 		p_main.setOpaque(false);
 		p_main.setFocusable(false);
@@ -274,7 +286,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 		// this is the left panel
 		//initializes p_palette
 		p_palette.setVisible(true);
-		p_palette.setBorder(BorderFactory.createLineBorder(Color.black));
+//		p_palette.setBorder(BorderFactory.createLineBorder(Color.black));
 		p_palette.setOpaque(false);
 		GridBagConstraints gbc_p_palette = new GridBagConstraints();
 		gbc_p_palette.anchor = GridBagConstraints.WEST;
@@ -294,7 +306,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 		// this is the top middle panel
 		//initializes p_workspace
 		p_workspace.setVisible(true);
-		p_workspace.setBorder(BorderFactory.createLineBorder(Color.black));
+//		p_workspace.setBorder(BorderFactory.createLineBorder(Color.black));
 		p_workspace.setOpaque(false);
 		
 		GridBagConstraints gbc_p_workspace = new GridBagConstraints();
@@ -318,7 +330,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 		// this is the right panel
 		//initializes p_browser
 		p_browser.setVisible(true);
-		p_browser.setBorder(BorderFactory.createLineBorder(Color.black));
+//		p_browser.setBorder(BorderFactory.createLineBorder(Color.black));
 		p_browser.setOpaque(false);
 		GridBagConstraints gbc_p_browser = new GridBagConstraints();
 		gbc_p_browser.anchor = GridBagConstraints.WEST;
@@ -338,7 +350,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 		
 		// this is the bottom panel
 		//initializes p_console
-		p_console.setBorder(BorderFactory.createLineBorder(Color.black));
+//		p_console.setBorder(BorderFactory.createLineBorder(Color.black));
 		p_console.setVisible(true);
 		p_console.setOpaque(false);
 		GridBagConstraints gbc_p_console = new GridBagConstraints();
@@ -372,6 +384,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 /*		for(DraggableRect r : controller.getRects()){
 			add(r);
 		}*/
+//		controller.addRect(d);
 	}
 	
 	// Sets default layout and preferences for window
@@ -454,6 +467,11 @@ public class GUI extends GUI_Instance implements ActionListener{
 	    subMenuBlock.add(Start);
 	    Start.addActionListener(this);
 	    Start.setActionCommand("start");
+	    
+	    Function = new JMenuItem("Function");
+	    subMenuBlock.add(Function);
+	    Function.addActionListener(this);
+	    Function.setActionCommand("function");
 // ------------------------------------------------------------------------------------------------------------------------------	    
 	    i_console_DockFrame = new JMenuItem("i_console Dock/Undock");
 	    subMenuFrameDock.add(i_console_DockFrame);
@@ -465,10 +483,10 @@ public class GUI extends GUI_Instance implements ActionListener{
 	    i_palette_DockFrame.addActionListener(this);
 	    i_palette_DockFrame.setActionCommand("i_palette_Dock/Undock");
 	    
-	    i_workspace_DockFrame = new JMenuItem("i_workspace Dock/Undock");
+/*	    i_workspace_DockFrame = new JMenuItem("i_workspace Dock/Undock");
 	    subMenuFrameDock.add(i_workspace_DockFrame);
 	    i_workspace_DockFrame.addActionListener(this);
-	    i_workspace_DockFrame.setActionCommand("i_workspace_Dock/Undock");
+	    i_workspace_DockFrame.setActionCommand("i_workspace_Dock/Undock");*/
 	    
 	    i_browser_DockFrame = new JMenuItem("i_browser Dock/Undock");
 	    subMenuFrameDock.add(i_browser_DockFrame);
@@ -492,10 +510,10 @@ public class GUI extends GUI_Instance implements ActionListener{
 	    show_i_palette.addActionListener(this);
 	    show_i_palette.setActionCommand("show i_palette");
 	    
-	    show_i_workspace = new JMenuItem("show i_workspace");
+/*	    show_i_workspace = new JMenuItem("show i_workspace");
 	    subMenuGenFrame.add(show_i_workspace);
 	    show_i_workspace.addActionListener(this);
-	    show_i_workspace.setActionCommand("show i_workspace");
+	    show_i_workspace.setActionCommand("show i_workspace");*/
 	    
 	    show_i_browser = new JMenuItem("show i_browser");
 	    subMenuGenFrame.add(show_i_browser);
@@ -606,27 +624,31 @@ public class GUI extends GUI_Instance implements ActionListener{
 			
 //------------------------------------------------------------------------------------------------------------------------------
 			case "draggableRect":
-				controller.addRect(new DraggableRect(10, 80, 75, 75));
+				controller.addRect(new DraggableRect(startX, startY, 75, 75));
 				this.add(controller.getRects().get(controller.getRects().size()-1));
 				break;
 			case "assignment":
-				controller.addRect(new Assignment(175, 80));
+				controller.addRect(new Assignment(startX, startY));
 				this.add(controller.getRects().get(controller.getRects().size()-1));
 				break;
 			case "condition":
-				controller.addRect(new Condition(175, 80));
+				controller.addRect(new Condition(startX, startY));
 				this.add(controller.getRects().get(controller.getRects().size()-1));
 				break;
 			case "conditional":
-				controller.addRect(new Conditional(175, 80));
+				controller.addRect(new Conditional(startX, startY));
 				this.add(controller.getRects().get(controller.getRects().size()-1));
 				break;
 			case "loop":
-				controller.addRect(new Loop(175, 80));
+				controller.addRect(new Loop(startX, startY));
 				this.add(controller.getRects().get(controller.getRects().size()-1));
 				break;
 			case "start":
-				controller.addRect(new Start(175, 80));
+				controller.addRect(new Start(startX, startY));
+				this.add(controller.getRects().get(controller.getRects().size()-1));
+				break;
+			case "function":
+				controller.addRect(new Function(startX, startY));
 				this.add(controller.getRects().get(controller.getRects().size()-1));
 				break;
 //-----------------------------------------------------------------------------------------------------------------------------
@@ -656,7 +678,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 					this.setContentPane(desktop);
 				}
 				break;
-			case "show i_workspace":
+/*			case "show i_workspace":
 				if(i_workspace.isClosed()){
 					i_workspace = getNewInternalFrame();
 					i_workspace_docked = true;
@@ -667,7 +689,7 @@ public class GUI extends GUI_Instance implements ActionListener{
 					desktop.add(i_workspace);
 					this.setContentPane(desktop);
 				}
-				break;
+				break;*/
 			case "show i_browser":
 				if(i_browser.isClosed()){
 					i_browser = getNewInternalFrame();
@@ -689,10 +711,10 @@ public class GUI extends GUI_Instance implements ActionListener{
 				i_palette_docked = !i_palette_docked;
 				i_palette.setSize(new Dimension(250, 200));
 				break;
-			case "i_workspace_Dock/Undock":
+/*			case "i_workspace_Dock/Undock":
 				i_workspace_docked = !i_workspace_docked;
 				i_workspace.setSize(new Dimension(250, 200));
-				break;
+				break;*/
 			case "i_browser_Dock/Undock":
 				i_browser_docked = !i_browser_docked;
 				i_browser.setSize(new Dimension(250, 200));
@@ -717,31 +739,30 @@ public class GUI extends GUI_Instance implements ActionListener{
 	@Override
 	public void paint(Graphics graphics){
 		try{
+			Graphics2D g = (Graphics2D) s.getDrawGraphics();
 			// calls default paint functions in parent object
-			super.paint(s.getDrawGraphics());
-			super.paintComponents(s.getDrawGraphics());
+			super.paint(g);
+			super.paintComponents(g);
 			//sets buffer panel to size of window
 			bufferPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
 			// calls function to draw onto g
-			Graphics2D g = (Graphics2D) s.getDrawGraphics();
 			drawJavaString(i_console);
 			drawJavaString(i_palette);
-			drawJavaString(i_workspace);
+//			drawJavaString(i_workspace);
 			drawJavaString(i_browser);
-			
+			controller.showRects(g);
 			if(i_console_docked){
 				i_console.setBounds(p_console.getBounds());
 			}
 			if(i_palette_docked){
 				i_palette.setBounds(p_palette.getBounds());
 			}
-			if(i_workspace_docked){
+/*			if(i_workspace_docked){
 				i_workspace.setBounds(p_workspace.getBounds());
-			}
+			}*/
 			if(i_browser_docked){
 				i_browser.setBounds(p_browser.getBounds());
 			}
-			controller.showRects(g);
 			s.show();
 			Toolkit.getDefaultToolkit().sync();
 			super.repaint();

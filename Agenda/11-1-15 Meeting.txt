@@ -1,0 +1,4 @@
+John - Combine most recent code with Yangqi's code and function code
+Kyle - Debug John's latest switch code (indexOutOfBounds when there are multiple instances)
+Yangqi - Fix the painting so that it paints with paintComponent and paints under the internal frames
+NEXT MEETING: SUNDAY, NOVEMBER 8th AT 8PM

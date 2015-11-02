@@ -259,6 +259,7 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
         for(DraggableRect r : rects){
         	// used to create the movement of the rectangles 
             if(r.getPosition().contains(p)) {
+            	System.out.println("adsf");
             	//deletes associations with other blocks
             	if(r.parentID != 0){
             		getRectByID(r.parentID).deleteChild(r.id);
