@@ -1,0 +1,4 @@
+John - Work on switch block so that you can add rects to it
+Kyle - Fix delete rect glitch where deleting parent immobilizes child
+Yangqi - Keep working on fixing errors with paint and painComponent as well as the dependencies
+NEXT MEETING: SUNDAY, NOVEMBER 22 AT 8PM
