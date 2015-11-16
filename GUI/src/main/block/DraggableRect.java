@@ -23,6 +23,8 @@ public class DraggableRect extends JPanel {
 	public int parentID = 0;
 	public boolean internalRect = false;
 	public ArrayList<Integer> childrenIDs;
+	protected int type = 0;
+
 	
 	// default constructor which initializes values
 	public DraggableRect(){
@@ -46,6 +48,7 @@ public class DraggableRect extends JPanel {
 		objectsHoveringAbove.add(false);
 		this.setBackground(Color.WHITE);
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
 	}
 	
 	// override constructor to set color as well
@@ -59,6 +62,7 @@ public class DraggableRect extends JPanel {
 		this.setBackground(Color.WHITE);
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 	}
+	
 	
 	// getter function for position
 	public Rectangle getPosition(){
@@ -208,7 +212,7 @@ public class DraggableRect extends JPanel {
 	
 	// returns integer to identify block type
 	public int getType(){
-		return 0;
+		return type;
 	}
 	
 	//returns true if the draggableRect has children

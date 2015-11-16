@@ -48,6 +48,7 @@ public class Condition extends DraggableRect{
 		objectsHoveringAbove.add(false);
 		objectsHoveringAbove.add(false);
 		update();
+		type = 2;
 	}
 	public Condition(int x, int y){
 		super(x, y, mainWidth, mainHeight);
@@ -74,6 +75,7 @@ public class Condition extends DraggableRect{
 		objectsHoveringAbove.add(false);
 		objectsHoveringAbove.add(false);
 		update();
+		type = 2;
 	}
 	public Condition(Color c){
 		super(0, 0, mainWidth, mainHeight, c);
@@ -98,6 +100,7 @@ public class Condition extends DraggableRect{
 		objectsHoveringAbove.add(false);
 		objectsHoveringAbove.add(false);
 		update();
+		type = 2;
 	}
 	public Condition(int x, int y, Color c){
 		super(x, y, mainWidth, mainHeight,c);
@@ -122,6 +125,7 @@ public class Condition extends DraggableRect{
 		objectsHoveringAbove.add(false);
 		objectsHoveringAbove.add(false);
 		update();
+		type = 2;
 	}
 	@Override
 	public void update(){
@@ -200,9 +204,5 @@ public class Condition extends DraggableRect{
 		update();
 		//draws decorations
 		drawLines(g);
-	}
-	@Override
-	public int getType(){
-		return 4;
 	}
 }

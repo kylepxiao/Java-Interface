@@ -25,9 +25,10 @@ public class Function extends DraggableRect{
 	public Function(){
 		super(0, 0, mainWidth, mainHeight);
 		setNumChildren(numChildren);
+		type = 7;
 	}
 	
-	//override constructor to specify position
+	//override constructor to specify position 
 	public Function(int x, int y){
 		super(x, y, mainWidth, mainHeight);
 		name.setBounds(2, mainHeight/2, mainWidth-5, mainHeight/2);
@@ -36,18 +37,21 @@ public class Function extends DraggableRect{
 		name.setVisible(true);
 		this.add(name);
 		setNumChildren(numChildren);
+		type = 7;
 	}
 	
 	//override constructor to specify color
 	public Function(Color c){
 		super(0, 0, mainWidth, mainHeight, c);
 		setNumChildren(numChildren);
+		type = 7;
 	}
 	
 	//override constructor to specify position and color
 	public Function(int x, int y, Color c){
 		super(x, y, mainWidth, mainHeight, c);
 		setNumChildren(numChildren);
+		type = 7;
 	}
 	
 	@Override
@@ -67,10 +71,5 @@ public class Function extends DraggableRect{
 			g.drawLine(midX, bottomY, midX, bottomY + displacement);
 			g.fillPolygon(xPoints, yPoints, 3);
 		}
-	}
-
-	@Override
-	public int getType(){
-		return 6;
 	}
 }

@@ -7,6 +7,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList; // import ArrayList
 
+import main.block.Switch;
+
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.event.MouseInputAdapter; // import javax.swing.event.MouseTinputAdapter
@@ -19,7 +21,10 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
 	private static ArrayList<DraggableRect> rects;
 	private static ArrayList<Integer> ClickNum = new ArrayList<Integer>();
 	private static File file = new File("test.java");
-	private boolean newMouseStroke = true;
+	public static boolean newMouseStroke = true;
+	int a = 10;
+	int b = 100;
+	
 	
     // declare and initialize boolean dragging
     boolean dragging = false;
@@ -28,7 +33,8 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     JPopupMenu menu = new JPopupMenu("Popup");
     
     // declare and initialize a JMenuItem
-    JMenuItem deleteRect = new JMenuItem("deleteRect");
+    JMenuItem deleteRect = new JMenuItem("DeleteRect");
+    JMenuItem addCase = new JMenuItem("AddCase");
     
     
     int clicks = 0;
@@ -72,10 +78,15 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     
     // overload function to specify which element to delete in rects
     public void deleteRect(int index){
-    	if(rects.size() > index && index != -1){
+    	if(rects.size() > index && index >= 0){
+    		if(rects.get(index).getType() == 6){
+    			((Switch) rects.get(index)).casesAndContents.clear();
+        		((Switch) rects.get(index)).clicks = 0;
+    		}
     		rects.get(index).getParent().remove(rects.get(index));
     		rects.remove(index);
     	}
+    	
     }
     
     // displays DraggableRect objects onto Graphics2D object g
@@ -133,12 +144,26 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     		if((dRX <= mx && mx <= dRX + dRW) && (dRY <= my && my <= dRY + dRH)){
     			theClicked = i;
     			//theClicked = adr.get(i);
-    			System.out.println(theClicked);
+    			//System.out.println(theClicked);
     			return theClicked;
     		}
     	}
     	return -1;
+    	
     }
+    
+    public int getClickedType(int mx, int my){
+    	int blockType = 0;
+    	int index = getClickedRect(mx, my, rects);
+    	if(index >= 0 && index < rects.size()){
+    		blockType = rects.get(index).getType();
+    	}
+    	//System.out.println("type" + blockType);
+    	return blockType;	
+    	
+    }
+    
+    
     
     
     // return array of rectangles by specified type
@@ -259,7 +284,6 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
         for(DraggableRect r : rects){
         	// used to create the movement of the rectangles 
             if(r.getPosition().contains(p)) {
-            	System.out.println("adsf");
             	//deletes associations with other blocks
             	if(r.parentID != 0){
             		getRectByID(r.parentID).deleteChild(r.id);
@@ -341,28 +365,56 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     	
     	// if the clicks is 1 then do the action
     	//if(clicks == ClickNum.size()){
-    		final int mx = e.getX();
-    		final int my = e.getY();
-    		//System.out.println(rects.size() + " mx " + mx + " my" + my + " rects " + rects.get(0).getX() + " rects " + rects.get(0).getY() + "          " + rects.get(0).getWidth() + "      " + rects.get(0).getHeight());
-    		//System.out.println(getClickedRect(mx, my, rects));
-    		//ClickNum.clear();
-    		deleteRect.addActionListener(new ActionListener() {
-    			public void actionPerformed(ActionEvent e) {
-    				if(findIfClicked(mx, my, rects) && newMouseStroke){
-    					deleteRect(getClickedRect(mx, my, rects));
-    					newMouseStroke = false;
-    				}
+    	final int mx = e.getX();
+    	final int my = e.getY();
+    	//System.out.println(rects.size() + " mx " + mx + " my" + my + " rects " + rects.get(0).getX() + " rects " + rects.get(0).getY() + "          " + rects.get(0).getWidth() + "      " + rects.get(0).getHeight());
+    	//System.out.println(getClickedRect(mx, my, rects));
+    	//ClickNum.clear();
+    	deleteRect.addActionListener(new ActionListener() {
+    		public void actionPerformed(ActionEvent e) {
+    			if(findIfClicked(mx, my, rects) && newMouseStroke){
+    				deleteRect(getClickedRect(mx, my, rects));
+    				newMouseStroke = false;
+    				//System.out.println("Click number is " + clicks);
     			}
-    		});
-    	//}
+    		}
+    	});
     	
-    
-    	menu.add(deleteRect);
+    	
+    	addCase.addActionListener(new ActionListener() {
+    		public void actionPerformed(ActionEvent e) {
+    			if(newMouseStroke){
+    				
+    				DraggableRect r = rects.get(getClickedRect(mx, my, rects));
+    				if(r.getType() == 6){
+    					Switch s = (Switch) r;
+	    				//Switch s =new Switch();
+	    				
+	    				s.clicks++;
+	    				//System.out.println("Switch type " + blockType);
+	    				//for(int i = 0; i <Switch.clicks; i++ ) {
+	    				//Switch.cases.setLocation(Switch.cases.x, Switch.cases.y + Switch.caseDisplacementY);
+	    					
+	  //  					Switch.content2 = ;
+	    				s.casesAndContents.add(new Rectangle(s.content.x, s.content.y + s.contentDisplacementY, 75, 50));   				  				
+	    				//}
+	    				newMouseStroke = false;
+    				}
+				}
+    		}
+    	});
+    	if(getClickedType(mx,my) == 6){
+    		menu.add(addCase);
+    		//System.out.println("Type 2 " + getClickedType(mx,my) );
+    	}else {
+    		menu.remove(addCase);
+    	}
+        	menu.add(deleteRect);
     	if(findIfClicked(mx, my, rects)){
     		if(e.isPopupTrigger()){
     			menu.show(e.getComponent(), e.getX(), e.getY());
     		} 
-    	}
+    	}	
     }
     
     // creates method mouseDragged with parameter MouseEvent e 

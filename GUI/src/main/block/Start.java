@@ -28,18 +28,21 @@ public class Start extends DraggableRect{
 	public Start(int x, int y){
 		super(x, y, mainWidth, mainHeight);
 		setNumChildren(numChildren);
+		type = 5;
 	}
 	
 	//override constructor to specify color
 	public Start(Color c){
 		super(0, 0, mainWidth, mainHeight, c);
 		setNumChildren(numChildren);
+		type = 5;
 	}
 	
 	//override constructor to specify position and color
 	public Start(int x, int y, Color c){
 		super(x, y, mainWidth, mainHeight, c);
 		setNumChildren(numChildren);
+		type = 5;
 	}
 	
 	@Override
@@ -62,8 +65,5 @@ public class Start extends DraggableRect{
 		}
 	}
 
-	@Override
-	public int getType(){
-		return 1;
-	}
+	
 }
