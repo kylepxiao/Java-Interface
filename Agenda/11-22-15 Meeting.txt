@@ -1,0 +1,4 @@
+John - Continue working on Switch block (fixing shadow error, etc.)
+Kyle - Review Yangqi's code and create right click dock/undock for each internal frame
+Yangqi - Continue working on incorporating new paint class and post question on stackoverflow
+NEXT MEETING: FRIDAY, NOVEMBER 27 AT 8PM
