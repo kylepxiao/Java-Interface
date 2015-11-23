@@ -83,6 +83,13 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     			((Switch) rects.get(index)).casesAndContents.clear();
         		((Switch) rects.get(index)).clicks = 0;
     		}
+    		if(rects.get(index).hasChildren()){
+	    		for(int r : rects.get(index).childrenIDs){
+	    			if(r != 0){
+	    				getRectByID(r).parentID = 0;
+	    			}
+	    		}
+    		}
     		rects.get(index).getParent().remove(rects.get(index));
     		rects.remove(index);
     	}
@@ -286,8 +293,10 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
             if(r.getPosition().contains(p)) {
             	//deletes associations with other blocks
             	if(r.parentID != 0){
-            		getRectByID(r.parentID).deleteChild(r.id);
-            		getRectByID(r.parentID).update();
+            		if(getRectByID(r.parentID).hasChildren()){
+	            		getRectByID(r.parentID).deleteChild(r.id);
+	            		getRectByID(r.parentID).update();
+            		}
             	}
             	r.parentID = 0;
             	//used to set up movement
