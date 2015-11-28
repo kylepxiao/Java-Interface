@@ -13,6 +13,9 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferStrategy;
 import java.io.BufferedReader;
 import java.io.File;
@@ -42,6 +45,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 
 import main.block.Assignment;
@@ -119,6 +123,14 @@ public class GUI extends GUI_Instance implements ActionListener {
 
 	// sets default directory for java JDK and is subject to change by user
 	private static String path = "C:\\Program Files\\Java\\jdk1.8.0_05\\bin";
+	
+	// declare and initialize a JPopupMenu
+    JPopupMenu rmenu = new JPopupMenu("Popup");
+    
+    // declare and initialize a JMenuItem
+    JMenuItem dock_palette = new JMenuItem("Dock/Undock");
+    JMenuItem dock_browser = new JMenuItem("Dock/Undock");
+    JMenuItem dock_console = new JMenuItem("Dock/Undock");
 
 	// main function
 	public static void main(String[] args) {
@@ -175,6 +187,12 @@ public class GUI extends GUI_Instance implements ActionListener {
 		frame.setFocusable(true);
 		frame.setSize(new Dimension(300, 200));
 		frame.setLocation(100, 400);
+		frame.getContentPane().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e){
+				System.out.println("test...");
+			}
+		});
 		try {
 			frame.setSelected(true);
 		} catch (java.beans.PropertyVetoException e) {
@@ -212,6 +230,22 @@ public class GUI extends GUI_Instance implements ActionListener {
 
 		JPanel s_workspace = new JPanel(new BorderLayout());
 		JPanel s_palette = new JPanel(new BorderLayout());
+		dock_palette.addActionListener(new ActionListener() {
+    		public void actionPerformed(ActionEvent e) {
+    			i_palette_docked = !i_palette_docked;
+    			i_palette.setSize(new Dimension(250, 200));
+    		}
+    	});
+		s_palette.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e){
+				if(SwingUtilities.isRightMouseButton(e)){
+					rmenu.removeAll();
+					rmenu.add(dock_palette);
+					rmenu.show(e.getComponent(), e.getX(), e.getY());
+				}
+			}
+		});
 		
 		
 		//palette internalframe content
@@ -289,7 +323,45 @@ public class GUI extends GUI_Instance implements ActionListener {
 		s_palette.add(button_Start);
 		
 		JPanel s_browser = new JPanel(new BorderLayout());
+		dock_browser.addActionListener(new ActionListener() {
+    		public void actionPerformed(ActionEvent e) {
+    			i_browser_docked = !i_browser_docked;
+    			if(!i_browser_docked){
+    				i_browser.setSize(new Dimension(250, 200));
+    			}
+    		}
+    	});
+		s_browser.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e){
+				if(SwingUtilities.isRightMouseButton(e)){
+					rmenu.removeAll();
+					rmenu.add(dock_browser);
+					rmenu.show(e.getComponent(), e.getX(), e.getY());
+				}
+			}
+		});
+
 		JPanel s_output = new JPanel(new BorderLayout());
+		
+		dock_console.addActionListener(new ActionListener() {
+    		public void actionPerformed(ActionEvent e) {
+    			i_console_docked = !i_console_docked;
+    			if(!i_console_docked){
+    				i_console.setSize(new Dimension(250, 200));
+    			}
+    		}
+    	});
+		codeLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e){
+				if(SwingUtilities.isRightMouseButton(e)){
+					rmenu.removeAll();
+					rmenu.add(dock_console);
+					rmenu.show(e.getComponent(), e.getX(), e.getY());
+				}
+			}
+		});
 
 		JScrollPane codeScrollPane = new JScrollPane(codeLabel); // made
 																	// scrollPane
@@ -683,8 +755,7 @@ public class GUI extends GUI_Instance implements ActionListener {
 				scrollPane
 						.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS); // always
 																								// show
-																								// Horizontal
-																								// scrollBar
+																								// Horizontal																		// scrollBar
 				desktop.add(i_console);
 				this.setContentPane(desktop);
 			}
@@ -718,7 +789,6 @@ public class GUI extends GUI_Instance implements ActionListener {
 			break;
 		// ------------------------------------------------------------------------------------------------------------------------------
 		case "i_console_Dock/Undock":
-			i_console_docked = !i_console_docked;
 			i_console.setSize(new Dimension(250, 200));
 			break;
 		case "i_palette_Dock/Undock":

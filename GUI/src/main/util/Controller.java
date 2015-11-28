@@ -422,8 +422,8 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     	if(findIfClicked(mx, my, rects)){
     		if(e.isPopupTrigger()){
     			menu.show(e.getComponent(), e.getX(), e.getY());
-    		} 
-    	}	
+    		}
+    	}
     }
     
     // creates method mouseDragged with parameter MouseEvent e 
