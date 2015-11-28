@@ -1,0 +1,4 @@
+John - Reorgzanize code to make it more intuitive and clean
+Kyle - Debug John's switch block (block-shadow and multiple children)
+Yangqi - Continue to try to make paint-component work to fix painting-over problem
+NEXT MEETING: SUNDAY, DECEMBER 6th AT 8PM
