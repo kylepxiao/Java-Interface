@@ -1,0 +1,4 @@
+John - Add scrollbar to outer JFrame (Use controller to find highest y)
+Kyle - Figure out way to erase painting on internal frame (erase in rectangle)
+Yangqi - Add code compiling functionality for new blocks (like switch)
+NEXT MEETING: SUNDAY, JANUARY 10th AT 8PM
