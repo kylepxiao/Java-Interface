@@ -150,6 +150,12 @@ public class Loop extends DraggableRect {
 		return branch.x - content.x + branch.width;
 	}
 	
+	//overrides getHeight to account for changes in branch sizes
+	@Override
+	public int getResizeHeight(){
+		return branchDisplacementY;
+	}
+	
 	public void resetFamily(){
 		parentID = 0;
 		setNumChildren(numChildren);

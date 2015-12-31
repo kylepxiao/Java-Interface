@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -22,12 +23,8 @@ public class Switch extends DraggableRect{
 
 	public Rectangle content;
 	
-	private boolean contentVisible = true;
-	
-	
 	private static final int mainWidth = 75;
 	public static final int mainHeight = 75;
-	
 	
 	private static final int contentWidth = 75;
 	private static final int contentHeight = 50;
@@ -36,10 +33,13 @@ public class Switch extends DraggableRect{
 	public static final int contentDisplacementY = 100;
 	
 	public int clicks = 0;
-	public ArrayList<Rectangle> casesAndContents = new ArrayList<Rectangle>(); 
+	public ArrayList<Rectangle> Contents = new ArrayList<Rectangle>();
+	public ArrayList<Boolean> ContentVisible = new ArrayList<Boolean>();
 	
 	private JTextArea expression = new JTextArea();
-	private static final int numChildren = 0;
+	private static final int numChildren = 50;
+	
+	int justSnapped = -1;
 	
 	
 	public Switch(){
@@ -58,7 +58,8 @@ public class Switch extends DraggableRect{
 		super(x, y, mainWidth, mainHeight);
 		setNumChildren(numChildren);
 		content = new Rectangle(position.x + contentDisplacementX, position.y + contentDisplacementX, contentWidth, contentHeight);
-		casesAndContents.add(content);
+		Contents.add(content);
+		ContentVisible.add(true);
 		objectsHoveringAbove.add(false);
 		objectsHoveringAbove.add(false);
 		expression.setOpaque(false);
@@ -97,45 +98,29 @@ public class Switch extends DraggableRect{
 	}
 	//calculates position of branches and updates dimensions based on children
 	private void updateBranches(){
-		//sets branch location with respect to main position
-		// make a for loop here that has the the arraylist in it and then specify each consectutive case to the case before it
-		//cases = new Rectangle(cases.x, cases.y + caseDisplacementY, 100, 100);
 		content.setLocation(position.x + contentDisplacementX, position.y + contentDisplacementY);
-		for(int i = 1; i < casesAndContents.size(); i++){
-			casesAndContents.get(i).setLocation(casesAndContents.get(i - 1).x, casesAndContents.get(i - 1).y + contentDisplacementY);;
-			//casesAndContents.set(i, cases);
+		for(int i = 1; i < Contents.size(); i++){
+			if(childrenIDs.get(i - 1) != 0){
+				Contents.get(i).setLocation(Controller.getMaxTreeX(childrenIDs.get(i - 1)), Controller.getMaxTreeY(childrenIDs.get(i - 1)) + contentDisplacementY);
+				Controller.setTreeLocation(Controller.getRectByID(childrenIDs.get(i)), Contents.get(i).x, Contents.get(i).y);
+			}else{
+				Contents.get(i).setLocation(Contents.get(i - 1).x, Contents.get(i - 1).y + contentDisplacementY); 
+			}
 		}
-/*
-		if(childrenIDs.size() > 0 && childrenIDs.get(0) != 0){
+
+		if(childrenIDs.size() > 0 && justSnapped != -1 && childrenIDs.get(justSnapped) != 0){
 			//sets branch1 to encapsulate child
-			caseVisible = false;
-			int childWidth = main.util.Controller.getRectByID(childrenIDs.get(0)).getResizeWidth();
-			if(childWidth > content.x - position.x){
-				content.x += childWidth - contentDisplacementX + 5;
-			}
-		}else{
+			ContentVisible.set(justSnapped, false);
+			
+		}else if(justSnapped != -1) {
 			//sets branch1 to visible
-			caseVisible = true;
+			ContentVisible.set(justSnapped, true);
 		}
-		//checks if there is something in the second branch
-		if(childrenIDs.size() > 1 && childrenIDs.get(1) != 0){
-			//sets branch2 to encapsulate child
-			contentVisible = false;
-			Controller.setTreeLocation(Controller.getRectByID(childrenIDs.get(1)), content.x, content.y);
-		}else{
-			//sets branch2 visible
-			contentVisible = true;
-		}
-		//expands branch if condition is in place
-		if(childrenIDs.size() > 2 && childrenIDs.get(2) != 0){
-			if(content.x < position.x + contentDisplacementX + 30){
-				content.x = position.x + contentDisplacementX + 30;
-			}
-			if(childrenIDs.get(1) != 0){
-				Controller.setTreeLocation(Controller.getRectByID(childrenIDs.get(1)), content.x, content.y);
+		for(int i=0; i<min(childrenIDs.size(), Contents.size()); i++){
+			if(childrenIDs.get(i) == 0){
+				ContentVisible.set(i, true);
 			}
 		}
-*/			
 	}
 		
 	//overrides update to account for branches
@@ -157,45 +142,46 @@ public class Switch extends DraggableRect{
 		parentID = 0;
 		setNumChildren(numChildren);
 	}
-/*	
+	
 	//Overrides getNewSnap to account for branches
 	@Override
 	public Point getNewSnap(DraggableRect rect){
 		//updates branches to adjust for child height
 		updateBranches();
 		//if intersect main rect
-		if (position.intersects(rect.getPosition()) && id != rect.id){
-			//sets location to far right to avoid collisions
-			if(rect.getType() == 0){
-				return new Point(position.x-35, position.y+3);
+		for(int i = 0; i < Contents.size(); i++){
+			if(position.intersects(rect.getPosition()) && id != rect.id){
+				if(type == 4){
+					return new Point(position.x-35, position.y+3);
+				}
+				//sets location to far right to avoid collisions
+				return new Point(position.x + contentDisplacementX + content.width + displacement, rect.getPosition().y);
+				
+			}else if (Contents.get(i).intersects(rect.getPosition()) && !Contents.get(i).equals(rect) && childrenIDs.get(i) == 0){
+				
+				//sets location of rectangle being dragged to below the rectangle it overlaps
+				justSnapped = i;
+				return new Point(Contents.get(i).x, Contents.get(i).y);
+				
 			}
-			return new Point(position.x + contentDisplacementX + content.width + displacement, rect.getPosition().y);
-			//if intersecting first branch
-		}else if (cases.intersects(rect.getPosition()) && !cases.equals(rect) && childrenIDs.get(0) == 0){
-			//sets location of rectangle being dragged to below the rectangle it overlaps
-			return new Point(cases.x, cases.y);
-			//if intersecting second branch
-		}else if(content.intersects(rect.getPosition()) && !content.equals(rect) && childrenIDs.get(1) == 0){
-			//sets location of rectangle being dragged to below the rectangle it overlaps
-			return new Point(content.x, content.y);
 		}return null;
 	}
 	
-	//overrides setChild function to set child under branch
+	//overrides setChild function set child under branch
 	@Override
 	public void setChild(DraggableRect rect){
 		if(!position.equals(rect.getPosition())){
-			if(cases.intersects(rect.getPosition()) && childrenIDs.get(0) == 0){
-				childrenIDs.set(0, rect.id);
-			}else if(content.intersects(rect.getPosition()) && childrenIDs.get(1) == 0){
-				childrenIDs.set(1, rect.id);
-			}else if(position.intersects(rect.getPosition()) && childrenIDs.get(2) == 0 && rect.getType() == 4){
-				childrenIDs.set(2, rect.id);
-				internalRect = true;
+			for(int i = 0; i < Contents.size(); i++){
+				if(Contents.get(i).intersects(rect.getPosition()) && childrenIDs.get(i) == 0){
+					childrenIDs.set(i, rect.id);
+				}else if(position.intersects(rect.getPosition()) && childrenIDs.get(1) == 0 && rect.getType() == 6){
+					childrenIDs.set(49, rect.id);
+					internalRect = true;
+				}
 			}
 		}
-	}
-*/		
+		update();
+	}	
 	@Override
 	public void checkHoverOver(DraggableRect r){
 		try{
@@ -209,16 +195,20 @@ public class Switch extends DraggableRect{
 					objectsHoveringAbove.set(0, false);
 				}
 			}	
-			//checks hovering over branch1
-			if(content.intersects(r.getPosition()) && id != r.id){
-				if(!objectsHoveringAbove.get(1)){
-					objectsHoveringAbove.set(1, true);
-				}
-			}else{
-				if(objectsHoveringAbove.get(1)){
-					objectsHoveringAbove.set(1, false);
+		
+			for(int i=0; i<Contents.size(); i++){
+				//checks hovering over branch1
+				if(Contents.get(i).intersects(r.getPosition()) && id != r.id){
+					if(!objectsHoveringAbove.get(i)){
+						objectsHoveringAbove.set(i, true);
+					}
+				}else{
+					if(objectsHoveringAbove.get(i)){
+						objectsHoveringAbove.set(i, false);
+					}
 				}
 			}
+		
 			
 				
 			//catches indexOutOfBounds exception
@@ -231,13 +221,17 @@ public class Switch extends DraggableRect{
 		int mainMidX = position.x + (position.width/2);
 		int mainBottom = position.y + position.height;
 		int caseLeft = position.x + contentDisplacementX;
-		int caseMidY = position.y + clicks*contentDisplacementY + 100 + (content.height/2);
+//		int caseMidY = position.y + clicks*contentDisplacementY + 100 + (content.height/2);
+		int caseMidY = Contents.get(clicks).y + (content.height/2);//+ 100 + (content.height/2);
 		int mainBranch2MidX = content.x - (content.width/2);
 		//draws lines for arrows
+		g.setColor(Color.BLACK);
 		g.drawLine(mainMidX, mainBottom, mainMidX, caseMidY);
 		
-		for(int i = 0; i < casesAndContents.size(); i++){
-			int contentMidY2 = position.y + i*contentDisplacementY + 100 + (content.height/2);
+		for(int i = 0; i < Contents.size(); i++){
+			//draws polygons
+			caseLeft = Contents.get(i).x;
+			int contentMidY2 = Contents.get(i).y + (content.height/2);
 			int[] xPoints = {caseLeft - triangleSize, caseLeft - triangleSize, caseLeft};
 			int[] yPoints = {contentMidY2 - triangleSize, contentMidY2 + triangleSize, contentMidY2};
 			g.drawLine(mainMidX, contentMidY2, caseLeft, contentMidY2);
@@ -252,33 +246,32 @@ public class Switch extends DraggableRect{
 	
 	@Override
 	public void draw(Graphics2D g){
-		super.draw(g);
-		
-		
-		//System.out.println("cases " + casesAndContents.size());
-		for(int i = 0; i < casesAndContents.size(); i++){
-			
-			if(contentVisible && objectsHoveringAbove.get(1)){
-				g.setPaint(shadow);
-				g.fill(content);
-			}
-			
-			if(contentVisible){
-				g.draw(casesAndContents.get(i));
-			}
-				drawArrows(g);
-				
-				
-				
-		}
+		g.setPaint(c);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
+                RenderingHints.VALUE_ANTIALIAS_ON);		// call setRenderingHint method
 		update();
+		
 		//System.out.println("cases " + casesAndContents.size());
+		for(int i = 0; i < Contents.size(); i++){
+			
+			if(ContentVisible.get(i) && objectsHoveringAbove.get(i)){
+				g.setPaint(shadow);
+				g.fill(Contents.get(i));
+			}
+			
+			if(ContentVisible.get(i)){
+				g.setColor(Color.BLACK);
+				g.draw(Contents.get(i));
+			}
+			
+		}
+		drawArrows(g);
 	}
-	/*
-	@Override
-	public int getType(){
-		return type;
+	
+	private int min(int a, int b){
+		if(a > b){
+			return b;
+		}return a;
 	}
-	*/
 	
 }

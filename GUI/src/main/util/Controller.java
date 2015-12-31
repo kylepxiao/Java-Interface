@@ -76,19 +76,12 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     	}
     }*/
     
-    // overload function to specify which element to delete in rects
+ // overload function to specify which element to delete in rects
     public void deleteRect(int index){
     	if(rects.size() > index && index >= 0){
     		if(rects.get(index).getType() == 6){
-    			((Switch) rects.get(index)).casesAndContents.clear();
+    			((Switch) rects.get(index)).Contents.clear();
         		((Switch) rects.get(index)).clicks = 0;
-    		}
-    		if(rects.get(index).hasChildren()){
-	    		for(int r : rects.get(index).childrenIDs){
-	    			if(r != 0){
-	    				getRectByID(r).parentID = 0;
-	    			}
-	    		}
     		}
     		rects.get(index).getParent().remove(rects.get(index));
     		rects.remove(index);
@@ -218,54 +211,79 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     	}return "";
     }
     
-    //changes the position of a DraggableRect and all its children
+  //changes the position of a DraggableRect and all its children
     public static void setTreeLocation(DraggableRect r, int x, int y){
-    	//if the rect has children, then set the position of the children
-    	if(r.hasChildren()){
-    		//keep a record of the original position of the parent rect
-    		int oldX = r.getPosition().x;
-    		int oldY = r.getPosition().y;
-    		//set the position of the parent rect
-    		r.setPosition(x, y);
-    		r.update();
-    		//iterate through each of the first-generation child rects
-    		for(int child : r.childrenIDs){
-    			//if the child isn't empty
-    			if(child != 0){
-    				//find the child with the specified id
-    				DraggableRect childRect = getRectByID(child);
-    				//get the new coordinates
-    				int newX = childRect.getPosition().x + (x - oldX);
-    				int newY = childRect.getPosition().y + (y - oldY);
-    				//continue with the child's child
-    				setTreeLocation(childRect, newX, newY);
-    			}
-    		}
-    	//if there are no children, then just set the position of the rect
-    	}else{
-    		r.setPosition(x, y);
-    		r.update();
+    	if(r != null){
+	    	//if the rect has children, then set the position of the children
+	    	if(r.hasChildren()){
+	    		//keep a record of the original position of the parent rect
+	    		int oldX = r.getPosition().x;
+	    		int oldY = r.getPosition().y;
+	    		//set the position of the parent rect
+	    		r.setPosition(x, y);
+	    		r.update();
+	    		//iterate through each of the first-generation child rects
+	    		for(int child : r.childrenIDs){
+	    			//if the child isn't empty
+	    			if(child != 0){
+	    				//find the child with the specified id
+	    				DraggableRect childRect = getRectByID(child);
+	    				//get the new coordinates
+	    				int newX = childRect.getPosition().x + (x - oldX);
+	    				int newY = childRect.getPosition().y + (y - oldY);
+	    				//continue with the child's child
+	    				setTreeLocation(childRect, newX, newY);
+	    			}
+	    		}
+	    	//if there are no children, then just set the position of the rect
+	    	}else{
+	    		r.setPosition(x, y);
+	    		r.update();
+	    	}
     	}
     }
     
     //finds the member with the greatest width starting with the parent of initID
     public static int getMaxTreeX(int initID){
-    	DraggableRect r = getRectByID(initID);
-    	int x = r.getPosition().x + r.getResizeWidth();
-    	if(r.hasChildren()){
-    		for(int child : r.childrenIDs){
-    			if(child != 0){
-	    			int newX = getMaxTreeX(child);
-	    			if(newX > x){
-	    				x = newX;
+    	if(initID != 0){
+	    	DraggableRect r = getRectByID(initID);
+	    	int x = r.getPosition().x + r.getResizeWidth();
+	    	if(r.hasChildren()){
+	    		for(int child : r.childrenIDs){
+	    			if(child != 0){
+		    			int newX = getMaxTreeX(child);
+		    			if(newX > x){
+		    				x = newX;
+		    			}
 	    			}
-    			}
-    		}
+	    		}
+	    	}
+	    	return x;
     	}
-    	return x;
+    	return 0;
     }
     
-    //writes to a file starting from specified rect
+    //finds the member with the greatest width starting with the parent of initID
+	public static int getMaxTreeY(int initID){
+		if(initID != 0){
+	    	DraggableRect r = getRectByID(initID);
+	    	int y = r.getPosition().y + r.getResizeHeight();
+	    	if(r.hasChildren()){
+	    		for(int child : r.childrenIDs){
+	    			if(child != 0){
+		    			int newY = getMaxTreeY(child);
+		    			if(newY > y){
+		    				y = newY;
+		    			}
+	    			}
+	    		}
+	    	}
+	    	return y;
+		}
+		return 0;
+	}
+	
+	//writes to a file starting from specified rect
     public void writeToFile(DraggableRect r){
     	try {
     		 
@@ -397,16 +415,9 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     				DraggableRect r = rects.get(getClickedRect(mx, my, rects));
     				if(r.getType() == 6){
     					Switch s = (Switch) r;
-	    				//Switch s =new Switch();
-	    				
 	    				s.clicks++;
-	    				//System.out.println("Switch type " + blockType);
-	    				//for(int i = 0; i <Switch.clicks; i++ ) {
-	    				//Switch.cases.setLocation(Switch.cases.x, Switch.cases.y + Switch.caseDisplacementY);
-	    					
-	  //  					Switch.content2 = ;
-	    				s.casesAndContents.add(new Rectangle(s.content.x, s.content.y + s.contentDisplacementY, 75, 50));   				  				
-	    				//}
+	    				s.Contents.add(new Rectangle(s.content.x, s.content.y, 75, 50));   		
+	    				s.ContentVisible.add(true);
 	    				newMouseStroke = false;
     				}
 				}

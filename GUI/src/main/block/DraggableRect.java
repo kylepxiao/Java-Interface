@@ -110,6 +110,11 @@ public class DraggableRect extends JPanel {
 		return position.width;
 	}
 	
+	//returns height requirement for blocks to avoid overlap conflicts
+	public int getResizeHeight(){
+		return position.height;
+	}
+	
 	//resets childrenIDs and sets the number of children
 	protected void setNumChildren(int n){
 		childrenIDs = new ArrayList<Integer>(n);
@@ -171,7 +176,8 @@ public class DraggableRect extends JPanel {
 		if (position.intersects(rect.getPosition()) && id != rect.id){
     		//sets location of rectangle being dragged to below the rectangle it overlaps
     		return new Point(position.x, position.y + position.height + displacement);
-    	}return null;
+    		
+		}return null;
 	}
 	
 	//displays shadows when child rect is hovering over it

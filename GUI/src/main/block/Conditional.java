@@ -150,6 +150,12 @@ public class Conditional extends DraggableRect{
 		return branch2.x - branch1.x + branch2.width;
 	}
 	
+	//overrides getHeight to account for changes in branch sizes
+	@Override
+	public int getResizeHeight(){
+		return branchDisplacementY;
+	}
+	
 	//override resetFamily to account for different number of children
 	@Override
 	public void resetFamily(){
