@@ -1,0 +1,4 @@
+John - Make script block by putting text scrollbar in draggableRect
+Kyle - Debug changes to panels overlapping arrows
+Yangqi - Finish compile code
+NEXT MEETING: SUNDAY, JANUARY 17th AT 8PM
