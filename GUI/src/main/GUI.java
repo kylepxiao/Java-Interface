@@ -76,6 +76,9 @@ public class GUI extends GUI_Instance implements ActionListener {
 
 	// sets up buffer strategy for graphics
 	public BufferStrategy s;
+	
+	//checks for right click event
+	public static boolean rightMenuClick = false;
 
 	// sets up menubar and associated variables
 	private JMenuBar menuBar = new JMenuBar(); // Window menu bar
@@ -224,6 +227,7 @@ public class GUI extends GUI_Instance implements ActionListener {
 
 		// sets up desktop area inside JFrame for JInternalFrame
 		desktop = new JDesktopPane();
+		desktop.setOpaque(false);
 		i_console = getNewInternalFrame();
 		i_palette = getNewInternalFrame();		
 		i_browser = getNewInternalFrame();
@@ -240,9 +244,13 @@ public class GUI extends GUI_Instance implements ActionListener {
 			@Override
 			public void mousePressed(MouseEvent e){
 				if(SwingUtilities.isRightMouseButton(e)){
+					rightMenuClick = true;
 					rmenu.removeAll();
 					rmenu.add(dock_palette);
 					rmenu.show(e.getComponent(), e.getX(), e.getY());
+				}
+				if(SwingUtilities.isLeftMouseButton(e)){
+					rightMenuClick = false;
 				}
 			}
 		});
@@ -335,9 +343,13 @@ public class GUI extends GUI_Instance implements ActionListener {
 			@Override
 			public void mousePressed(MouseEvent e){
 				if(SwingUtilities.isRightMouseButton(e)){
+					rightMenuClick = true;
 					rmenu.removeAll();
 					rmenu.add(dock_browser);
 					rmenu.show(e.getComponent(), e.getX(), e.getY());
+				}
+				if(SwingUtilities.isLeftMouseButton(e)){
+					rightMenuClick = false;
 				}
 			}
 		});
@@ -356,9 +368,13 @@ public class GUI extends GUI_Instance implements ActionListener {
 			@Override
 			public void mousePressed(MouseEvent e){
 				if(SwingUtilities.isRightMouseButton(e)){
+					rightMenuClick = true;
 					rmenu.removeAll();
 					rmenu.add(dock_console);
 					rmenu.show(e.getComponent(), e.getX(), e.getY());
+				}
+				if(SwingUtilities.isLeftMouseButton(e)){
+					rightMenuClick = false;
 				}
 			}
 		});
@@ -372,6 +388,7 @@ public class GUI extends GUI_Instance implements ActionListener {
 		JScrollPane s_palette_ScrollPane = new JScrollPane(s_palette);
 		JScrollPane s_browser_ScrollPane = new JScrollPane(s_browser);
 		JScrollPane s_output_ScrollPane = new JScrollPane(s_output);
+//		JScrollPane s_main_ScrollPane = new JScrollPane(desktop);
 
 		i_console.getContentPane().add(codeScrollPane);
 		i_palette.getContentPane().add(s_palette_ScrollPane);
@@ -393,11 +410,14 @@ public class GUI extends GUI_Instance implements ActionListener {
 				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		s_output_ScrollPane
 				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+//		s_main_ScrollPane
+//		.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
 		desktop.add(i_console);
 		desktop.add(i_palette);
 		desktop.add(i_browser);
 		this.setContentPane(desktop);
+//		this.setContentPane(s_main_ScrollPane);
 
 		// buffer panel between JFrame and p_main content
 		bufferPanel.setVisible(true);
@@ -421,7 +441,7 @@ public class GUI extends GUI_Instance implements ActionListener {
 		p_main.setRequestFocusEnabled(false);
 		p_main.setOpaque(false);
 		p_main.setFocusable(false);
-		p_main.setBackground(Color.WHITE);
+//		p_main.setBackground(Color.WHITE);
 		bufferPanel.add(p_main, gbc_p_main);
 		GridBagLayout gbl_p_main = new GridBagLayout();
 		gbl_p_main.columnWidths = new int[] { 0, 0, 0, 0 };
@@ -515,7 +535,7 @@ public class GUI extends GUI_Instance implements ActionListener {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 		this.setTitle("Siemens Intuitive Interface");
-		this.setBackground(Color.GRAY);
+		this.setBackground(Color.WHITE);
 		this.setForeground(Color.BLACK);
 		getContentPane().setLayout(null);
 		this.setFont(new Font("Tahoma", Font.PLAIN, 24));
@@ -874,8 +894,8 @@ public class GUI extends GUI_Instance implements ActionListener {
 	public void paint(Graphics graphics) {
 		try {
 			// calls default paint functions in parent object
-			super.paint(s.getDrawGraphics());
 			super.paintComponents(s.getDrawGraphics());
+			
 			// sets buffer panel to size of window
 			bufferPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
 			// calls function to draw onto g
@@ -893,10 +913,23 @@ public class GUI extends GUI_Instance implements ActionListener {
 			if (i_browser_docked) {
 				i_browser.setBounds(p_browser.getBounds());
 			}
+			
 			controller.showRects(g);
+			
+			if(!rightMenuClick){
+				g.translate(i_palette.getBounds().x+5, i_palette.getBounds().y+51);
+				i_palette.paintAll(g);
+				g.translate(i_console.getBounds().x - i_palette.getBounds().x, i_console.getBounds().y - i_palette.getBounds().y);
+				i_console.paintAll(g);
+				g.translate(i_browser.getBounds().x - i_console.getBounds().x, i_browser.getBounds().y - i_console.getBounds().y);
+				i_browser.paintAll(g);
+			}else{
+				controller.showBorders(g, 5, 51);
+			}
+
 			s.show();
 			Toolkit.getDefaultToolkit().sync();
-			super.repaint();
+			repaint();
 		} catch (Exception ex) {
 		}
 	}

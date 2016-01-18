@@ -1,0 +1,5 @@
+BUGS: Opening new file erases everything on painted layer, deleting and reopening jpalette deletes button (problem in genPalette), EventQueErrors when opening program, specific bugs with draggableRects (condition being child, start being child, condition in conditional), deleting active parent causes children to freeze as well as EventQueErrors, sizing errors with assignment block, deleting active child causes errors in some parents (like switch)
+John - Fix button on palette glitch, assignment, combining code
+Kyle - Specific errors with draggableRects and deleting active parent EventQue Error
+Yangqi - Fix compilation and file saving
+NEXT MEETING: SUNDAY, JANUARY 24th AT 8PM

@@ -217,7 +217,7 @@ public class Switch extends DraggableRect{
 		}
 	}
 	
-	private void drawArrows(Graphics2D g){
+	public void drawArrows(Graphics2D g){
 		int mainMidX = position.x + (position.width/2);
 		int mainBottom = position.y + position.height;
 		int caseLeft = position.x + contentDisplacementX;

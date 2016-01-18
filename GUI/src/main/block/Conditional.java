@@ -264,7 +264,8 @@ public class Conditional extends DraggableRect{
 	}
 	
 	//draws arrows from main rectangle to branches
-	private void drawArrows(Graphics2D g){
+	@Override
+	public void drawArrows(Graphics2D g){
 		//defines points
 		int mainMidX = position.x + (position.width/2);
 		int mainMidY = (int) (position.y + (0.75 * position.height));

@@ -13,6 +13,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.event.MouseInputAdapter; // import javax.swing.event.MouseTinputAdapter
 
+import main.GUI;
 import main.block.DraggableRect;
 
 public class Controller extends MouseInputAdapter { 	// class DragController that extends MouseInputAdapter
@@ -95,6 +96,47 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     		r.draw(g);
     	}
     } 
+    
+    public void showBorders(Graphics2D g, int dx, int dy){
+    	for(DraggableRect r : rects){
+    		r.drawBorder(g, dx, dy);
+    	}
+    }
+    
+/*    public static boolean LineIntersectsRect(Point p1, Point p2, Rectangle r)
+    {
+        return LineIntersectsLine(p1, p2, new Point(r.x, r.y), new Point(r.x + r.width, r.y)) ||
+               LineIntersectsLine(p1, p2, new Point(r.x + r.width, r.y), new Point(r.x + r.width, r.y + r.height)) ||
+               LineIntersectsLine(p1, p2, new Point(r.x + r.width, r.y + r.height), new Point(r.x, r.y + r.height)) ||
+               LineIntersectsLine(p1, p2, new Point(r.x, r.y + r.height), new Point(r.x, r.y)) ||
+               (r.contains(p1) && r.contains(p2));
+    }
+
+    private static boolean LineIntersectsLine(Point l1p1, Point l1p2, Point l2p1, Point l2p2)
+    {
+        float q = (l1p1.y - l2p1.y) * (l2p2.x - l2p1.x) - (l1p1.x - l2p1.x) * (l2p2.y - l2p1.y);
+        float d = (l1p2.x - l1p1.x) * (l2p2.y - l2p1.y) - (l1p2.y - l1p1.y) * (l2p2.x - l2p1.x);
+
+        if( d == 0 )
+        {
+            return false;
+        }
+
+        float r = q / d;
+
+        q = (l1p1.y - l2p1.y) * (l1p2.x - l1p1.x) - (l1p1.x - l2p1.x) * (l1p2.y - l1p1.y);
+        float s = q / d;
+
+        if( r < 0 || r > 1 || s < 0 || s > 1 )
+        {
+            return false;
+        }
+
+        return true;
+    }*/
+    
+//    public void drawNonOverlappingLine(int x1, int y1, int x2, int y2, Graphics2D g){
+//    }
     
     // returns rectangle by specified id
     public static DraggableRect getRectByID(int id){
@@ -303,6 +345,8 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     public void mousePressed(MouseEvent e) {
     	// Points where the mouse is pressed
         Point p = e.getPoint();
+        
+        GUI.rightMenuClick = false;
         
         // create rectangles to keep a record of the rectangles created at the beginning of class DraggableRect.
         // they are used to find the top left point of the rectangles.

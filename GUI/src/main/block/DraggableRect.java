@@ -35,7 +35,7 @@ public class DraggableRect extends JPanel {
 		c = Color.BLACK;
 		objectsHoveringAbove.add(false);
 		this.setBackground(Color.WHITE);
-		this.setBorder(BorderFactory.createLineBorder(Color.black));
+		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 	}
 			
 	// override constructor which sets position values for rectangle
@@ -216,6 +216,14 @@ public class DraggableRect extends JPanel {
 		}
 	}
 	
+	//redraws the border using the graphics object
+	public void drawBorder(Graphics2D g, int dx, int dy){
+		g.setPaint(c);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
+                RenderingHints.VALUE_ANTIALIAS_ON);		// call setRenderingHint method
+		g.drawRect(getBounds().x + dx, getBounds().y + dy, getBounds().width - 1, getBounds().height - 1);
+	}
+	
 	// returns integer to identify block type
 	public int getType(){
 		return type;
@@ -229,4 +237,6 @@ public class DraggableRect extends JPanel {
 			}
 		}return false;
 	}
+	
+	public void drawArrows(Graphics2D g){}
 }

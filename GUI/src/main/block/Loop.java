@@ -250,7 +250,7 @@ public class Loop extends DraggableRect {
 	}
 	
 	//draws arrows from main rectangle to branches
-	private void drawArrows(Graphics2D g){
+	public void drawArrows(Graphics2D g){
 		Point p = new Point();
 		Boolean hasContent = this.childrenIDs.get(0) != 0;
 		if(hasContent){
