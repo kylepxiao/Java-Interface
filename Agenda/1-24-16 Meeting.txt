@@ -1,0 +1,5 @@
+BUGS: Opening new file erases everything on painted layer, EventQueErrors when opening program, specific bugs with draggableRects (condition being child, start being child, condition in conditional), sizing errors with assignment block, deleting active child causes errors in some parents (like switch)
+Note: fix draggableRect spawn, overlapping landing area, menu under internal frame, angle brackets don't show up (encoding), compiling bug
+John - Adding the arguments for switch and condition in conditional
+Kyle - Combine with Yangqi and fix uploading file error when panels aren't removed
+Yangqi - Fix draggableRect spawn and fix compiling bug
