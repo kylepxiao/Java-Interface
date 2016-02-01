@@ -77,15 +77,22 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     	}
     }*/
     
- // overload function to specify which element to delete in rects
+    // overload function to specify which element to delete in rects
     public void deleteRect(int index){
     	if(rects.size() > index && index >= 0){
     		if(rects.get(index).getType() == 6){
     			((Switch) rects.get(index)).Contents.clear();
         		((Switch) rects.get(index)).clicks = 0;
     		}
-    		rects.get(index).getParent().remove(rects.get(index));
-    		rects.remove(index);
+    		for(int i=0; i<rects.get(index).childrenIDs.size(); i++){
+    			if(rects.get(index).childrenIDs.get(i) != 0){
+    				getRectByID(rects.get(index).childrenIDs.get(i)).parentID = 0;
+    			}
+    		}
+    		if(rects.get(index).parentID != 0){
+    			getRectByID(rects.get(index).parentID).deleteChild(rects.get(index).id);
+    		}
+    		GUI.rectToBeRemoved = index;
     	}
     	
     }
@@ -222,35 +229,72 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     
     //recirsuve function to generate code string
     private String getFileMessage(DraggableRect r){
-    	if(r != null){
-    	if(r.hasChildren()){
-	    	switch(r.getType()){
-	    	case 0:
-	    		return getFileMessage(getRectByID(r.childrenIDs.get(0)));
-	    	case 1:
-	    		return "public static void main(String[] args){\n" + getFileMessage(getRectByID(r.childrenIDs.get(0))) + "\n}";
-	    	case 2:
-	    		return "if(" + /*getFileMessage(getRectByID(r.childrenIDs.get(0))) + */"){\n" + getFileMessage(getRectByID(r.childrenIDs.get(0))) + "\n}" + getFileMessage(getRectByID(r.childrenIDs.get(1)));
-	    	case 3:
-	    		return "while(){\n" + getFileMessage(getRectByID(r.childrenIDs.get(0))) + "\n}" + getFileMessage(getRectByID(r.childrenIDs.get(1)));
-	    	default:
-	    		return "";
-	    	}
-    	}else{
-    		switch(r.getType()){
-    		case 0:
-    			return "";
-    		case 1:
-    			return "public static void main(String[] args){}";
-    		case 2:
-    			return "if(){}";
-    		case 3:
-    			return "while(){}";
-    		default:
-    			return "";
-    		}
-    	}
-    	}return "";
+    	if (r != null) {
+			if (r.hasChildren()) {
+				switch (r.getType()) {
+				case 0:
+					return getFileMessage(getRectByID(r.childrenIDs.get(0)));
+				case 1:
+					// TODO update assignment rect
+					return r.f1 + " = " + r.f2 + ";\n" + getFileMessage(getRectByID(r.childrenIDs.get(0)));
+				case 2:
+					return r.f1 + " " + r.f3 + " " + r.f2;
+				case 3:
+					return "if(" + /*
+									 * getFileMessage(getRectByID(r.childrenIDs.
+									 * get(0))) +
+									 */"){\n" + getFileMessage(getRectByID(r.childrenIDs.get(0))) + "\n} else {\n"
+							+ getFileMessage(getRectByID(r.childrenIDs.get(1))) + "\n}";
+				case 4:
+					return "while(" + r.f1 + "){\n" + getFileMessage(getRectByID(r.childrenIDs.get(0))) + "\n}\n"
+							+ getFileMessage(getRectByID(r.childrenIDs.get(1)));
+				case 5:
+					return "public static void main(String[] args){\n"
+							+ getFileMessage(getRectByID(r.childrenIDs.get(0))) + "}";
+				case 6:
+					String message = "switch(" + r.f1 + ":\n";
+					for (int i = 0; i < r.childrenIDs.size(); i++) {
+						if (getRectByID(r.childrenIDs.get(i)) != null) {
+							message += "case " + i + ":\n";
+							message += getFileMessage(getRectByID(r.childrenIDs.get(i))) + "\n";
+						} else {
+							return message + "}";
+						}
+					}
+					break;
+				case 7:
+					return r.f1 + "{\n" + getFileMessage(getRectByID(r.childrenIDs.get(0))) + "\n}";
+				case 8:
+					return r.f1 + getFileMessage(getRectByID(r.childrenIDs.get(0)));
+				default:
+					return Integer.toString(r.getType());
+				}
+			} else {
+				switch (r.getType()) {
+				case 0:
+					return "";
+				case 1:
+					return "[TYPE] " + r.f1 + " = " + r.f2;
+				case 2:
+					return r.f1 + " " + r.f3 + " " + r.f2;
+				case 3:
+					return "if(" + r.f1 + "){}";
+				case 4:
+					return "while(" + r.f1 + "){}";
+				case 5:
+					return "public static void main(String[] args){}";
+				case 6:
+					return "switch(" + r.f1 + "){}";
+				case 7:
+					return r.f1 + "{}";
+				case 8:
+					return r.f1;
+				default:
+					return Integer.toString(r.getType());
+				}
+			}
+		}
+		return "";
     }
     
   //changes the position of a DraggableRect and all its children

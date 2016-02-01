@@ -24,6 +24,10 @@ public class DraggableRect extends JPanel {
 	public boolean internalRect = false;
 	public ArrayList<Integer> childrenIDs;
 	protected int type = 0;
+	
+	public String f1;
+	public String f2;
+	public String f3;
 
 	
 	// default constructor which initializes values

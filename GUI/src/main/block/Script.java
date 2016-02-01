@@ -1,12 +1,13 @@
 package main.block;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-public class Function extends DraggableRect{
-
+public class Script extends DraggableRect {
 	private static final long serialVersionUID = 1L;
 
 	//information about children
@@ -18,48 +19,43 @@ public class Function extends DraggableRect{
 	
 	//default dimensions of Start object
 	private static final int mainWidth = 75;
-	private static final int mainHeight = 50;
-	private JTextArea name = new JTextArea();
+	private static final int mainHeight = 75;
+	private JTextArea name = new JTextArea(4,4);
+	JScrollPane scrollPane = new JScrollPane(name);
 	
 	//default constructor
-	public Function(){
+	public Script(){
 		super(0, 0, mainWidth, mainHeight);
 		setNumChildren(numChildren);
-		type = 7;
-		
-		f1 = name.getText();
+		type = 8;
 	}
 	
 	//override constructor to specify position 
-	public Function(int x, int y){
+	public Script(int x, int y){
 		super(x, y, mainWidth, mainHeight);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		name.setBounds(2, mainHeight/2, mainWidth-5, mainHeight/2);
-		name.setText("Function Name");
+		name.setText("Text");
 		name.setWrapStyleWord(true);
 		name.setVisible(true);
-		this.add(name);
+		name.setLineWrap(true);
+		this.add(scrollPane);
 		setNumChildren(numChildren);
-		type = 7;
-		
-		f1 = name.getText();
+		type = 8;
 	}
 	
 	//override constructor to specify color
-	public Function(Color c){
+	public Script(Color c){
 		super(0, 0, mainWidth, mainHeight, c);
 		setNumChildren(numChildren);
-		type = 7;
-		
-		f1 = name.getText();
+		type = 8;
 	}
 	
 	//override constructor to specify position and color
-	public Function(int x, int y, Color c){
+	public Script(int x, int y, Color c){
 		super(x, y, mainWidth, mainHeight, c);
 		setNumChildren(numChildren);
-		type = 7;
-		
-		f1 = name.getText();
+		type = 8;
 	}
 	
 	@Override
@@ -79,5 +75,6 @@ public class Function extends DraggableRect{
 			g.drawLine(midX, bottomY, midX, bottomY + displacement);
 			g.fillPolygon(xPoints, yPoints, 3);
 		}
+		f1 = name.getText();
 	}
 }

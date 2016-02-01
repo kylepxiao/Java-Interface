@@ -44,6 +44,8 @@ public class Loop extends DraggableRect {
 		add(condition, BorderLayout.CENTER);
 		update();
 		type = 4;
+		
+		f1 = condition.getText();
 	}
 	
 	public Loop(int x, int y){
@@ -58,6 +60,8 @@ public class Loop extends DraggableRect {
 		add(condition, BorderLayout.CENTER);
 		update();
 		type = 4;
+		
+		f1 = condition.getText();
 	}
 	
 	public Loop(Color c){
@@ -72,6 +76,8 @@ public class Loop extends DraggableRect {
 		add(condition, BorderLayout.CENTER);
 		update();
 		type = 4;
+		
+		f1 = condition.getText();
 	}
 	
 	public Loop(int x, int y, Color c){
@@ -86,6 +92,8 @@ public class Loop extends DraggableRect {
 		add(condition, BorderLayout.CENTER);
 		update();
 		type = 4;
+		
+		f1 = condition.getText();
 	}
 	
 	//returns point to the rightmost bottom portion of the while content area
@@ -142,6 +150,8 @@ public class Loop extends DraggableRect {
 		}else{
 			this.setVisible(true);
 		}
+		
+		f1 = condition.getText();
 	}
 	
 	//overrides getWidth to account for changes in branch sizes

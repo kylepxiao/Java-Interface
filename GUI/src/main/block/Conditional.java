@@ -142,6 +142,7 @@ public class Conditional extends DraggableRect{
 		}else{
 			this.setVisible(true);
 		}
+		f1 = condition.getText();
 	}
 	
 	//overrides getWidth to account for changes in branch sizes

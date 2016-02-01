@@ -25,6 +25,8 @@ public class Condition extends DraggableRect{
 	private JTextField t1 = new JTextField();
 	private JTextField t2 = new JTextField();
 	
+	private JComboBox<String> comboBox1 = new JComboBox<String>();
+	
 	public Condition(){
 		super(0, 0, mainWidth, mainHeight);
 		this.setBorder(null);
@@ -47,8 +49,12 @@ public class Condition extends DraggableRect{
 		setNumChildren(numChildren);
 		objectsHoveringAbove.add(false);
 		objectsHoveringAbove.add(false);
+		comboBox1.addItem("");
 		update();
 		type = 2;
+		
+		f1 = "A";
+		f2 = "B";
 	}
 	public Condition(int x, int y){
 		super(x, y, mainWidth, mainHeight);
@@ -74,8 +80,12 @@ public class Condition extends DraggableRect{
 		setNumChildren(numChildren);
 		objectsHoveringAbove.add(false);
 		objectsHoveringAbove.add(false);
+		comboBox1.addItem("");
 		update();
 		type = 2;
+		
+		f1 = "A";
+		f2 = "B";
 	}
 	public Condition(Color c){
 		super(0, 0, mainWidth, mainHeight, c);
@@ -99,8 +109,12 @@ public class Condition extends DraggableRect{
 		setNumChildren(numChildren);
 		objectsHoveringAbove.add(false);
 		objectsHoveringAbove.add(false);
+		comboBox1.addItem("");
 		update();
 		type = 2;
+		
+		f1 = "A";
+		f2 = "B";
 	}
 	public Condition(int x, int y, Color c){
 		super(x, y, mainWidth, mainHeight,c);
@@ -124,8 +138,12 @@ public class Condition extends DraggableRect{
 		setNumChildren(numChildren);
 		objectsHoveringAbove.add(false);
 		objectsHoveringAbove.add(false);
+		comboBox1.addItem("");
 		update();
 		type = 2;
+		
+		f1 = "A";
+		f2 = "B";
 	}
 	@Override
 	public void update(){
@@ -134,6 +152,10 @@ public class Condition extends DraggableRect{
 		}else{
 			this.setBounds(getOffset(new Rectangle(position.x, position.y, position.width, position.height)));
 		}
+		
+		f1 = t1.getText();
+		f2 = t2.getText();
+		f3 = comboBox1.getSelectedItem().toString();
 	}
 	@Override
 	public void setChild(DraggableRect r){}

@@ -48,17 +48,8 @@ import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 
-import main.block.Assignment;
-import main.block.Condition;
-import main.block.Conditional;
-import main.block.DraggableRect;
-import main.block.Function;
-import main.block.Loop;
-import main.block.Start;
-import main.block.Switch;
-import main.util.Controller;
-import main.util.Save;
-
+import main.block.*;
+import main.util.*;
 public class GUI extends GUI_Instance implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
@@ -127,6 +118,8 @@ public class GUI extends GUI_Instance implements ActionListener {
 	// sets default directory for java JDK and is subject to change by user
 	private static String path = "C:\\Program Files\\Java\\jdk1.8.0_05\\bin";
 	
+	public static int rectToBeRemoved = -1;
+	
 	// declare and initialize a JPopupMenu
     JPopupMenu rmenu = new JPopupMenu("Popup");
     
@@ -190,12 +183,6 @@ public class GUI extends GUI_Instance implements ActionListener {
 		frame.setFocusable(true);
 		frame.setSize(new Dimension(300, 200));
 		frame.setLocation(100, 400);
-		frame.getContentPane().addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e){
-				System.out.println("test...");
-			}
-		});
 		try {
 			frame.setSelected(true);
 		} catch (java.beans.PropertyVetoException e) {
@@ -329,6 +316,15 @@ public class GUI extends GUI_Instance implements ActionListener {
 		button_Start.addActionListener(this);
 		button_Start.setActionCommand("start");	
 		s_palette.add(button_Start);
+		
+		s_palette.add(Box.createRigidArea(new Dimension(0, 10)));
+		
+		JButton button_Text = new JButton("Script");
+		button_Text.setAlignmentX(JButton.CENTER_ALIGNMENT);
+		button_Text.setMaximumSize(new Dimension(125, 25));
+		button_Text.addActionListener(this);
+		button_Text.setActionCommand("script");	
+		s_palette.add(button_Text);
 		
 		JPanel s_browser = new JPanel(new BorderLayout());
 		dock_browser.addActionListener(new ActionListener() {
@@ -527,6 +523,15 @@ public class GUI extends GUI_Instance implements ActionListener {
 		 * for(DraggableRect r : controller.getRects()){ add(r); }
 		 */
 	}
+	
+	@Override
+	public void addNotify() {
+		// creates buffer strategy for smooth window graphics
+        super.addNotify();
+        // Buffer
+        createBufferStrategy(2);           
+        s = getBufferStrategy();
+    }
 
 	// Sets default layout and preferences for window
 	public void setDefaultAttributes() {
@@ -539,10 +544,6 @@ public class GUI extends GUI_Instance implements ActionListener {
 		this.setForeground(Color.BLACK);
 		getContentPane().setLayout(null);
 		this.setFont(new Font("Tahoma", Font.PLAIN, 24));
-
-		// creates buffer strategy for smooth window graphics
-		this.createBufferStrategy(2);
-		s = this.getBufferStrategy();
 
 		// adds menu items
 		setJMenuBar(menuBar);
@@ -632,6 +633,12 @@ public class GUI extends GUI_Instance implements ActionListener {
 
 		elementMenu.add(cItem = new JCheckBoxMenuItem("cItem", false));
 		elementMenu.add(cItem2 = new JCheckBoxMenuItem("cItem2", false));
+		fileMenu.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e){
+				rightMenuClick = true;
+			}
+		});
 
 		menuBar.add(fileMenu);
 		menuBar.add(elementMenu);
@@ -683,8 +690,18 @@ public class GUI extends GUI_Instance implements ActionListener {
 			break;
 		case "open":
 			int loadStatus = loadFileChooser.showOpenDialog(null);
+			for(int i=0; i<controller.getRects().size(); i++){
+				if(controller.getRects().get(i) != null){
+					this.remove(controller.getRects().get(i));
+				}
+			}
 			if (loadStatus == JFileChooser.APPROVE_OPTION) {
 				Save.load();
+			}
+			for(int i=0; i<controller.getRects().size(); i++){
+				if(controller.getRects().get(i) != null){
+					this.add(controller.getRects().get(i));
+				}
 			}
 			break;
 		case "save":
@@ -705,7 +722,7 @@ public class GUI extends GUI_Instance implements ActionListener {
 			runProject();
 			break;
 		case "genCode":
-			ArrayList<DraggableRect> startRects = Controller.getRectsByType(1);
+			ArrayList<DraggableRect> startRects = Controller.getRectsByType(5);
 			for (DraggableRect r : startRects) {
 				controller.writeToFile(r);
 			}
@@ -755,6 +772,11 @@ public class GUI extends GUI_Instance implements ActionListener {
 			getContentPane().add(controller.getRects()
 					.get(controller.getRects().size() - 1));
 			break;
+		case "script":
+			controller.addRect(new Script(275, 80));
+			getContentPane().add(controller.getRects()
+					.get(controller.getRects().size() - 1));
+			break;
 		// -----------------------------------------------------------------------------------------------------------------------------
 		case "show i_console":
 			if (i_console.isClosed()) {
@@ -786,9 +808,91 @@ public class GUI extends GUI_Instance implements ActionListener {
 				i_palette = getNewInternalFrame();
 				JPanel s_palette = new JPanel(new BorderLayout());
 				JScrollPane s_palette_ScrollPane = new JScrollPane(s_palette);
+				s_palette.setLayout(new BoxLayout(s_palette, BoxLayout.Y_AXIS));
+				
+				JButton button_DRect = new JButton("DraggableRect");
+				button_DRect.setAlignmentX(JButton.CENTER_ALIGNMENT);
+				button_DRect.setMaximumSize(new Dimension(125, 25));
+				button_DRect.addActionListener(this);
+				button_DRect.setActionCommand("draggableRect");
+				s_palette.add(button_DRect);
+				
+				s_palette.add(Box.createRigidArea(new Dimension(0, 10)));
+				
+				JButton button_Assignment = new JButton("Assignment");
+				button_Assignment.setAlignmentX(JButton.CENTER_ALIGNMENT);
+				button_Assignment.setMaximumSize(new Dimension(125, 25));
+				button_Assignment.addActionListener(this);
+				button_Assignment.setActionCommand("assignment");
+				s_palette.add(button_Assignment);
+				
+				s_palette.add(Box.createRigidArea(new Dimension(0, 10)));
+				
+				JButton button_Condition = new JButton("Condition");
+				button_Condition.setAlignmentX(JButton.CENTER_ALIGNMENT);
+				button_Condition.setMaximumSize(new Dimension(125, 25));
+				button_Condition.addActionListener(this);
+				button_Condition.setActionCommand("condition");
+				s_palette.add(button_Condition);
+				
+				s_palette.add(Box.createRigidArea(new Dimension(0, 10)));
+				
+				JButton button_Conditional = new JButton("Conditional");
+				button_Conditional.setAlignmentX(JButton.CENTER_ALIGNMENT);
+				button_Conditional.addActionListener(this);
+				button_Conditional.setActionCommand("conditional");
+				button_Conditional.setMaximumSize(new Dimension(125, 25));
+				s_palette.add(button_Conditional);
+				
+				s_palette.add(Box.createRigidArea(new Dimension(0, 10)));
+				
+				JButton button_Loop = new JButton("Loop");
+				button_Loop.setAlignmentX(JButton.CENTER_ALIGNMENT);
+				button_Loop.setMaximumSize(new Dimension(125, 25));
+				button_Loop.addActionListener(this);
+				button_Loop.setActionCommand("loop");
+				s_palette.add(button_Loop);
+				
+				s_palette.add(Box.createRigidArea(new Dimension(0, 10)));
+		//---------------------------------------------------------------------------------		
+				JButton button_Switch = new JButton("Switch");
+				button_Switch.setAlignmentX(JButton.CENTER_ALIGNMENT);
+				button_Switch.setMaximumSize(new Dimension(125, 25));
+				button_Switch.addActionListener(this);
+				button_Switch.setActionCommand("switch");
+				s_palette.add(button_Switch);
+				
+				s_palette.add(Box.createRigidArea(new Dimension(0, 10)));
+				
+				JButton button_Function = new JButton("Function");
+				button_Function.setAlignmentX(JButton.CENTER_ALIGNMENT);
+				button_Function.setMaximumSize(new Dimension(125, 25));
+				button_Function.addActionListener(this);
+				button_Function.setActionCommand("function");
+				s_palette.add(button_Function);
+				
+				s_palette.add(Box.createRigidArea(new Dimension(0, 10)));
+		//-------------------------------------------------------------------------------		
+				JButton button_Start = new JButton("Start");
+				button_Start.setAlignmentX(JButton.CENTER_ALIGNMENT);
+				button_Start.setMaximumSize(new Dimension(125, 25));
+				button_Start.addActionListener(this);
+				button_Start.setActionCommand("start");	
+				s_palette.add(button_Start);
+				
+				s_palette.add(Box.createRigidArea(new Dimension(0, 10)));
+				
+				JButton button_Text = new JButton("Script");
+				button_Text.setAlignmentX(JButton.CENTER_ALIGNMENT);
+				button_Text.setMaximumSize(new Dimension(125, 25));
+				button_Text.addActionListener(this);
+				button_Text.setActionCommand("script");	
+				s_palette.add(button_Text);
 				i_palette.getContentPane().add(s_palette_ScrollPane);
 				s_palette_ScrollPane
 						.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+				
+				
 				desktop.add(i_palette);
 				this.setContentPane(desktop);
 			}
@@ -823,7 +927,6 @@ public class GUI extends GUI_Instance implements ActionListener {
 		default:
 			break;
 		}
-
 	}
 
 	// externally callable variable setting function
@@ -883,6 +986,10 @@ public class GUI extends GUI_Instance implements ActionListener {
 	public void run() {
 
 	}
+	
+	public void delete(int index){
+		this.remove(controller.getRects().get(index));
+	}
 
 	// Draw function which is called by default
 	public void draw() {
@@ -929,6 +1036,11 @@ public class GUI extends GUI_Instance implements ActionListener {
 
 			s.show();
 			Toolkit.getDefaultToolkit().sync();
+			if(rectToBeRemoved != -1){
+				delete(rectToBeRemoved);
+				controller.getRects().remove(rectToBeRemoved);
+				rectToBeRemoved = -1;
+			}
 			repaint();
 		} catch (Exception ex) {
 		}

@@ -66,7 +66,7 @@ public class Switch extends DraggableRect{
 		expression.setText("<Expression>");
 		add(expression, BorderLayout.CENTER);
 		type = 6;
-		//update();
+		update();
 	}
 	
 	public Switch(Color c){
@@ -134,6 +134,8 @@ public class Switch extends DraggableRect{
 		}else{
 			this.setVisible(true);
 		}
+		
+		f1 = expression.getText();
 	}
 	
 	//override resetFamily to account for different number of children

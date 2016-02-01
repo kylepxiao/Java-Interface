@@ -141,6 +141,9 @@ public class Assignment extends DraggableRect{
 	public void update(){
 		this.setBounds(getOffset(position));
 		updateSubs();
+		
+		f1 = variable.getText();
+		f2 = value.getText();
 	}
 	public void checkHoverOver(DraggableRect r){
 		try{

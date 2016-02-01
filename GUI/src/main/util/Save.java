@@ -94,6 +94,7 @@ public class Save {
 
 	public static void load() {
 		try {
+			System.out.println("starting load...");
 			// sets default attributes for load file chooser
 			loadFileChooser = new JFileChooser();
 			loadFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
