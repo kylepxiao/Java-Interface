@@ -1,0 +1,7 @@
+(1-17-16 Meeting): Specific bugs with draggableRects (condition being child, start being child, condition in conditional), sizing errors with assignment block, deleting active child causes errors in some parents (like switch)
+(1-24-16 Meeting): Fix draggableRect spawn, overlapping landing area, angle brackets don't show up (encoding), compiling bug
+(1-31-16 Meeting): Maximizing screen makes internal frames and shadows not line up, open file dialogue shows up twice, opening menu makes draggable rects show above both the menu and the internal frame
+Note: decide whether to make condition part of conditional, make text block fatter
+John - Make case block which is assigned to switch
+Kyle - Continue: Fix maximizing screen makes internal frames and shadows not line up, make frames not visible when "rightMenuClick"
+Yangqi - Continue working, fix second dialogue with loading file glitch, and add compile code for John's new conbined condition/conditional block
