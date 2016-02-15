@@ -1,0 +1,8 @@
+(1-17-16 Meeting): Specific bugs with draggableRects (start being child), sizing errors with assignment block, deleting active child causes errors in some parents (like switch)
+(1-24-16 Meeting): angle brackets don't show up (encoding), compiling bug (for Yangqi)
+(1-31-16 Meeting): Maximizing screen makes shadows not line up, opening menu makes draggable rects show above both the menu and the internal frame
+(2-7-15 Meeting): Make text block fatter
+(2-14-15 Meeting): Figure out why test.java will not run with Yangqi, make case and switch with typing in case
+John - Make text block fatter, add condition into loop
+Kyle - Fix John's block (only has one child for some reason), combine code (both from drive and Yangqi's repository)
+Yangqi - Make code write to java file and run (research why doesn't run)

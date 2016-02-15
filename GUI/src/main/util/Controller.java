@@ -101,6 +101,14 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     public void showRects(Graphics2D g){
     	for(DraggableRect r : rects){
     		r.draw(g);
+/*    		if(!GUI.rightMenuClick){
+    			r.setVisible(true);
+    			r.draw(g);
+    		}else{
+    			r.setBorder(null);
+    			r.update();
+    			System.out.println("ASDF");
+    		}*/
     	}
     } 
     

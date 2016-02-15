@@ -65,8 +65,7 @@ public class DraggableRect extends JPanel {
 		objectsHoveringAbove.add(false);
 		this.setBackground(Color.WHITE);
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
-	}
-	
+	}	
 	
 	// getter function for position
 	public Rectangle getPosition(){

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
@@ -1024,12 +1025,21 @@ public class GUI extends GUI_Instance implements ActionListener {
 			controller.showRects(g);
 			
 			if(!rightMenuClick){
-				g.translate(i_palette.getBounds().x+5, i_palette.getBounds().y+51);
-				i_palette.paintAll(g);
-				g.translate(i_console.getBounds().x - i_palette.getBounds().x, i_console.getBounds().y - i_palette.getBounds().y);
-				i_console.paintAll(g);
-				g.translate(i_browser.getBounds().x - i_console.getBounds().x, i_browser.getBounds().y - i_console.getBounds().y);
-				i_browser.paintAll(g);
+				if(this.getExtendedState() == Frame.MAXIMIZED_BOTH){
+					g.translate(i_palette.getBounds().x, i_palette.getBounds().y+45);
+					i_palette.paintAll(g);
+					g.translate(i_console.getBounds().x - i_palette.getBounds().x, i_console.getBounds().y - i_palette.getBounds().y);
+					i_console.paintAll(g);
+					g.translate(i_browser.getBounds().x - i_console.getBounds().x, i_browser.getBounds().y - i_console.getBounds().y);
+					i_browser.paintAll(g);
+				}else{
+					g.translate(i_palette.getBounds().x+5, i_palette.getBounds().y+51);
+					i_palette.paintAll(g);
+					g.translate(i_console.getBounds().x - i_palette.getBounds().x, i_console.getBounds().y - i_palette.getBounds().y);
+					i_console.paintAll(g);
+					g.translate(i_browser.getBounds().x - i_console.getBounds().x, i_browser.getBounds().y - i_console.getBounds().y);
+					i_browser.paintAll(g);
+				}
 			}else{
 				controller.showBorders(g, 5, 51);
 			}
