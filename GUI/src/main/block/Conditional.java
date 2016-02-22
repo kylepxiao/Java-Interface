@@ -1,12 +1,17 @@
 package main.block;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import javax.swing.BorderFactory;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import main.util.Controller;
 
@@ -28,12 +33,19 @@ public class Conditional extends DraggableRect{
 	public static final String codeEncap3 = "}";
 	
 	//default dimensions of conditional object
-	private static final int mainWidth = 75;
-	private static final int mainHeight = 75;
+	private static final int mainWidth = 130;
+	private static final int mainHeight = 76;
 	private static final int branchWidth = 75;
 	private static final int branchHeight = 50;
-	private static final int branchDisplacementX = 100;
+	private static final int branchDisplacementX = 130;
 	private static final int branchDisplacementY = 130;
+	
+	private static final int subWidth = 20;
+	private static final int subHeight = 25;
+	private static final int subDisplacementX = 32;
+	
+	private JTextField t1 = new JTextField();
+	private JTextField t2 = new JTextField();
 	
 	//default constructor
 	public Conditional(){
@@ -53,9 +65,27 @@ public class Conditional extends DraggableRect{
 	//override constructor to specify position
 	public Conditional(int x, int y){
 		super(x, y, mainWidth, mainHeight);
+		this.setBorder(null);
+		this.setLayout(null);
 		setNumChildren(numChildren);
 		branch1 = new Rectangle(0, 0, branchWidth, branchHeight);
 		branch2 = new Rectangle(0, 0, branchWidth, branchHeight);
+		int t1X = (mainWidth/2) - (subWidth/2) - subDisplacementX;
+		int t2X = (mainWidth/2) - (subWidth/2) + subDisplacementX;
+		int midY = (mainHeight/2) - (subHeight/2);
+		//left text box attributes
+		t1.setBounds(t1X, midY, subWidth, subHeight);
+		t1.setText("A");
+		t1.setVisible(true);
+		//right text box attributes
+		t2.setBounds(t2X, midY, subWidth, subHeight);
+		t2.setText("B");
+		t2.setVisible(true);
+		//adding text boxes
+		this.add(t1);
+		this.add(t2);
+		//adds combo box
+		this.add(getComboBox());
 		objectsHoveringAbove.add(false);
 		objectsHoveringAbove.add(false);
 		condition.setOpaque(false);
@@ -98,7 +128,7 @@ public class Conditional extends DraggableRect{
 	//calculates position of branches and updates dimensions based on children
 	private void updateBranches(){
 		//sets branch location with respect to main position
-		branch1.setLocation(position.x, position.y + branchDisplacementY);
+		branch1.setLocation(position.x+mainWidth/2-branchWidth/2, position.y + branchDisplacementY);
 		branch2.setLocation(position.x + branchDisplacementX, position.y + branchDisplacementY);
 		if(childrenIDs.size() > 0 && childrenIDs.get(0) != 0){
 			//sets branch1 to encapsulate child
@@ -142,13 +172,12 @@ public class Conditional extends DraggableRect{
 		}else{
 			this.setVisible(true);
 		}
-		f1 = condition.getText();
 	}
 	
 	//overrides getWidth to account for changes in branch sizes
 	@Override
 	public int getResizeWidth(){
-		return branch2.x - branch1.x + branch2.width;
+		return branch2.x - branch1.x + branch2.width +45;
 	}
 	
 	//overrides getHeight to account for changes in branch sizes
@@ -200,6 +229,37 @@ public class Conditional extends DraggableRect{
 				internalRect = true;
 			}
 		}
+	}
+	
+	private Container getComboBox(){
+		String labels[] = { "==", "!=", ">", "<",">=", "<="};
+		JFrame frame = new JFrame();
+		Container contentpane = frame.getContentPane();
+
+	    JComboBox<String> comboBox1 = new JComboBox<String>(labels);
+	    contentpane.add(comboBox1, BorderLayout.CENTER);
+	    
+	    //sets bounds of contentpane
+	    int x = (mainWidth/2) - 20;
+	    int y = (mainHeight/2) - 12;
+	    contentpane.setBounds(x, y, 40, 25);
+	    
+	    return contentpane;
+	}
+	
+	//gets the offset for an array of x points
+	private int[] getOffsetPointsX(int[] xPoints){
+		for(int i=0; i<xPoints.length; i++){
+			xPoints[i] += 0;
+		}
+		return xPoints;
+	}
+	//gets the offset for an array of y points
+	private int[] getOffsetPointsY(int[] yPoints){
+		for(int i=0; i<yPoints.length; i++){
+			yPoints[i] += 9;
+		}
+		return yPoints;
 	}
 	
 	//sets right point to right branch
@@ -268,11 +328,14 @@ public class Conditional extends DraggableRect{
 	@Override
 	public void drawArrows(Graphics2D g){
 		//defines points
-		int mainMidX = position.x + (position.width/2);
-		int mainMidY = (int) (position.y + (0.75 * position.height));
-		int mainBottom = position.y + position.height;
-		int branchTop = position.y + branchDisplacementY;
+		int mainMidX = position.x + position.width/2;
+		int mainMidY = position.y + position.height/2-9;
 		int mainRight = position.x + position.width;
+		//int mainMidX = position.x + (position.width/2);
+		//int mainMidY = (int) (position.y + (0.75 * position.height));
+		int mainBottom = position.y + position.height-9;
+		int branchTop = position.y + branchDisplacementY;
+		//int mainRight = position.x + position.width;
 		int branch2MidX = branch2.x + (branch2.width/2);
 		int mainToBranchMidY = (branchTop + mainBottom)/2;
 		int mainBranch2MidX = (mainRight + branch2MidX)/2;
@@ -280,17 +343,29 @@ public class Conditional extends DraggableRect{
 		int[] yPoints1 = {branchTop - triangleSize, branchTop - triangleSize, branchTop};
 		int[] xPoints2 = {branch2MidX - triangleSize, branch2MidX + triangleSize, branch2MidX};
 		int[] yPoints2 = {branchTop - triangleSize, branchTop - triangleSize, branchTop};
+		
+		
+	
+		
+		int mainTop = position.y -9;
+		
+		//int mainBottom = position.y + position.height - 9;
+		
+		int[] xPoints = {position.x, mainMidX, mainRight, mainMidX};
+		int[] yPoints = {mainMidY, mainTop, mainMidY, mainBottom};
+
+		g.drawPolygon(getOffsetPointsX(xPoints), getOffsetPointsY(yPoints), 4);
 		//draws lines for arrows
-		g.drawLine(mainMidX, mainBottom, mainMidX, mainToBranchMidY - 10);
+		g.drawLine(mainMidX, mainBottom+9, mainMidX, mainToBranchMidY - 10);
 		g.drawLine(mainMidX, mainToBranchMidY + 10, mainMidX, branchTop);
-		g.drawLine(mainRight, mainMidY, branch2MidX, mainMidY);
-		g.drawLine(branch2MidX, mainMidY, branch2MidX, branchTop);
+		g.drawLine(mainRight, mainMidY+9, branch2MidX, mainMidY+9);
+		g.drawLine(branch2MidX, mainMidY+9, branch2MidX, branchTop);
 		//draws triangles for arrows
 		g.fillPolygon(xPoints1, yPoints1, 3);
 		g.fillPolygon(xPoints2, yPoints2, 3);
 		//draws labels for arrows
 		g.setFont(new Font(Font.SANS_SERIF, 3, 18));
-		g.drawString("False", mainBranch2MidX - 23, mainMidY - 5);
+		g.drawString("False", mainBranch2MidX - 23, mainMidY - 4);
 		g.drawString("True", mainMidX - 20, mainToBranchMidY + 5);
 	}
 	

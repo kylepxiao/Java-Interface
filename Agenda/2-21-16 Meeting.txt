@@ -1,0 +1,9 @@
+(1-17-16 Meeting): Specific bugs with draggableRects (start being child), sizing errors with assignment block, deleting active child causes errors in some parents (like switch)
+(1-24-16 Meeting): angle brackets don't show up (encoding), compiling bug (for Yangqi)
+(1-31-16 Meeting): Maximizing screen makes shadows not line up, opening menu makes draggable rects show above both the menu and the internal frame
+(2-7-16 Meeting): Make text block fatter
+(2-14-16 Meeting): Figure out why test.java will not run with Yangqi, make case and switch with typing in case
+(2-21-16 Meeting) Assigments is buggy with conditional, spawning in fullscreen doesn't line up, spawning a bunch of loops in same place causes glitches
+John - Nothing; have fun at robotics!
+Kyle - Combine John's loop-diamond code and fat script block code with rest of code and fix assignment not working with conditional
+Yangqi - Fix the nulls for genCode and fix spawning under full screen and merge with code from Kyle's repository

@@ -690,20 +690,7 @@ public class GUI extends GUI_Instance implements ActionListener {
 			saved = true;
 			break;
 		case "open":
-			int loadStatus = loadFileChooser.showOpenDialog(null);
-			for(int i=0; i<controller.getRects().size(); i++){
-				if(controller.getRects().get(i) != null){
-					this.remove(controller.getRects().get(i));
-				}
-			}
-			if (loadStatus == JFileChooser.APPROVE_OPTION) {
-				Save.load();
-			}
-			for(int i=0; i<controller.getRects().size(); i++){
-				if(controller.getRects().get(i) != null){
-					this.add(controller.getRects().get(i));
-				}
-			}
+			Save.load();
 			break;
 		case "save":
 			if (!saved) {
