@@ -24,7 +24,7 @@ public class Conditional extends DraggableRect{
 	private Rectangle branch2;
 	private boolean branch1Visible = true;
 	private boolean branch2Visible = true;
-	private static final int numChildren = 3;
+	private static final int numChildren = 2;
 	private JTextArea condition = new JTextArea();
 	
 	//Strings used to write to java file
@@ -167,11 +167,6 @@ public class Conditional extends DraggableRect{
 //		this.setBounds(getOffset(position));
 		super.update();
 		updateBranches();
-		if(internalRect){
-			this.setVisible(false);
-		}else{
-			this.setVisible(true);
-		}
 	}
 	
 	//overrides getWidth to account for changes in branch sizes
@@ -198,35 +193,41 @@ public class Conditional extends DraggableRect{
 	public Point getNewSnap(DraggableRect rect){
 		//updates branches to adjust for child height
 		updateBranches();
-		//if intersect main rect
-		if (position.intersects(rect.getPosition()) && id != rect.id){
-			if(rect.getType() == 4){
-				return new Point(position.x-35, position.y+3);
+		if(!childrenIDs.contains(rect.id)){
+			//if intersect main rect
+			if (position.intersects(rect.getPosition()) && id != rect.id){
+				if(rect.getType() == 4){
+					return new Point(position.x-35, position.y+3);
+				}
+				//sets location to far right to avoid collisions
+				return new Point(position.x + branchDisplacementX + branch2.width + displacement, rect.getPosition().y);
+			//if intersecting first branch
+			}else if (branch1.intersects(rect.getPosition()) && !branch1.equals(rect) && childrenIDs.get(0) == 0){
+	    		//sets location of rectangle being dragged to below the rectangle it overlaps
+				return new Point(branch1.x, branch1.y);
+	    	//if intersecting second branch
+	    	}else if(branch2.intersects(rect.getPosition()) && !branch2.equals(rect) && childrenIDs.get(1) == 0){
+	    		//sets location of rectangle being dragged to below the rectangle it overlaps
+	    		return new Point(branch2.x, branch2.y);
+	    	}
+		}else{
+			if(childrenIDs.get(0) == rect.id){
+				return new Point(branch1.x, branch1.y);
+			}else if(childrenIDs.get(1) == rect.id){
+				return new Point(branch2.x, branch2.y);
 			}
-			//sets location to far right to avoid collisions
-			return new Point(position.x + branchDisplacementX + branch2.width + displacement, rect.getPosition().y);
-		//if intersecting first branch
-		}else if (branch1.intersects(rect.getPosition()) && !branch1.equals(rect) && childrenIDs.get(0) == 0){
-    		//sets location of rectangle being dragged to below the rectangle it overlaps
-    		return new Point(branch1.x, branch1.y);
-    	//if intersecting second branch
-    	}else if(branch2.intersects(rect.getPosition()) && !branch2.equals(rect) && childrenIDs.get(1) == 0){
-    		//sets location of rectangle being dragged to below the rectangle it overlaps
-    		return new Point(branch2.x, branch2.y);
-    	}return null;
+		}
+		return null;
 	}
 	
 	//overrides setChild function to set child under branch
 	@Override
 	public void setChild(DraggableRect rect){
-		if(!position.equals(rect.getPosition())){
+		if(!position.equals(rect.getPosition()) && !childrenIDs.contains(rect.id)){
 			if(branch1.intersects(rect.getPosition()) && childrenIDs.get(0) == 0){
 				childrenIDs.set(0, rect.id);
 			}else if(branch2.intersects(rect.getPosition()) && childrenIDs.get(1) == 0){
 				childrenIDs.set(1, rect.id);
-			}else if(position.intersects(rect.getPosition()) && childrenIDs.get(2) == 0 && rect.getType() == 4){
-				childrenIDs.set(2, rect.id);
-				internalRect = true;
 			}
 		}
 	}

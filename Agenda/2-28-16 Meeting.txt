@@ -1,0 +1,8 @@
+(1-17-16 Meeting): Specific bugs with draggableRects (start being child), sizing errors with assignment block
+(1-24-16 Meeting): angle brackets don't show up (encoding), compiling bug (for Yangqi)
+(1-31-16 Meeting): Maximizing screen makes shadows not line up, opening menu makes draggable rects show above both the menu and the internal frame
+(2-14-16 Meeting): Figure out why test.java will not run with Yangqi, make case and switch with typing in case
+(2-21-16 Meeting) Assigments is buggy with conditional, spawning in fullscreen doesn't line up, spawning a bunch of loops in same place causes glitches
+John - Figure out what is wrong with resizing for loop and conditional
+Kyle - Fix shadows in full screen, prevent certain blocks (like start) from being children
+Yangqi - Add stacking code and make sure it works in full screen, clean code
