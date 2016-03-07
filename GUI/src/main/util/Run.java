@@ -34,27 +34,27 @@ public class Run {
 					return "if(" + /*
 									 * genCode(Controller.getRectByID(r.
 									 * childrenIDs. get(0))) +
-									 */"){\n" + genCode(Controller.getRectByID(r.childrenIDs.get(0))) + "\n} else {\n"
+									 */"){\n\t" + genCode(Controller.getRectByID(r.childrenIDs.get(0))) + "\n\b} else {\n"
 							+ genCode(Controller.getRectByID(r.childrenIDs.get(1))) + "\n}";
 				case 4:
-					return "while(" + r.f1 + "){\n" + genCode(Controller.getRectByID(r.childrenIDs.get(0))) + "\n}\n"
+					return "while(" + r.f1 + "){\n\t" + genCode(Controller.getRectByID(r.childrenIDs.get(0))) + "\n\b}"
 							+ genCode(Controller.getRectByID(r.childrenIDs.get(1)));
 				case 5:
-					return "public static void main(String[] args){\n"
-							+ genCode(Controller.getRectByID(r.childrenIDs.get(0))) + "}";
+					return "public static void main(String[] args){\n\t"
+							+ genCode(Controller.getRectByID(r.childrenIDs.get(0))) + "\n\b}";
 				case 6:
-					String message = "switch(" + r.f1 + ":\n";
+					String message = "switch(" + r.f1 + ":\n\t";
 					for (int i = 0; i < r.childrenIDs.size(); i++) {
 						if (Controller.getRectByID(r.childrenIDs.get(i)) != null) {
-							message += "case " + i + ":\n";
-							message += genCode(Controller.getRectByID(r.childrenIDs.get(i))) + "\n";
+							message += "case " + i + ":\n\t";
+							message += genCode(Controller.getRectByID(r.childrenIDs.get(i))) + "\n\b";
 						} else {
-							return message + "}";
+							return message + "\n\b}";
 						}
 					}
 					break;
 				case 7:
-					return r.f1 + "{\n" + genCode(Controller.getRectByID(r.childrenIDs.get(0))) + "\n}";
+					return r.f1 + "{\n\t" + genCode(Controller.getRectByID(r.childrenIDs.get(0))) + "\n\b}";
 				case 8:
 					return r.f1 + genCode(Controller.getRectByID(r.childrenIDs.get(0)));
 				default:

@@ -2,29 +2,37 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="Save" key="selection"/>
+		<item value="width/3.5" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="save"/>
-			<item value="runProject"/>
-			<item value="gencode"/>
-			<item value="getFileMessage"/>
-			<item value="getRectByID"/>
-			<item value="run"/>
+			<item value="width/3"/>
+			<item value="3"/>
+			<item value="4.5"/>
+			<item value="(int)getBounds().width/4.5"/>
+			<item value="getBounds().width/4.5"/>
+			<item value="getBounds().height/10"/>
+			<item value="getBounds().height/4"/>
+			<item value="getBounds().width/4"/>
 		</list>
 		<list key="replacehistory">
-			<item value="genCode"/>
-			<item value="Controller.getRectByID"/>
+			<item value="width/3.5"/>
+			<item value="3.5"/>
+			<item value="3"/>
+			<item value="(int)Math.round(getBounds().width/4.5)"/>
+			<item value="(int)getBounds().width/4.5"/>
+			<item value="getBounds().height/10D"/>
+			<item value="getBounds().width/4.5"/>
+			<item value="getBounds().width/4"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="257" key="DIALOG_WIDTH"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 		<item value="366" key="DIALOG_HEIGHT"/>
-		<item value="867" key="DIALOG_X_ORIGIN"/>
-		<item value="170" key="DIALOG_Y_ORIGIN"/>
+		<item value="653" key="DIALOG_X_ORIGIN"/>
+		<item value="370" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>

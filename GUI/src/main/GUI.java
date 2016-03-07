@@ -720,39 +720,95 @@ public class GUI extends GUI_Instance implements ActionListener {
 			break;
 		// ------------------------------------------------------------------------------------------------------------------------------
 		case "draggableRect":
-			controller.addRect(new DraggableRect(275, 80, 75, 75));
+			int occSpawn = 0;
+			for (DraggableRect r : controller.getRects()) {
+				if (r.getPosition().x == ((int)Math.round(getBounds().width/3.5)) + occSpawn && r.getPosition().y == (getBounds().height/10) + occSpawn) {
+					occSpawn += 10;
+				}
+			}
+			controller.addRect(new DraggableRect(((int)Math.round(getBounds().width/3.5)) + occSpawn, (getBounds().height/10) + occSpawn, 75, 75));
 			getContentPane().add(controller.getRects().get(controller.getRects().size() - 1));
 			break;
 		case "assignment":
-			controller.addRect(new Assignment(275, 80));
+			occSpawn = 0;
+			for (DraggableRect r : controller.getRects()) {
+				if (r.getPosition().x == ((int)Math.round(getBounds().width/3.5)) + occSpawn && r.getPosition().y == (getBounds().height/10) + occSpawn) {
+					occSpawn += 10;
+				}
+			}
+			controller.addRect(new Assignment(((int)Math.round(getBounds().width/3.5)) + occSpawn, (getBounds().height/10) + occSpawn));
 			getContentPane().add(controller.getRects().get(controller.getRects().size() - 1));
 			break;
 		case "condition":
-			controller.addRect(new Condition(275, 80));
+			occSpawn = 0;
+			for (DraggableRect r : controller.getRects()) {
+				if (r.getPosition().x == ((int)Math.round(getBounds().width/3.5)) + occSpawn && r.getPosition().y == (getBounds().height/10) + occSpawn) {
+					occSpawn += 10;
+				}
+			}
+			controller.addRect(new Condition(((int)Math.round(getBounds().width/3.5)) + occSpawn, (getBounds().height/10) + occSpawn));
 			getContentPane().add(controller.getRects().get(controller.getRects().size() - 1));
 			break;
 		case "conditional":
-			controller.addRect(new Conditional(275, 80));
+			occSpawn = 0;
+			for (DraggableRect r : controller.getRects()) {
+				if (r.getPosition().x == ((int)Math.round(getBounds().width/3.5)) + occSpawn && r.getPosition().y == (getBounds().height/10) + occSpawn) {
+					occSpawn += 10;
+				}
+			}
+			controller.addRect(new Conditional(((int)Math.round(getBounds().width/3.5)) + occSpawn, (getBounds().height/10) + occSpawn));
 			getContentPane().add(controller.getRects().get(controller.getRects().size() - 1));
 			break;
 		case "function":
-			controller.addRect(new Function(275, 80));
+			occSpawn = 0;
+			for (DraggableRect r : controller.getRects()) {
+				if (r.getPosition().x == ((int)Math.round(getBounds().width/3.5)) + occSpawn && r.getPosition().y == (getBounds().height/10) + occSpawn) {
+					occSpawn += 10;
+				}
+			}
+			controller.addRect(new Function(((int)Math.round(getBounds().width/3.5)) + occSpawn, (getBounds().height/10) + occSpawn));
 			getContentPane().add(controller.getRects().get(controller.getRects().size() - 1));
 			break;
 		case "loop":
-			controller.addRect(new Loop(275, 80));
+			occSpawn = 0;
+			for (DraggableRect r : controller.getRects()) {
+				if (r.getPosition().x == ((int)Math.round(getBounds().width/3.5)) + occSpawn && r.getPosition().y == (getBounds().height/10) + occSpawn) {
+					occSpawn += 10;
+				}
+			}
+			controller.addRect(new Loop(((int)Math.round(getBounds().width/3.5)) + occSpawn, (getBounds().height/10) + occSpawn));
 			getContentPane().add(controller.getRects().get(controller.getRects().size() - 1));
 			break;
 		case "start":
-			controller.addRect(new Start(275, 80));
+			occSpawn = 0;
+			for (DraggableRect r : controller.getRects()) {
+				if (r.getPosition().x == ((int)Math.round(getBounds().width/3.5)) + occSpawn && r.getPosition().y == (getBounds().height/10) + occSpawn) {
+					occSpawn += 10;
+				}
+			}
+			controller.addRect(new Start(((int)Math.round(getBounds().width/3.5)) + occSpawn, (getBounds().height/10) + occSpawn));
 			getContentPane().add(controller.getRects().get(controller.getRects().size() - 1));
 			break;
 		case "switch":
-			controller.addRect(new Switch(275, 80));
+			occSpawn = 0;
+			for (DraggableRect r : controller.getRects()) {
+				if (r.getPosition().x == ((int)Math.round(getBounds().width/3.5)) + occSpawn && r.getPosition().y == (getBounds().height/10) + occSpawn) {
+					occSpawn += 10;
+				}
+			}
+
+			controller.addRect(new Switch(((int)Math.round(getBounds().width/3.5)) + occSpawn, (getBounds().height/10) + occSpawn));
 			getContentPane().add(controller.getRects().get(controller.getRects().size() - 1));
 			break;
 		case "script":
-			controller.addRect(new Script(275, 80));
+			occSpawn = 0;
+			for (DraggableRect r : controller.getRects()) {
+				if (r.getPosition().x == ((int)Math.round(getBounds().width/3.5)) + occSpawn && r.getPosition().y == (getBounds().height/10) + occSpawn) {
+					occSpawn += 10;
+				}
+			}
+
+			controller.addRect(new Script(((int)Math.round(getBounds().width/3.5)) + occSpawn, (getBounds().height/10) + occSpawn));
 			getContentPane().add(controller.getRects().get(controller.getRects().size() - 1));
 			break;
 		// -----------------------------------------------------------------------------------------------------------------------------
