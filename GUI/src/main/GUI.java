@@ -1019,6 +1019,7 @@ public class GUI extends GUI_Instance implements ActionListener {
 					i_console.paintAll(g);
 					g.translate(i_browser.getBounds().x - i_console.getBounds().x, i_browser.getBounds().y - i_console.getBounds().y);
 					i_browser.paintAll(g);
+					Controller.fullscreen = true;
 				}else{
 					g.translate(i_palette.getBounds().x+5, i_palette.getBounds().y+51);
 					i_palette.paintAll(g);
@@ -1026,6 +1027,7 @@ public class GUI extends GUI_Instance implements ActionListener {
 					i_console.paintAll(g);
 					g.translate(i_browser.getBounds().x - i_console.getBounds().x, i_browser.getBounds().y - i_console.getBounds().y);
 					i_browser.paintAll(g);
+					Controller.fullscreen = false;
 				}
 			}else{
 				controller.showBorders(g, 5, 51);

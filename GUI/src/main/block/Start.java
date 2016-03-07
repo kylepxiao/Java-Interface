@@ -22,6 +22,7 @@ public class Start extends DraggableRect{
 	public Start(){
 		super(0, 0, mainWidth, mainHeight);
 		setNumChildren(numChildren);
+		this.setOpaque(false);
 	}
 	
 	//override constructor to specify position
@@ -29,6 +30,7 @@ public class Start extends DraggableRect{
 		super(x, y, mainWidth, mainHeight);
 		setNumChildren(numChildren);
 		type = 5;
+		this.setOpaque(false);
 	}
 	
 	//override constructor to specify color
@@ -36,6 +38,7 @@ public class Start extends DraggableRect{
 		super(0, 0, mainWidth, mainHeight, c);
 		setNumChildren(numChildren);
 		type = 5;
+		this.setOpaque(false);
 	}
 	
 	//override constructor to specify position and color
@@ -43,6 +46,7 @@ public class Start extends DraggableRect{
 		super(x, y, mainWidth, mainHeight, c);
 		setNumChildren(numChildren);
 		type = 5;
+		this.setOpaque(false);
 	}
 	
 	@Override
@@ -51,8 +55,8 @@ public class Start extends DraggableRect{
 	}
 	
 	@Override
-	public void draw(Graphics2D g){
-		super.draw(g);
+	public void draw(Graphics2D g, boolean fullscreen){
+		super.draw(g, fullscreen);
 		g.setFont(new Font(Font.SANS_SERIF, 3, 18));
 		g.drawString("Start", position.x +15, 5 + position.y + (position.height)/2);
 		if(childrenIDs.get(0) != 0){

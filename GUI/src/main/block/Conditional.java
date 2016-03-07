@@ -60,6 +60,7 @@ public class Conditional extends DraggableRect{
 		add(condition, BorderLayout.CENTER);
 		update();
 		type = 3;
+		this.setOpaque(false);
 	}
 	
 	//override constructor to specify position
@@ -93,6 +94,7 @@ public class Conditional extends DraggableRect{
 		add(condition, BorderLayout.CENTER);
 		update();
 		type = 3;
+		this.setOpaque(false);
 	}
 	
 	//override constructor to specify color
@@ -108,6 +110,7 @@ public class Conditional extends DraggableRect{
 		add(condition, BorderLayout.CENTER);
 		update();
 		type = 3;
+		this.setOpaque(false);
 	}
 	
 	//override constructor to specify position and color
@@ -123,6 +126,7 @@ public class Conditional extends DraggableRect{
 		add(condition, BorderLayout.CENTER);
 		update();
 		type = 3;
+		this.setOpaque(false);
 	}
 	
 	//calculates position of branches and updates dimensions based on children
@@ -372,8 +376,8 @@ public class Conditional extends DraggableRect{
 	
 	//overrides draw function to include branches
 	@Override
-	public void draw(Graphics2D g){
-		super.draw(g);
+	public void draw(Graphics2D g, boolean fullscreen){
+		super.draw(g, fullscreen);
 		update();
 		//fills in shadows for hovering
 		if(branch1Visible && objectsHoveringAbove.get(1)){

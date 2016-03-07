@@ -40,6 +40,7 @@ public class DraggableRect extends JPanel {
 		objectsHoveringAbove.add(false);
 		this.setBackground(Color.WHITE);
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		this.setOpaque(false);
 	}
 			
 	// override constructor which sets position values for rectangle
@@ -52,7 +53,7 @@ public class DraggableRect extends JPanel {
 		objectsHoveringAbove.add(false);
 		this.setBackground(Color.WHITE);
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
+		this.setOpaque(false);
 	}
 	
 	// override constructor to set color as well
@@ -65,6 +66,7 @@ public class DraggableRect extends JPanel {
 		objectsHoveringAbove.add(false);
 		this.setBackground(Color.WHITE);
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
+		this.setOpaque(false);
 	}	
 	
 	// getter function for position
@@ -149,7 +151,7 @@ public class DraggableRect extends JPanel {
 	
 	//records child under ChildrenIDs
 	public void setChild(DraggableRect r){
-		if(!childrenIDs.contains(r.id)){
+		if(!childrenIDs.contains(r.id) && r.type != 5){
 			if(childrenIDs.size() > 0){
 				childrenIDs.set(0, r.id);
 			}
@@ -209,13 +211,17 @@ public class DraggableRect extends JPanel {
 	}
 	
 	// draw function for DraggableRect onto Graphics2D g
-	public void draw(Graphics2D g){
+	public void draw(Graphics2D g, boolean fullscreen){
 		g.setPaint(c);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
                 RenderingHints.VALUE_ANTIALIAS_ON);		// call setRenderingHint method
 		if(objectsHoveringAbove.get(0)){
 			g.setPaint(shadow);
-			g.fill(position);
+			if(!fullscreen){
+				g.fill(position);
+			}else{
+				g.fillRect(position.x - 5, position.y - 4, position.width, position.height);
+			}
 		}
 	}
 	

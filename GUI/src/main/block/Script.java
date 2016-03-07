@@ -28,6 +28,7 @@ public class Script extends DraggableRect {
 		super(0, 0, mainWidth, mainHeight);
 		setNumChildren(numChildren);
 		type = 8;
+		this.setOpaque(false);
 	}
 	
 	//override constructor to specify position 
@@ -42,6 +43,7 @@ public class Script extends DraggableRect {
 		this.add(scrollPane);
 		setNumChildren(numChildren);
 		type = 8;
+		this.setOpaque(false);
 	}
 	
 	//override constructor to specify color
@@ -56,6 +58,7 @@ public class Script extends DraggableRect {
 		this.add(scrollPane);
 		setNumChildren(numChildren);
 		type = 8;
+		this.setOpaque(false);
 	}
 	
 	//override constructor to specify position and color
@@ -70,6 +73,7 @@ public class Script extends DraggableRect {
 		this.add(scrollPane);
 		setNumChildren(numChildren);
 		type = 8;
+		this.setOpaque(false);
 	}
 	
 	@Override
@@ -78,8 +82,8 @@ public class Script extends DraggableRect {
 	}
 	
 	@Override
-	public void draw(Graphics2D g){
-		super.draw(g);
+	public void draw(Graphics2D g, boolean fullscreen){
+		super.draw(g, fullscreen);
 		g.setFont(new Font(Font.SANS_SERIF, 3, 18));
 		if(childrenIDs.get(0) != 0){
 			int midX = position.x + (position.width/2);

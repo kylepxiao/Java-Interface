@@ -55,6 +55,7 @@ public class Condition extends DraggableRect{
 		
 		f1 = "A";
 		f2 = "B";
+		this.setOpaque(false);
 	}
 	public Condition(int x, int y){
 		super(x, y, mainWidth, mainHeight);
@@ -86,6 +87,7 @@ public class Condition extends DraggableRect{
 		
 		f1 = "A";
 		f2 = "B";
+		this.setOpaque(false);
 	}
 	public Condition(Color c){
 		super(0, 0, mainWidth, mainHeight, c);
@@ -115,6 +117,7 @@ public class Condition extends DraggableRect{
 		
 		f1 = "A";
 		f2 = "B";
+		this.setOpaque(false);
 	}
 	public Condition(int x, int y, Color c){
 		super(x, y, mainWidth, mainHeight,c);
@@ -144,6 +147,7 @@ public class Condition extends DraggableRect{
 		
 		f1 = "A";
 		f2 = "B";
+		this.setOpaque(false);
 	}
 	@Override
 	public void update(){
@@ -221,8 +225,8 @@ public class Condition extends DraggableRect{
 		g.drawPolygon(getOffsetPointsX(xPoints), getOffsetPointsY(yPoints), 4);
 	}
 	@Override
-	public void draw(Graphics2D g){
-		super.draw(g);
+	public void draw(Graphics2D g, boolean fullscreen){
+		super.draw(g, fullscreen);
 		update();
 		//draws decorations
 		drawLines(g);

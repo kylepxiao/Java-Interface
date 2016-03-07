@@ -28,6 +28,7 @@ public class Function extends DraggableRect{
 		type = 7;
 		
 		f1 = name.getText();
+		this.setOpaque(false);
 	}
 	
 	//override constructor to specify position 
@@ -42,6 +43,7 @@ public class Function extends DraggableRect{
 		type = 7;
 		
 		f1 = name.getText();
+		this.setOpaque(false);
 	}
 	
 	//override constructor to specify color
@@ -51,6 +53,7 @@ public class Function extends DraggableRect{
 		type = 7;
 		
 		f1 = name.getText();
+		this.setOpaque(false);
 	}
 	
 	//override constructor to specify position and color
@@ -60,6 +63,7 @@ public class Function extends DraggableRect{
 		type = 7;
 		
 		f1 = name.getText();
+		this.setOpaque(false);
 	}
 	
 	@Override
@@ -68,8 +72,8 @@ public class Function extends DraggableRect{
 	}
 	
 	@Override
-	public void draw(Graphics2D g){
-		super.draw(g);
+	public void draw(Graphics2D g, boolean fullscreen){
+		super.draw(g, fullscreen);
 		g.setFont(new Font(Font.SANS_SERIF, 3, 18));
 		if(childrenIDs.get(0) != 0){
 			int midX = position.x + (position.width/2);

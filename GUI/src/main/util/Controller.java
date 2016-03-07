@@ -23,6 +23,7 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
 	private static ArrayList<Integer> ClickNum = new ArrayList<Integer>();
 	private static File file = new File("test.java");
 	public static boolean newMouseStroke = true;
+	public static boolean fullscreen = false;
 	int a = 10;
 	int b = 100;
 	
@@ -100,7 +101,7 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     // displays DraggableRect objects onto Graphics2D object g
     public void showRects(Graphics2D g){
     	for(DraggableRect r : rects){
-    		r.draw(g);
+    		r.draw(g, fullscreen);
 /*    		if(!GUI.rightMenuClick){
     			r.setVisible(true);
     			r.draw(g);

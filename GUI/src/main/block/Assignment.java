@@ -54,6 +54,7 @@ public class Assignment extends DraggableRect{
 		objectsHoveringAbove.add(false);
 		update();
 		type = 1;
+		this.setOpaque(false);
 	}
 	public Assignment(int x, int y){
 		super(x, y, mainWidth, mainHeight);
@@ -80,6 +81,7 @@ public class Assignment extends DraggableRect{
 		objectsHoveringAbove.add(false);
 		update();
 		type = 1;
+		this.setOpaque(false);
 	}
 	public Assignment(Color c){
 		super(0, 0, mainWidth, mainHeight, c);
@@ -106,6 +108,7 @@ public class Assignment extends DraggableRect{
 		objectsHoveringAbove.add(false);
 		update();
 		type = 1;
+		this.setOpaque(false);
 	}
 	public Assignment(int x, int y, Color c){
 		super(x, y, mainWidth, mainHeight, c);
@@ -132,6 +135,7 @@ public class Assignment extends DraggableRect{
 		objectsHoveringAbove.add(false);
 		update();
 		type = 1;
+		this.setOpaque(false);
 	}
 	private void updateSubs(){
 		sub1.setLocation(position.x + subDisplacementX, position.y + subDisplacementY);
@@ -178,8 +182,8 @@ public class Assignment extends DraggableRect{
 		}
 	}
 	@Override
-	public void draw(Graphics2D g){
-		super.draw(g);
+	public void draw(Graphics2D g, boolean fullscreen){
+		super.draw(g, fullscreen);
 		update();
 		//fills in shadows for hovering
 		if(sub1Visible && objectsHoveringAbove.get(1)){

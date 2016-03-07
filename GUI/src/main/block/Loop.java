@@ -55,6 +55,7 @@ public class Loop extends DraggableRect {
 		add(condition, BorderLayout.CENTER);
 		update();
 		type = 4;
+		this.setOpaque(false);
 	}
 	
 	public Loop(int x, int y){
@@ -87,6 +88,7 @@ public class Loop extends DraggableRect {
 		add(condition, BorderLayout.CENTER);
 		update();
 		type = 4;
+		this.setOpaque(false);
 	}
 	
 	public Loop(Color c){
@@ -101,6 +103,7 @@ public class Loop extends DraggableRect {
 		add(condition, BorderLayout.CENTER);
 		update();
 		type = 4;
+		this.setOpaque(false);
 	}
 	
 	public Loop(int x, int y, Color c){
@@ -115,6 +118,7 @@ public class Loop extends DraggableRect {
 		add(condition, BorderLayout.CENTER);
 		update();
 		type = 4;
+		this.setOpaque(false);
 	}
 	
 	//returns point to the rightmost bottom portion of the while content area
@@ -375,8 +379,8 @@ public class Loop extends DraggableRect {
 		g.drawPolygon(getOffsetPointsX(xPoints), getOffsetPointsY(yPoints), 4);
 	}
 	
-	public void draw(Graphics2D g){
-		super.draw(g);
+	public void draw(Graphics2D g, boolean fullscreen){
+		super.draw(g, fullscreen);
 		update();
 		if(contentVisible && objectsHoveringAbove.get(1)){
 			g.setPaint(shadow);

@@ -52,6 +52,7 @@ public class Switch extends DraggableRect{
 		add(expression, BorderLayout.CENTER);
 		type = 6;
 		update();
+		this.setOpaque(false);
 	}
 	
 	public Switch(int x, int y){
@@ -67,6 +68,7 @@ public class Switch extends DraggableRect{
 		add(expression, BorderLayout.CENTER);
 		type = 6;
 		update();
+		this.setOpaque(false);
 	}
 	
 	public Switch(Color c){
@@ -80,6 +82,7 @@ public class Switch extends DraggableRect{
 		add(expression, BorderLayout.CENTER);
 		type = 6;
 		update();
+		this.setOpaque(false);
 	}
 	
 	
@@ -95,6 +98,7 @@ public class Switch extends DraggableRect{
 		add(expression, BorderLayout.CENTER);
 		type = 6;
 		update();
+		this.setOpaque(false);
 	}
 	//calculates position of branches and updates dimensions based on children
 	private void updateBranches(){
@@ -247,7 +251,7 @@ public class Switch extends DraggableRect{
 	}
 	
 	@Override
-	public void draw(Graphics2D g){
+	public void draw(Graphics2D g, boolean fullscreen){
 		g.setPaint(c);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
                 RenderingHints.VALUE_ANTIALIAS_ON);		// call setRenderingHint method
