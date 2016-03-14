@@ -2,30 +2,30 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="width/3.5" key="selection"/>
+		<item value="" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="width/3"/>
-			<item value="3"/>
-			<item value="4.5"/>
-			<item value="(int)getBounds().width/4.5"/>
-			<item value="getBounds().width/4.5"/>
-			<item value="getBounds().height/10"/>
-			<item value="getBounds().height/4"/>
-			<item value="getBounds().width/4"/>
+			<item value="temp = &quot;&quot;;"/>
+			<item value="printTabs"/>
+			<item value="\t"/>
+			<item value="\n"/>
+			<item value="/n"/>
+			<item value="/t"/>
+			<item value="\b"/>
+			<item value="codelabel"/>
 		</list>
 		<list key="replacehistory">
+			<item value=""/>
+			<item value="temp += getTabs(tabs)"/>
+			<item value="/n"/>
+			<item value="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;"/>
+			<item value="&amp;nbsp"/>
+			<item value="\b\b\b\b"/>
+			<item value="    "/>
 			<item value="width/3.5"/>
-			<item value="3.5"/>
-			<item value="3"/>
-			<item value="(int)Math.round(getBounds().width/4.5)"/>
-			<item value="(int)getBounds().width/4.5"/>
-			<item value="getBounds().height/10D"/>
-			<item value="getBounds().width/4.5"/>
-			<item value="getBounds().width/4"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

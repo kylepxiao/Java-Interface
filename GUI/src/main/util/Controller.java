@@ -237,7 +237,7 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     
     //recirsuve function to generate code string
     private String getFileMessage(DraggableRect r){
-    	return Run.genCode(r);
+    	return Run.genCode(r, 0);
     }
     
   //changes the position of a DraggableRect and all its children

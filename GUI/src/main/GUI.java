@@ -647,20 +647,21 @@ public class GUI extends GUI_Instance implements ActionListener {
 			// opens test.java
 			br = new BufferedReader(new FileReader("test.java"));
 			// variables to keep track of message
-			String message = "<html>";
+			//String message = "<html>";
+			String message = "";
 			String sCurrentLine;
 			// loops through each line to read file
 			while ((sCurrentLine = br.readLine()) != null) {
-				message += sCurrentLine + "<br>";
+				message += sCurrentLine + "\r";
 			}
-			message += "</html>";
+			//message += "</html>";
 			// sets JTextPane codeLabel attributes
-			codeLabel.setContentType("text/html");
+			codeLabel.setContentType("text/plain");
 			codeLabel.setText(message);
 			codeLabel.setOpaque(false);
 			codeLabel.setEditable(true);
 			codeLabel.setText(message);
-			codeLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
+			codeLabel.setFont(new Font("Monospaced", Font.PLAIN, 12));
 			codeLabel.setForeground(Color.MAGENTA);
 		} catch (IOException e) {
 			e.printStackTrace();

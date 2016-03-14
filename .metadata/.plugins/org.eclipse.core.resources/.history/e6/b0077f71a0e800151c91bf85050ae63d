@@ -1,0 +1,159 @@
+package main.util;
+
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+
+import main.block.DraggableRect;
+
+public class Run {
+	// generates .java file
+	public static void genJava(DraggableRect r) {
+		try (Writer writer = new BufferedWriter(
+				new OutputStreamWriter(new FileOutputStream(Save.getPath() + Save.getFile() + ".java"), "utf-8"))) {
+			writer.write(genCode(r, 0));
+		} catch (IOException ex) {
+			// report
+		}
+	}
+
+	public static String genCode(DraggableRect r, int tabs) {
+		String temp = "";
+		if (r != null) {
+			if (r.hasChildren()) {
+				switch (r.getType()) {
+				case 0:
+					temp = "";
+					temp += getTabs(tabs);
+					temp += genCode(Controller.getRectByID(r.childrenIDs.get(0)), tabs);
+					return temp;
+				case 1:
+					// TODO update assignment rect
+					temp = "";
+					temp += getTabs(tabs);
+					temp += r.f1 + " = " + r.f2 + ";\n";
+					temp += genCode(Controller.getRectByID(r.childrenIDs.get(0)), tabs);
+					return temp;
+				case 2:
+					temp = "";
+					temp += r.f1 + " " + r.f3 + " " + r.f2;
+					return temp;
+				case 3:
+					temp = "";
+					temp += getTabs(tabs);
+					temp += "if(" + r.f1 + "){\n";
+					tabs += 1;
+					temp += genCode(Controller.getRectByID(r.childrenIDs.get(0))) + "\n";
+					tabs -= 1;
+					temp += getTabs(tabs);
+					temp += "} else {\n";
+					tabs += 1;
+					temp += genCode(Controller.getRectByID(r.childrenIDs.get(1))) + "\n";
+					tabs -= 1;
+					temp += getTabs(tabs);
+					temp += "}";
+					return temp;
+				case 4:
+					temp = "";
+					temp += getTabs(tabs);
+					temp += "while(" + r.f1 + "){\n";
+					tabs += 1;
+					temp += getTabs(tabs);
+					temp += genCode(Controller.getRectByID(r.childrenIDs.get(0))) + "\n";
+					tabs -= 1;
+					temp += getTabs(tabs);
+					temp += "}\n";
+					temp += genCode(Controller.getRectByID(r.childrenIDs.get(1)));
+					return temp;
+				case 5:
+					temp = "";
+					temp += "public static void main(String[] args){\n";
+					tabs += 1;
+					temp += genCode(Controller.getRectByID(r.childrenIDs.get(0))) + "\n";
+					tabs -= 1;
+					temp += getTabs(tabs);
+					temp += "}";
+					return temp;
+				case 6:
+					String message = "switch(" + r.f1 + "):";
+					for (int i = 0; i < r.childrenIDs.size(); i++) {
+						if (Controller.getRectByID(r.childrenIDs.get(i)) != null) {
+							message += "case " + i + ":";
+							message += genCode(Controller.getRectByID(r.childrenIDs.get(i))) + "";
+						} else {
+							return message + "}";
+						}
+					}
+					break;
+				case 7:
+					return r.f1 + "{" + genCode(Controller.getRectByID(r.childrenIDs.get(0))) + "}";
+				case 8:
+					return r.f1 + genCode(Controller.getRectByID(r.childrenIDs.get(0)));
+				default:
+					return Integer.toString(r.getType());
+				}
+			} else {
+				switch (r.getType()) {
+				case 0:
+					temp = "";
+					temp += getTabs(tabs);
+					return temp;
+				case 1:
+					temp = "";
+					temp += getTabs(tabs);
+					temp += r.f1 + " = " + r.f2 + ";";
+					return temp;
+				case 2:
+					temp = "";
+					temp += getTabs(tabs);
+					temp += r.f1 + " " + r.f3 + " " + r.f2;
+					return temp;
+				case 3:
+					temp = "";
+					temp += getTabs(tabs);
+					temp += "if(" + r.f1 + "){}";
+					return temp;
+				case 4:
+					temp = "";
+					temp += getTabs(tabs);
+					temp += "while(" + r.f1 + "){}";
+					return temp;
+				case 5:
+					temp = "";
+					temp += getTabs(tabs);
+					temp += "public static void main(String[] args){}";
+					return temp;
+				case 6:
+					temp = "";
+					temp += getTabs(tabs);
+					temp += "switch(" + r.f1 + "){}";
+					return temp;
+				case 7:
+					temp = "";
+					temp += getTabs(tabs);
+					temp += r.f1 + "{}";
+					return temp;
+				case 8:
+					temp = "";
+					temp += getTabs(tabs);
+					temp += r.f1;
+					return temp;
+				default:
+					return Integer.toString(r.getType());
+				}
+			}
+		}
+		return "";
+	}
+
+	private static String getTabs(int x) {
+		String tabs = "";
+		if (x > 0) {
+			tabs += ("\t");
+			getTabs(x - 1);
+		}
+		return tabs;
+	}
+}
