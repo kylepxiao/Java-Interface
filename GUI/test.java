@@ -1,2 +1,5 @@
 public static void main(String[] args){
-if(null){}}
+	A = B;
+	AAA;
+	A = B;
+}

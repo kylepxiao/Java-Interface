@@ -28,7 +28,6 @@ public class Function extends DraggableRect{
 		type = 7;
 		
 		f1 = name.getText();
-		this.setOpaque(false);
 	}
 	
 	//override constructor to specify position 
@@ -43,7 +42,6 @@ public class Function extends DraggableRect{
 		type = 7;
 		
 		f1 = name.getText();
-		this.setOpaque(false);
 	}
 	
 	//override constructor to specify color
@@ -53,7 +51,6 @@ public class Function extends DraggableRect{
 		type = 7;
 		
 		f1 = name.getText();
-		this.setOpaque(false);
 	}
 	
 	//override constructor to specify position and color
@@ -63,7 +60,6 @@ public class Function extends DraggableRect{
 		type = 7;
 		
 		f1 = name.getText();
-		this.setOpaque(false);
 	}
 	
 	@Override

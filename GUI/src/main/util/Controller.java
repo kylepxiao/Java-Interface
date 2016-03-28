@@ -238,72 +238,7 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     
     //recirsuve function to generate code string
     private String getFileMessage(DraggableRect r){
-    	if (r != null) {
-			if (r.hasChildren()) {
-				switch (r.getType()) {
-				case 0:
-					return getFileMessage(getRectByID(r.childrenIDs.get(0)));
-				case 1:
-					// TODO update assignment rect
-					return r.f1 + " = " + r.f2 + ";\n" + getFileMessage(getRectByID(r.childrenIDs.get(0)));
-				case 2:
-					return r.f1 + " " + r.f3 + " " + r.f2;
-				case 3:
-					return "if(" + /*
-									 * getFileMessage(getRectByID(r.childrenIDs.
-									 * get(0))) +
-									 */"){\n" + getFileMessage(getRectByID(r.childrenIDs.get(0))) + "\n} else {\n"
-							+ getFileMessage(getRectByID(r.childrenIDs.get(1))) + "\n}";
-				case 4:
-					return "while(" + r.f1 + "){\n" + getFileMessage(getRectByID(r.childrenIDs.get(0))) + "\n}\n"
-							+ getFileMessage(getRectByID(r.childrenIDs.get(1)));
-				case 5:
-					return "public static void main(String[] args){\n"
-							+ getFileMessage(getRectByID(r.childrenIDs.get(0))) + "}";
-				case 6:
-					String message = "switch(" + r.f1 + ":\n";
-					for (int i = 0; i < r.childrenIDs.size(); i++) {
-						if (getRectByID(r.childrenIDs.get(i)) != null) {
-							message += "case " + i + ":\n";
-							message += getFileMessage(getRectByID(r.childrenIDs.get(i))) + "\n";
-						} else {
-							return message + "}";
-						}
-					}
-					break;
-				case 7:
-					return r.f1 + "{\n" + getFileMessage(getRectByID(r.childrenIDs.get(0))) + "\n}";
-				case 8:
-					return r.f1 + getFileMessage(getRectByID(r.childrenIDs.get(0)));
-				default:
-					return Integer.toString(r.getType());
-				}
-			} else {
-				switch (r.getType()) {
-				case 0:
-					return "";
-				case 1:
-					return "[TYPE] " + r.f1 + " = " + r.f2;
-				case 2:
-					return r.f1 + " " + r.f3 + " " + r.f2;
-				case 3:
-					return "if(" + r.f1 + "){}";
-				case 4:
-					return "while(" + r.f1 + "){}";
-				case 5:
-					return "public static void main(String[] args){}";
-				case 6:
-					return "switch(" + r.f1 + "){}";
-				case 7:
-					return r.f1 + "{}";
-				case 8:
-					return r.f1;
-				default:
-					return Integer.toString(r.getType());
-				}
-			}
-		}
-		return "";
+    	return Run.genCode(r, 0);
     }
     
   //changes the position of a DraggableRect and all its children

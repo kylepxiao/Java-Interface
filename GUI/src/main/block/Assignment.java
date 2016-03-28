@@ -54,7 +54,6 @@ public class Assignment extends DraggableRect{
 		objectsHoveringAbove.add(false);
 		update();
 		type = 1;
-		this.setOpaque(false);
 	}
 	public Assignment(int x, int y){
 		super(x, y, mainWidth, mainHeight);
@@ -81,7 +80,6 @@ public class Assignment extends DraggableRect{
 		objectsHoveringAbove.add(false);
 		update();
 		type = 1;
-		this.setOpaque(false);
 	}
 	public Assignment(Color c){
 		super(0, 0, mainWidth, mainHeight, c);
@@ -108,7 +106,6 @@ public class Assignment extends DraggableRect{
 		objectsHoveringAbove.add(false);
 		update();
 		type = 1;
-		this.setOpaque(false);
 	}
 	public Assignment(int x, int y, Color c){
 		super(x, y, mainWidth, mainHeight, c);
@@ -135,7 +132,6 @@ public class Assignment extends DraggableRect{
 		objectsHoveringAbove.add(false);
 		update();
 		type = 1;
-		this.setOpaque(false);
 	}
 	private void updateSubs(){
 		sub1.setLocation(position.x + subDisplacementX, position.y + subDisplacementY);

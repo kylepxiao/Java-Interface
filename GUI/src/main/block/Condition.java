@@ -55,7 +55,6 @@ public class Condition extends DraggableRect{
 		
 		f1 = "A";
 		f2 = "B";
-		this.setOpaque(false);
 	}
 	public Condition(int x, int y){
 		super(x, y, mainWidth, mainHeight);
@@ -87,7 +86,6 @@ public class Condition extends DraggableRect{
 		
 		f1 = "A";
 		f2 = "B";
-		this.setOpaque(false);
 	}
 	public Condition(Color c){
 		super(0, 0, mainWidth, mainHeight, c);
@@ -117,7 +115,6 @@ public class Condition extends DraggableRect{
 		
 		f1 = "A";
 		f2 = "B";
-		this.setOpaque(false);
 	}
 	public Condition(int x, int y, Color c){
 		super(x, y, mainWidth, mainHeight,c);
@@ -147,7 +144,6 @@ public class Condition extends DraggableRect{
 		
 		f1 = "A";
 		f2 = "B";
-		this.setOpaque(false);
 	}
 	@Override
 	public void update(){

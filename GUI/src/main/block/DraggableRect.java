@@ -2,7 +2,9 @@ package main.block;
 import java.awt.*; 		 // import java.awt package
 import java.util.ArrayList; // import java.util.ArrayList package
 
-import javax.swing.*;	 // import javax.swing package
+import javax.swing.*;
+
+import main.util.Controller;	 // import javax.swing package
 
 public class DraggableRect extends JPanel {
 
@@ -130,7 +132,10 @@ public class DraggableRect extends JPanel {
 	
 	//gets offset between rect position and JPanel position
 	protected Rectangle getOffset(Rectangle r){
-		return new Rectangle(r.x - 5, r.y - 50, r.width, r.height);
+		if(!Controller.fullscreen){
+			return new Rectangle(r.x - 5, r.y - 50, r.width, r.height);
+		}
+		return new Rectangle(r.x, r.y - 45, r.width, r.height);
 	}
 	
 	//sets parentID to 0 and clears childrenIDs

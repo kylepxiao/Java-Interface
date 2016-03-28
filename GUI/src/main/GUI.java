@@ -14,7 +14,6 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferStrategy;
@@ -49,8 +48,19 @@ import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 
-import main.block.*;
-import main.util.*;
+import main.block.Assignment;
+import main.block.Condition;
+import main.block.Conditional;
+import main.block.DraggableRect;
+import main.block.Function;
+import main.block.Loop;
+import main.block.Script;
+import main.block.Start;
+import main.block.Switch;
+import main.util.Controller;
+import main.util.Run;
+import main.util.Save;
+
 public class GUI extends GUI_Instance implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
@@ -68,16 +78,16 @@ public class GUI extends GUI_Instance implements ActionListener {
 
 	// sets up buffer strategy for graphics
 	public BufferStrategy s;
-	
-	//checks for right click event
+
+	// checks for right click event
 	public static boolean rightMenuClick = false;
 
 	// sets up menubar and associated variables
 	private JMenuBar menuBar = new JMenuBar(); // Window menu bar
-	
+
 	// sets up settings menu
 	private Settings settings = new Settings("", path);
-	
+
 	// sets up destop area to drag internal frame
 	private JDesktopPane desktop;
 
@@ -106,28 +116,25 @@ public class GUI extends GUI_Instance implements ActionListener {
 	private JFileChooser loadFileChooser;
 
 	// declares items in menu
-	private JMenuItem subMenuFrameDock, subMenuGenFrame,
-			mItemNew, mItemSave, mItemLoad, mItemRun, mItemGenCode,
-			mItemGenFrame, i_console_DockFrame,
-			i_palette_DockFrame, i_browser_DockFrame,
-			show_i_console, show_i_palette,
-			show_i_browser;
+	private JMenuItem subMenuFrameDock, subMenuGenFrame, mItemNew, mItemSave, mItemLoad, mItemRun, mItemGenCode,
+			mItemGenFrame, i_console_DockFrame, i_palette_DockFrame, i_browser_DockFrame, show_i_console,
+			show_i_palette, show_i_browser;
 	private JRadioButtonMenuItem rItem, rItem2, rItem3;
 	@SuppressWarnings("unused")
 	private JCheckBoxMenuItem cItem, cItem2;
 
 	// sets default directory for java JDK and is subject to change by user
 	private static String path = "C:\\Program Files\\Java\\jdk1.8.0_05\\bin";
-	
+
 	public static int rectToBeRemoved = -1;
-	
+
 	// declare and initialize a JPopupMenu
-    JPopupMenu rmenu = new JPopupMenu("Popup");
-    
-    // declare and initialize a JMenuItem
-    JMenuItem dock_palette = new JMenuItem("Dock/Undock");
-    JMenuItem dock_browser = new JMenuItem("Dock/Undock");
-    JMenuItem dock_console = new JMenuItem("Dock/Undock");
+	JPopupMenu rmenu = new JPopupMenu("Popup");
+
+	// declare and initialize a JMenuItem
+	JMenuItem dock_palette = new JMenuItem("Dock/Undock");
+	JMenuItem dock_browser = new JMenuItem("Dock/Undock");
+	JMenuItem dock_console = new JMenuItem("Dock/Undock");
 
 	// main function
 	public static void main(String[] args) {
@@ -153,8 +160,7 @@ public class GUI extends GUI_Instance implements ActionListener {
 		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 		ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
 		// sets antialiasing
-		((Graphics2D) this.getGraphics()).setRenderingHint(
-				RenderingHints.KEY_TEXT_ANTIALIASING,
+		((Graphics2D) this.getGraphics()).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 	}
 
@@ -198,8 +204,7 @@ public class GUI extends GUI_Instance implements ActionListener {
 		saveFileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
 		saveFileChooser.setCurrentDirectory(new java.io.File("."));
 		saveFileChooser.setDialogTitle("Save As");
-		saveFileChooser
-				.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		saveFileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		// sets default attributes for load file chooser
 		loadFileChooser = new JFileChooser();
 		loadFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
@@ -217,160 +222,159 @@ public class GUI extends GUI_Instance implements ActionListener {
 		desktop = new JDesktopPane();
 		desktop.setOpaque(false);
 		i_console = getNewInternalFrame();
-		i_palette = getNewInternalFrame();		
+		i_palette = getNewInternalFrame();
 		i_browser = getNewInternalFrame();
 
 		JPanel s_workspace = new JPanel(new BorderLayout());
 		JPanel s_palette = new JPanel(new BorderLayout());
 		dock_palette.addActionListener(new ActionListener() {
-    		public void actionPerformed(ActionEvent e) {
-    			i_palette_docked = !i_palette_docked;
-    			i_palette.setSize(new Dimension(250, 200));
-    		}
-    	});
+			public void actionPerformed(ActionEvent e) {
+				i_palette_docked = !i_palette_docked;
+				i_palette.setSize(new Dimension(250, 200));
+			}
+		});
 		s_palette.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mousePressed(MouseEvent e){
-				if(SwingUtilities.isRightMouseButton(e)){
+			public void mousePressed(MouseEvent e) {
+				if (SwingUtilities.isRightMouseButton(e)) {
 					rightMenuClick = true;
 					rmenu.removeAll();
 					rmenu.add(dock_palette);
 					rmenu.show(e.getComponent(), e.getX(), e.getY());
 				}
-				if(SwingUtilities.isLeftMouseButton(e)){
+				if (SwingUtilities.isLeftMouseButton(e)) {
 					rightMenuClick = false;
 				}
 			}
 		});
-		
-		
-		//palette internalframe content
-		
+
+		// palette internalframe content
+
 		s_palette.setLayout(new BoxLayout(s_palette, BoxLayout.Y_AXIS));
-		
+
 		JButton button_DRect = new JButton("DraggableRect");
 		button_DRect.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		button_DRect.setMaximumSize(new Dimension(125, 25));
 		button_DRect.addActionListener(this);
 		button_DRect.setActionCommand("draggableRect");
 		s_palette.add(button_DRect);
-		
+
 		s_palette.add(Box.createRigidArea(new Dimension(0, 10)));
-		
+
 		JButton button_Assignment = new JButton("Assignment");
 		button_Assignment.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		button_Assignment.setMaximumSize(new Dimension(125, 25));
 		button_Assignment.addActionListener(this);
 		button_Assignment.setActionCommand("assignment");
 		s_palette.add(button_Assignment);
-		
+
 		s_palette.add(Box.createRigidArea(new Dimension(0, 10)));
-		
+
 		JButton button_Condition = new JButton("Condition");
 		button_Condition.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		button_Condition.setMaximumSize(new Dimension(125, 25));
 		button_Condition.addActionListener(this);
 		button_Condition.setActionCommand("condition");
 		s_palette.add(button_Condition);
-		
+
 		s_palette.add(Box.createRigidArea(new Dimension(0, 10)));
-		
+
 		JButton button_Conditional = new JButton("Conditional");
 		button_Conditional.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		button_Conditional.addActionListener(this);
 		button_Conditional.setActionCommand("conditional");
 		button_Conditional.setMaximumSize(new Dimension(125, 25));
 		s_palette.add(button_Conditional);
-		
+
 		s_palette.add(Box.createRigidArea(new Dimension(0, 10)));
-		
+
 		JButton button_Loop = new JButton("Loop");
 		button_Loop.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		button_Loop.setMaximumSize(new Dimension(125, 25));
 		button_Loop.addActionListener(this);
 		button_Loop.setActionCommand("loop");
 		s_palette.add(button_Loop);
-		
+
 		s_palette.add(Box.createRigidArea(new Dimension(0, 10)));
-//---------------------------------------------------------------------------------		
+		// ---------------------------------------------------------------------------------
 		JButton button_Switch = new JButton("Switch");
 		button_Switch.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		button_Switch.setMaximumSize(new Dimension(125, 25));
 		button_Switch.addActionListener(this);
 		button_Switch.setActionCommand("switch");
 		s_palette.add(button_Switch);
-		
+
 		s_palette.add(Box.createRigidArea(new Dimension(0, 10)));
-		
+
 		JButton button_Function = new JButton("Function");
 		button_Function.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		button_Function.setMaximumSize(new Dimension(125, 25));
 		button_Function.addActionListener(this);
 		button_Function.setActionCommand("function");
 		s_palette.add(button_Function);
-		
+
 		s_palette.add(Box.createRigidArea(new Dimension(0, 10)));
-//-------------------------------------------------------------------------------		
+		// -------------------------------------------------------------------------------
 		JButton button_Start = new JButton("Start");
 		button_Start.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		button_Start.setMaximumSize(new Dimension(125, 25));
 		button_Start.addActionListener(this);
-		button_Start.setActionCommand("start");	
+		button_Start.setActionCommand("start");
 		s_palette.add(button_Start);
-		
+
 		s_palette.add(Box.createRigidArea(new Dimension(0, 10)));
-		
+
 		JButton button_Text = new JButton("Script");
 		button_Text.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		button_Text.setMaximumSize(new Dimension(125, 25));
 		button_Text.addActionListener(this);
-		button_Text.setActionCommand("script");	
+		button_Text.setActionCommand("script");
 		s_palette.add(button_Text);
-		
+
 		JPanel s_browser = new JPanel(new BorderLayout());
 		dock_browser.addActionListener(new ActionListener() {
-    		public void actionPerformed(ActionEvent e) {
-    			i_browser_docked = !i_browser_docked;
-    			if(!i_browser_docked){
-    				i_browser.setSize(new Dimension(250, 200));
-    			}
-    		}
-    	});
+			public void actionPerformed(ActionEvent e) {
+				i_browser_docked = !i_browser_docked;
+				if (!i_browser_docked) {
+					i_browser.setSize(new Dimension(250, 200));
+				}
+			}
+		});
 		s_browser.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mousePressed(MouseEvent e){
-				if(SwingUtilities.isRightMouseButton(e)){
+			public void mousePressed(MouseEvent e) {
+				if (SwingUtilities.isRightMouseButton(e)) {
 					rightMenuClick = true;
 					rmenu.removeAll();
 					rmenu.add(dock_browser);
 					rmenu.show(e.getComponent(), e.getX(), e.getY());
 				}
-				if(SwingUtilities.isLeftMouseButton(e)){
+				if (SwingUtilities.isLeftMouseButton(e)) {
 					rightMenuClick = false;
 				}
 			}
 		});
 
 		JPanel s_output = new JPanel(new BorderLayout());
-		
+
 		dock_console.addActionListener(new ActionListener() {
-    		public void actionPerformed(ActionEvent e) {
-    			i_console_docked = !i_console_docked;
-    			if(!i_console_docked){
-    				i_console.setSize(new Dimension(250, 200));
-    			}
-    		}
-    	});
+			public void actionPerformed(ActionEvent e) {
+				i_console_docked = !i_console_docked;
+				if (!i_console_docked) {
+					i_console.setSize(new Dimension(250, 200));
+				}
+			}
+		});
 		codeLabel.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mousePressed(MouseEvent e){
-				if(SwingUtilities.isRightMouseButton(e)){
+			public void mousePressed(MouseEvent e) {
+				if (SwingUtilities.isRightMouseButton(e)) {
 					rightMenuClick = true;
 					rmenu.removeAll();
 					rmenu.add(dock_console);
 					rmenu.show(e.getComponent(), e.getX(), e.getY());
 				}
-				if(SwingUtilities.isLeftMouseButton(e)){
+				if (SwingUtilities.isLeftMouseButton(e)) {
 					rightMenuClick = false;
 				}
 			}
@@ -385,36 +389,31 @@ public class GUI extends GUI_Instance implements ActionListener {
 		JScrollPane s_palette_ScrollPane = new JScrollPane(s_palette);
 		JScrollPane s_browser_ScrollPane = new JScrollPane(s_browser);
 		JScrollPane s_output_ScrollPane = new JScrollPane(s_output);
-//		JScrollPane s_main_ScrollPane = new JScrollPane(desktop);
+		// JScrollPane s_main_ScrollPane = new JScrollPane(desktop);
 
 		i_console.getContentPane().add(codeScrollPane);
 		i_palette.getContentPane().add(s_palette_ScrollPane);
 		i_browser.getContentPane().add(s_browser_ScrollPane);
 
-		codeScrollPane
-				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // always
-																					// show
-																					// Vertical
-																					// scrollBar
-		s_workspace_ScrollPane
-				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // always
-																					// show
-																					// Horizontal
-																					// scrollBar
-		s_palette_ScrollPane
-				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		s_browser_ScrollPane
-				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		s_output_ScrollPane
-				.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-//		s_main_ScrollPane
-//		.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		codeScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // always
+																							// show
+																							// Vertical
+																							// scrollBar
+		s_workspace_ScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // always
+																									// show
+																									// Horizontal
+																									// scrollBar
+		s_palette_ScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		s_browser_ScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		s_output_ScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		// s_main_ScrollPane
+		// .setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
 		desktop.add(i_console);
 		desktop.add(i_palette);
 		desktop.add(i_browser);
 		this.setContentPane(desktop);
-//		this.setContentPane(s_main_ScrollPane);
+		// this.setContentPane(s_main_ScrollPane);
 
 		// buffer panel between JFrame and p_main content
 		bufferPanel.setVisible(true);
@@ -438,15 +437,13 @@ public class GUI extends GUI_Instance implements ActionListener {
 		p_main.setRequestFocusEnabled(false);
 		p_main.setOpaque(false);
 		p_main.setFocusable(false);
-//		p_main.setBackground(Color.WHITE);
+		// p_main.setBackground(Color.WHITE);
 		bufferPanel.add(p_main, gbc_p_main);
 		GridBagLayout gbl_p_main = new GridBagLayout();
 		gbl_p_main.columnWidths = new int[] { 0, 0, 0, 0 };
 		gbl_p_main.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
-		gbl_p_main.columnWeights = new double[] { 1.0, 2.0, 1.0,
-				Double.MIN_VALUE };
-		gbl_p_main.rowWeights = new double[] { 1.0, 2.0, 2.0, 2.0, 2.0, 4.0,
-				1.0, Double.MIN_VALUE };
+		gbl_p_main.columnWeights = new double[] { 1.0, 2.0, 1.0, Double.MIN_VALUE };
+		gbl_p_main.rowWeights = new double[] { 1.0, 2.0, 2.0, 2.0, 2.0, 4.0, 1.0, Double.MIN_VALUE };
 		p_main.setLayout(gbl_p_main);
 
 		// this is the left panel
@@ -460,7 +457,7 @@ public class GUI extends GUI_Instance implements ActionListener {
 		gbc_p_palette.fill = GridBagConstraints.BOTH;
 		gbc_p_palette.gridx = 0;
 		gbc_p_palette.gridy = 0;
-		
+
 		p_main.add(p_palette, gbc_p_palette);
 		GridBagLayout gbl_p_palette = new GridBagLayout();
 		gbl_p_palette.columnWidths = new int[] { 0 };
@@ -524,15 +521,15 @@ public class GUI extends GUI_Instance implements ActionListener {
 		 * for(DraggableRect r : controller.getRects()){ add(r); }
 		 */
 	}
-	
+
 	@Override
 	public void addNotify() {
 		// creates buffer strategy for smooth window graphics
-        super.addNotify();
-        // Buffer
-        createBufferStrategy(2);           
-        s = getBufferStrategy();
-    }
+		super.addNotify();
+		// Buffer
+		createBufferStrategy(2);
+		s = getBufferStrategy();
+	}
 
 	// Sets default layout and preferences for window
 	public void setDefaultAttributes() {
@@ -577,7 +574,7 @@ public class GUI extends GUI_Instance implements ActionListener {
 		mItemGenFrame = fileMenu.add("Show Console");
 		mItemGenFrame.addActionListener(this);
 		mItemGenFrame.setActionCommand("genFrame");
-		
+
 		mItemGenCode = fileMenu.add("Preferences");
 		mItemGenCode.addActionListener(this);
 		mItemGenCode.setActionCommand("settings");
@@ -610,12 +607,10 @@ public class GUI extends GUI_Instance implements ActionListener {
 		show_i_palette.addActionListener(this);
 		show_i_palette.setActionCommand("show i_palette");
 
-
 		show_i_browser = new JMenuItem("show i_browser");
 		subMenuGenFrame.add(show_i_browser);
 		show_i_browser.addActionListener(this);
 		show_i_browser.setActionCommand("show i_browser");
-
 
 		fileMenu.add(subMenuFrameDock);
 		fileMenu.add(subMenuGenFrame);
@@ -636,7 +631,7 @@ public class GUI extends GUI_Instance implements ActionListener {
 		elementMenu.add(cItem2 = new JCheckBoxMenuItem("cItem2", false));
 		fileMenu.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mousePressed(MouseEvent e){
+			public void mousePressed(MouseEvent e) {
 				rightMenuClick = true;
 			}
 		});
@@ -652,20 +647,21 @@ public class GUI extends GUI_Instance implements ActionListener {
 			// opens test.java
 			br = new BufferedReader(new FileReader("test.java"));
 			// variables to keep track of message
-			String message = "<html>";
+			//String message = "<html>";
+			String message = "";
 			String sCurrentLine;
 			// loops through each line to read file
 			while ((sCurrentLine = br.readLine()) != null) {
-				message += sCurrentLine + "<br>";
+				message += sCurrentLine + "\r";
 			}
-			message += "</html>";
+			//message += "</html>";
 			// sets JTextPane codeLabel attributes
-			codeLabel.setContentType("text/html");
+			codeLabel.setContentType("text/plain");
 			codeLabel.setText(message);
 			codeLabel.setOpaque(false);
 			codeLabel.setEditable(true);
 			codeLabel.setText(message);
-			codeLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
+			codeLabel.setFont(new Font("Monospaced", Font.PLAIN, 12));
 			codeLabel.setForeground(Color.MAGENTA);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -691,13 +687,17 @@ public class GUI extends GUI_Instance implements ActionListener {
 			break;
 		case "open":
 			Save.load();
+			for (int i = 0; i < controller.getRects().size(); i++) {
+				if (controller.getRects().get(i) != null) {
+					this.add(controller.getRects().get(i));
+				}
+			}
 			break;
 		case "save":
 			if (!saved) {
 				int saveStatusSave = saveFileChooser.showSaveDialog(null);
 				if (saveStatusSave == JFileChooser.APPROVE_OPTION) {
-					Save.setPath(saveFileChooser.getCurrentDirectory()
-							.getAbsolutePath());
+					Save.setPath(saveFileChooser.getCurrentDirectory().getAbsolutePath());
 					Save.setFile(saveFileChooser.getSelectedFile().getName());
 					Save.save();
 					saved = true;
@@ -721,49 +721,96 @@ public class GUI extends GUI_Instance implements ActionListener {
 			break;
 		// ------------------------------------------------------------------------------------------------------------------------------
 		case "draggableRect":
-			controller.addRect(new DraggableRect(275, 80, 75, 75));
-			getContentPane().add(controller.getRects()
-					.get(controller.getRects().size() - 1));
+			int occSpawn = 0;
+			for (DraggableRect r : controller.getRects()) {
+				if (r.getPosition().x == ((int)Math.round(getBounds().width/3.5)) + occSpawn && r.getPosition().y == (getBounds().height/10) + occSpawn) {
+					occSpawn += 10;
+				}
+			}
+			controller.addRect(new DraggableRect(((int)Math.round(getBounds().width/3.5)) + occSpawn, (getBounds().height/10) + occSpawn, 75, 75));
+			getContentPane().add(controller.getRects().get(controller.getRects().size() - 1));
 			break;
 		case "assignment":
-			controller.addRect(new Assignment(275, 80));
-			getContentPane().add(controller.getRects()
-					.get(controller.getRects().size() - 1));
+			occSpawn = 0;
+			for (DraggableRect r : controller.getRects()) {
+				if (r.getPosition().x == ((int)Math.round(getBounds().width/3.5)) + occSpawn && r.getPosition().y == (getBounds().height/10) + occSpawn) {
+					occSpawn += 10;
+				}
+			}
+			controller.addRect(new Assignment(((int)Math.round(getBounds().width/3.5)) + occSpawn, (getBounds().height/10) + occSpawn));
+			getContentPane().add(controller.getRects().get(controller.getRects().size() - 1));
 			break;
 		case "condition":
-			controller.addRect(new Condition(275, 80));
-			getContentPane().add(controller.getRects()
-					.get(controller.getRects().size() - 1));
+			occSpawn = 0;
+			for (DraggableRect r : controller.getRects()) {
+				if (r.getPosition().x == ((int)Math.round(getBounds().width/3.5)) + occSpawn && r.getPosition().y == (getBounds().height/10) + occSpawn) {
+					occSpawn += 10;
+				}
+			}
+			controller.addRect(new Condition(((int)Math.round(getBounds().width/3.5)) + occSpawn, (getBounds().height/10) + occSpawn));
+			getContentPane().add(controller.getRects().get(controller.getRects().size() - 1));
 			break;
 		case "conditional":
-			controller.addRect(new Conditional(275, 80));
-			getContentPane().add(controller.getRects()
-					.get(controller.getRects().size() - 1));
+			occSpawn = 0;
+			for (DraggableRect r : controller.getRects()) {
+				if (r.getPosition().x == ((int)Math.round(getBounds().width/3.5)) + occSpawn && r.getPosition().y == (getBounds().height/10) + occSpawn) {
+					occSpawn += 10;
+				}
+			}
+			controller.addRect(new Conditional(((int)Math.round(getBounds().width/3.5)) + occSpawn, (getBounds().height/10) + occSpawn));
+			getContentPane().add(controller.getRects().get(controller.getRects().size() - 1));
 			break;
 		case "function":
-			controller.addRect(new Function(275, 80));
-			getContentPane().add(controller.getRects()
-					.get(controller.getRects().size() - 1));
+			occSpawn = 0;
+			for (DraggableRect r : controller.getRects()) {
+				if (r.getPosition().x == ((int)Math.round(getBounds().width/3.5)) + occSpawn && r.getPosition().y == (getBounds().height/10) + occSpawn) {
+					occSpawn += 10;
+				}
+			}
+			controller.addRect(new Function(((int)Math.round(getBounds().width/3.5)) + occSpawn, (getBounds().height/10) + occSpawn));
+			getContentPane().add(controller.getRects().get(controller.getRects().size() - 1));
 			break;
 		case "loop":
-			controller.addRect(new Loop(275, 80));
-			getContentPane().add(controller.getRects()
-					.get(controller.getRects().size() - 1));
+			occSpawn = 0;
+			for (DraggableRect r : controller.getRects()) {
+				if (r.getPosition().x == ((int)Math.round(getBounds().width/3.5)) + occSpawn && r.getPosition().y == (getBounds().height/10) + occSpawn) {
+					occSpawn += 10;
+				}
+			}
+			controller.addRect(new Loop(((int)Math.round(getBounds().width/3.5)) + occSpawn, (getBounds().height/10) + occSpawn));
+			getContentPane().add(controller.getRects().get(controller.getRects().size() - 1));
 			break;
 		case "start":
-			controller.addRect(new Start(275, 80));
-			getContentPane().add(controller.getRects()
-					.get(controller.getRects().size() - 1));
+			occSpawn = 0;
+			for (DraggableRect r : controller.getRects()) {
+				if (r.getPosition().x == ((int)Math.round(getBounds().width/3.5)) + occSpawn && r.getPosition().y == (getBounds().height/10) + occSpawn) {
+					occSpawn += 10;
+				}
+			}
+			controller.addRect(new Start(((int)Math.round(getBounds().width/3.5)) + occSpawn, (getBounds().height/10) + occSpawn));
+			getContentPane().add(controller.getRects().get(controller.getRects().size() - 1));
 			break;
 		case "switch":
-			controller.addRect(new Switch(275, 80));
-			getContentPane().add(controller.getRects()
-					.get(controller.getRects().size() - 1));
+			occSpawn = 0;
+			for (DraggableRect r : controller.getRects()) {
+				if (r.getPosition().x == ((int)Math.round(getBounds().width/3.5)) + occSpawn && r.getPosition().y == (getBounds().height/10) + occSpawn) {
+					occSpawn += 10;
+				}
+			}
+
+			controller.addRect(new Switch(((int)Math.round(getBounds().width/3.5)) + occSpawn, (getBounds().height/10) + occSpawn));
+			getContentPane().add(controller.getRects().get(controller.getRects().size() - 1));
 			break;
 		case "script":
-			controller.addRect(new Script(275, 80));
-			getContentPane().add(controller.getRects()
-					.get(controller.getRects().size() - 1));
+			occSpawn = 0;
+			for (DraggableRect r : controller.getRects()) {
+				if (r.getPosition().x == ((int)Math.round(getBounds().width/3.5)) + occSpawn && r.getPosition().y == (getBounds().height/10) + occSpawn) {
+					occSpawn += 10;
+				}
+			}
+
+			controller.addRect(new Script(((int)Math.round(getBounds().width/3.5)) + occSpawn, (getBounds().height/10) + occSpawn));
+			getContentPane().add(controller.getRects().get(controller.getRects().size() - 1));
 			break;
 		// -----------------------------------------------------------------------------------------------------------------------------
 		case "show i_console":
@@ -777,15 +824,15 @@ public class GUI extends GUI_Instance implements ActionListener {
 																		// codeLabel
 				i_console.getContentPane().add(scrollPane); // added scrollPane
 															// to i_console
-				scrollPane
-						.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // always
-																							// show
-																							// Vertical
-																							// scrollBar
-				scrollPane
-						.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS); // always
+				scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // always
 																								// show
-																								// Horizontal																		// scrollBar
+																								// Vertical
+																								// scrollBar
+				scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS); // always
+																									// show
+																									// Horizontal
+																									// //
+																									// scrollBar
 				desktop.add(i_console);
 				this.setContentPane(desktop);
 			}
@@ -797,103 +844,100 @@ public class GUI extends GUI_Instance implements ActionListener {
 				JPanel s_palette = new JPanel(new BorderLayout());
 				JScrollPane s_palette_ScrollPane = new JScrollPane(s_palette);
 				s_palette.setLayout(new BoxLayout(s_palette, BoxLayout.Y_AXIS));
-				
+
 				JButton button_DRect = new JButton("DraggableRect");
 				button_DRect.setAlignmentX(JButton.CENTER_ALIGNMENT);
 				button_DRect.setMaximumSize(new Dimension(125, 25));
 				button_DRect.addActionListener(this);
 				button_DRect.setActionCommand("draggableRect");
 				s_palette.add(button_DRect);
-				
+
 				s_palette.add(Box.createRigidArea(new Dimension(0, 10)));
-				
+
 				JButton button_Assignment = new JButton("Assignment");
 				button_Assignment.setAlignmentX(JButton.CENTER_ALIGNMENT);
 				button_Assignment.setMaximumSize(new Dimension(125, 25));
 				button_Assignment.addActionListener(this);
 				button_Assignment.setActionCommand("assignment");
 				s_palette.add(button_Assignment);
-				
+
 				s_palette.add(Box.createRigidArea(new Dimension(0, 10)));
-				
+
 				JButton button_Condition = new JButton("Condition");
 				button_Condition.setAlignmentX(JButton.CENTER_ALIGNMENT);
 				button_Condition.setMaximumSize(new Dimension(125, 25));
 				button_Condition.addActionListener(this);
 				button_Condition.setActionCommand("condition");
 				s_palette.add(button_Condition);
-				
+
 				s_palette.add(Box.createRigidArea(new Dimension(0, 10)));
-				
+
 				JButton button_Conditional = new JButton("Conditional");
 				button_Conditional.setAlignmentX(JButton.CENTER_ALIGNMENT);
 				button_Conditional.addActionListener(this);
 				button_Conditional.setActionCommand("conditional");
 				button_Conditional.setMaximumSize(new Dimension(125, 25));
 				s_palette.add(button_Conditional);
-				
+
 				s_palette.add(Box.createRigidArea(new Dimension(0, 10)));
-				
+
 				JButton button_Loop = new JButton("Loop");
 				button_Loop.setAlignmentX(JButton.CENTER_ALIGNMENT);
 				button_Loop.setMaximumSize(new Dimension(125, 25));
 				button_Loop.addActionListener(this);
 				button_Loop.setActionCommand("loop");
 				s_palette.add(button_Loop);
-				
+
 				s_palette.add(Box.createRigidArea(new Dimension(0, 10)));
-		//---------------------------------------------------------------------------------		
+				// ---------------------------------------------------------------------------------
 				JButton button_Switch = new JButton("Switch");
 				button_Switch.setAlignmentX(JButton.CENTER_ALIGNMENT);
 				button_Switch.setMaximumSize(new Dimension(125, 25));
 				button_Switch.addActionListener(this);
 				button_Switch.setActionCommand("switch");
 				s_palette.add(button_Switch);
-				
+
 				s_palette.add(Box.createRigidArea(new Dimension(0, 10)));
-				
+
 				JButton button_Function = new JButton("Function");
 				button_Function.setAlignmentX(JButton.CENTER_ALIGNMENT);
 				button_Function.setMaximumSize(new Dimension(125, 25));
 				button_Function.addActionListener(this);
 				button_Function.setActionCommand("function");
 				s_palette.add(button_Function);
-				
+
 				s_palette.add(Box.createRigidArea(new Dimension(0, 10)));
-		//-------------------------------------------------------------------------------		
+				// -------------------------------------------------------------------------------
 				JButton button_Start = new JButton("Start");
 				button_Start.setAlignmentX(JButton.CENTER_ALIGNMENT);
 				button_Start.setMaximumSize(new Dimension(125, 25));
 				button_Start.addActionListener(this);
-				button_Start.setActionCommand("start");	
+				button_Start.setActionCommand("start");
 				s_palette.add(button_Start);
-				
+
 				s_palette.add(Box.createRigidArea(new Dimension(0, 10)));
-				
+
 				JButton button_Text = new JButton("Script");
 				button_Text.setAlignmentX(JButton.CENTER_ALIGNMENT);
 				button_Text.setMaximumSize(new Dimension(125, 25));
 				button_Text.addActionListener(this);
-				button_Text.setActionCommand("script");	
+				button_Text.setActionCommand("script");
 				s_palette.add(button_Text);
 				i_palette.getContentPane().add(s_palette_ScrollPane);
-				s_palette_ScrollPane
-						.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-				
-				
+				s_palette_ScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
 				desktop.add(i_palette);
 				this.setContentPane(desktop);
 			}
 			break;
-		
+
 		case "show i_browser":
 			if (i_browser.isClosed()) {
 				i_browser = getNewInternalFrame();
 				JPanel s_browser = new JPanel(new BorderLayout());
 				JScrollPane s_browser_ScrollPane = new JScrollPane(s_browser);
 				i_browser.getContentPane().add(s_browser_ScrollPane);
-				s_browser_ScrollPane
-						.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+				s_browser_ScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
 				desktop.add(i_browser);
 				this.setContentPane(desktop);
@@ -945,14 +989,12 @@ public class GUI extends GUI_Instance implements ActionListener {
 		if (containsSave) {
 			Save.setFile(file);
 		} else {
-			String tempPath = new StringBuffer(workspacePath).reverse()
-					.toString();
+			String tempPath = new StringBuffer(workspacePath).reverse().toString();
 			String tempNewFile = "";
 			for (Character c : tempPath.toCharArray()) {
 				tempNewFile += c;
 				if (c == '\\') {
-					Save.setFile(new StringBuffer(tempNewFile).reverse()
-							.toString());
+					Save.setFile(new StringBuffer(tempNewFile).reverse().toString());
 					break;
 				}
 			}
@@ -966,16 +1008,16 @@ public class GUI extends GUI_Instance implements ActionListener {
 			saved = true;
 		}
 
-		System.out.println("JDK Path: " + path + " Workspace Path: "
-				+ Save.getPath() + " Working File: " + Save.getFile());
+		System.out.println(
+				"JDK Path: " + path + " Workspace Path: " + Save.getPath() + " Working File: " + Save.getFile());
 	}
 
 	// Function to run handlers
 	public void run() {
 
 	}
-	
-	public void delete(int index){
+
+	public void delete(int index) {
 		this.remove(controller.getRects().get(index));
 	}
 
@@ -990,7 +1032,7 @@ public class GUI extends GUI_Instance implements ActionListener {
 		try {
 			// calls default paint functions in parent object
 			super.paintComponents(s.getDrawGraphics());
-			
+
 			// sets buffer panel to size of window
 			bufferPanel.setBounds(0, 0, this.getWidth(), this.getHeight());
 			// calls function to draw onto g
@@ -1008,9 +1050,9 @@ public class GUI extends GUI_Instance implements ActionListener {
 			if (i_browser_docked) {
 				i_browser.setBounds(p_browser.getBounds());
 			}
-			
+
 			controller.showRects(g);
-			
+
 			if(!rightMenuClick){
 				if(this.getExtendedState() == Frame.MAXIMIZED_BOTH){
 					g.translate(i_palette.getBounds().x, i_palette.getBounds().y+45);
@@ -1035,7 +1077,7 @@ public class GUI extends GUI_Instance implements ActionListener {
 
 			s.show();
 			Toolkit.getDefaultToolkit().sync();
-			if(rectToBeRemoved != -1){
+			if (rectToBeRemoved != -1) {
 				delete(rectToBeRemoved);
 				controller.getRects().remove(rectToBeRemoved);
 				rectToBeRemoved = -1;
@@ -1048,17 +1090,19 @@ public class GUI extends GUI_Instance implements ActionListener {
 	// function to compile and run code in project
 	private void runProject() {
 		// displays text input dialog to get user JDK path
-		String s = (String) JOptionPane.showInputDialog(new JFrame(),
-				"Java JDK Path:", "Run Process", JOptionPane.PLAIN_MESSAGE,
-				null, null, path);
+		String s = (String) JOptionPane.showInputDialog(new JFrame(), "Java JDK Path:", "Run Process",
+				JOptionPane.PLAIN_MESSAGE, null, null, path);
 		// if the user did not cancel and the string is not empty
 		if ((s != null) && (s.length() > 0)) {
 			// set the path to input
 			path = s;
 			// compile and run the process
 			try {
-				runProcess("javac test.java");
-				runProcess("java test");
+				ArrayList<DraggableRect> startRects = Controller.getRectsByType(5);
+				for (DraggableRect r : startRects) {
+					Run.genJava(r);
+				}
+				runProcess(Save.getFile() + ".java");
 				// catches invalid path exception
 			} catch (IOException io) {
 				JOptionPane.showMessageDialog(new JFrame(), "Invalid Path");
@@ -1071,8 +1115,7 @@ public class GUI extends GUI_Instance implements ActionListener {
 	}
 
 	// prints commands and standard output from them into the console
-	private static void printLines(String name, InputStream ins)
-			throws Exception {
+	private static void printLines(String name, InputStream ins) throws Exception {
 		String line = null;
 		BufferedReader in = new BufferedReader(new InputStreamReader(ins));
 		while ((line = in.readLine()) != null) {
