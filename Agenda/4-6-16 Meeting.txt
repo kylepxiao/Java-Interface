@@ -1,0 +1,10 @@
+(1-24-16 Meeting): compiling bug (for Yangqi)
+(1-31-16 Meeting): Opening menu makes draggable rects show above both the menu and the internal frame
+(2-14-16 Meeting): Figure out why test.java will not run with Yangqi, make case and switch with typing in case
+(2-21-16 Meeting) Assigments is buggy with conditional, spawning in fullscreen doesn't line up, spawning a bunch of loops in same place causes glitches
+(3-6-16 Meeting) Remake switch and case
+(3-13-16 Meeting) Snapping third block onto two overlapping rects causes errors; Scrolling console snaps back and cannot highlight text
+John - Fix bug involving snap not working with script blocks on outer loop area, write about me
+Kyle - Write summary
+Yangqi - 
+NOTE: NEXT MEETING ON SATURDAY AT 2PM
