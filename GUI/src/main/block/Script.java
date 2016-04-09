@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-
+ 
 public class Script extends DraggableRect {
 	private static final long serialVersionUID = 1L;
 
@@ -34,7 +34,7 @@ public class Script extends DraggableRect {
 	public Script(int x, int y){
 		super(x, y, mainWidth, mainHeight);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		name.setBounds(2, mainHeight/2, mainWidth-5, mainHeight/2);
+		name.setBounds(2, mainHeight/2, mainWidth-5, mainHeight/2 - 15);
 		name.setText("Text");
 		name.setWrapStyleWord(true);
 		name.setVisible(true);
