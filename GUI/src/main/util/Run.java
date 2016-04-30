@@ -34,9 +34,6 @@ public class Run {
 					temp += r.f1 + " = " + r.f2 + ";\n";
 					temp += genCode(Controller.getRectByID(r.childrenIDs.get(0)), tabs);
 					return temp;
-				case 2:
-					temp += r.f1 + " " + r.f3 + " " + r.f2;
-					return temp;
 				case 3:
 					temp += getTabs(tabs);
 					temp += "if(" + r.f1 + "){\n";
@@ -63,25 +60,16 @@ public class Run {
 					return temp;
 				case 6:
 					temp += getTabs(tabs);
-					temp += "switch(" + r.f1 + "){\n";
-					for (int i = 0; i < r.childrenIDs.size(); i++) {
-						if (Controller.getRectByID(r.childrenIDs.get(i)) != null) {
-							temp += getTabs(tabs + 1);
-							temp += "case " + i + ":\n";
-							temp += genCode(Controller.getRectByID(r.childrenIDs.get(i)), tabs + 2) + "\n";
-						} else {
-							temp += getTabs(tabs);
-							return temp + "}";
-						}
-					}
-					break;
-				case 7:
+					temp += "public static void " + r.f1 + "(){\n";
+					temp += getTabs(tabs+1);
+					temp += r.f2 + "\n";
+					temp += getTabs(tabs+1);
+					temp += "return;\n";
 					temp += getTabs(tabs);
-					temp += r.f1 + "{\n";
-					temp += genCode(Controller.getRectByID(r.childrenIDs.get(0)), tabs + 1) + "\n";
-					temp += "}";
+					temp += "}\n";
+					temp += genCode(Controller.getRectByID(r.childrenIDs.get(0)), tabs) + "\n";
 					return temp;
-				case 8:
+				case 7:
 					temp += getTabs(tabs);
 					temp += r.f1 + "\n";
 					temp += genCode(Controller.getRectByID(r.childrenIDs.get(0)), tabs);
@@ -98,33 +86,32 @@ public class Run {
 					temp += getTabs(tabs);
 					temp += r.f1 + " = " + r.f2 + ";";
 					return temp;
-				case 2:
-					temp += getTabs(tabs);
-					temp += r.f1 + " " + r.f3 + " " + r.f2;
-					return temp;
 				case 3:
 					temp += getTabs(tabs);
-					temp += "if(" + r.f1 + "){}";
+					temp += "if(" + r.f1 + "){\n	}";
 					return temp;
 				case 4:
 					temp += getTabs(tabs);
-					temp += "while(" + r.f1 + "){}";
+					temp += "while(" + r.f1 + "){\n 	}";
 					return temp;
 				case 5:
 					temp += getTabs(tabs);
 					temp += "public static void main(String[] args){}";
 					return temp;
+
 				case 6:
 					temp += getTabs(tabs);
-					temp += "switch(" + r.f1 + "){}";
+					temp += "public static void " + r.f1 + "(){\n";
+					temp += getTabs(tabs+1);
+					temp += r.f2 + "\n";
+					temp += getTabs(tabs+1);
+					temp += "return;\n";
+					temp += getTabs(tabs);
+					temp += "}\n";
 					return temp;
 				case 7:
 					temp += getTabs(tabs);
-					temp += r.f1 + "{}";
-					return temp;
-				case 8:
-					temp += getTabs(tabs);
-					temp += r.f1;
+					temp += r.f1 + "\n";
 					return temp;
 				default:
 					return Integer.toString(r.getType());

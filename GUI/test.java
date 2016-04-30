@@ -1,5 +1,9 @@
 public static void main(String[] args){
-	A = B;
-	AAA;
-	A = B;
+	public static void Name{
+		System.out.println("Hello World");
+		return;
+	}
+	Name()
+
+
 }

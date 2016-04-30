@@ -2,7 +2,9 @@ package main.block;
 import java.awt.*; 		 // import java.awt package
 import java.util.ArrayList; // import java.util.ArrayList package
 
-import javax.swing.*;	 // import javax.swing package
+import javax.swing.*;
+
+import main.util.Controller;	 // import javax.swing package
 
 public class DraggableRect extends JPanel {
 
@@ -40,6 +42,7 @@ public class DraggableRect extends JPanel {
 		objectsHoveringAbove.add(false);
 		this.setBackground(Color.WHITE);
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		this.setOpaque(false);
 	}
 			
 	// override constructor which sets position values for rectangle
@@ -52,7 +55,7 @@ public class DraggableRect extends JPanel {
 		objectsHoveringAbove.add(false);
 		this.setBackground(Color.WHITE);
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
+		this.setOpaque(false);
 	}
 	
 	// override constructor to set color as well
@@ -65,6 +68,7 @@ public class DraggableRect extends JPanel {
 		objectsHoveringAbove.add(false);
 		this.setBackground(Color.WHITE);
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
+		this.setOpaque(false);
 	}	
 	
 	// getter function for position
@@ -128,7 +132,10 @@ public class DraggableRect extends JPanel {
 	
 	//gets offset between rect position and JPanel position
 	protected Rectangle getOffset(Rectangle r){
-		return new Rectangle(r.x - 5, r.y - 50, r.width, r.height);
+		if(!Controller.fullscreen){
+			return new Rectangle(r.x - 5, r.y - 50, r.width, r.height);
+		}
+		return new Rectangle(r.x, r.y - 45, r.width, r.height);
 	}
 	
 	//sets parentID to 0 and clears childrenIDs
@@ -149,7 +156,7 @@ public class DraggableRect extends JPanel {
 	
 	//records child under ChildrenIDs
 	public void setChild(DraggableRect r){
-		if(!childrenIDs.contains(r.id)){
+		if(!childrenIDs.contains(r.id) && r.type != 5){
 			if(childrenIDs.size() > 0){
 				childrenIDs.set(0, r.id);
 			}
@@ -209,13 +216,17 @@ public class DraggableRect extends JPanel {
 	}
 	
 	// draw function for DraggableRect onto Graphics2D g
-	public void draw(Graphics2D g){
+	public void draw(Graphics2D g, boolean fullscreen){
 		g.setPaint(c);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
                 RenderingHints.VALUE_ANTIALIAS_ON);		// call setRenderingHint method
 		if(objectsHoveringAbove.get(0)){
 			g.setPaint(shadow);
-			g.fill(position);
+			if(!fullscreen){
+				g.fill(position);
+			}else{
+				g.fillRect(position.x - 5, position.y - 4, position.width, position.height);
+			}
 		}
 	}
 	

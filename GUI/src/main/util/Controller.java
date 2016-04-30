@@ -7,8 +7,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList; // import ArrayList
 
-import main.block.Switch;
-
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.event.MouseInputAdapter; // import javax.swing.event.MouseTinputAdapter
@@ -23,6 +21,7 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
 	private static ArrayList<Integer> ClickNum = new ArrayList<Integer>();
 	private static File file = new File("test.java");
 	public static boolean newMouseStroke = true;
+	public static boolean fullscreen = false;
 	int a = 10;
 	int b = 100;
 	
@@ -79,11 +78,6 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     
     // overload function to specify which element to delete in rects
     public void deleteRect(int index){
-    	if(rects.size() > index && index >= 0){
-    		if(rects.get(index).getType() == 6){
-    			((Switch) rects.get(index)).Contents.clear();
-        		((Switch) rects.get(index)).clicks = 0;
-    		}
     		for(int i=0; i<rects.get(index).childrenIDs.size(); i++){
     			if(rects.get(index).childrenIDs.get(i) != 0){
     				getRectByID(rects.get(index).childrenIDs.get(i)).parentID = 0;
@@ -95,12 +89,12 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     		GUI.rectToBeRemoved = index;
     	}
     	
-    }
+
     
     // displays DraggableRect objects onto Graphics2D object g
     public void showRects(Graphics2D g){
     	for(DraggableRect r : rects){
-    		r.draw(g);
+    		r.draw(g, fullscreen);
 /*    		if(!GUI.rightMenuClick){
     			r.setVisible(true);
     			r.draw(g);
@@ -126,27 +120,21 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
                LineIntersectsLine(p1, p2, new Point(r.x, r.y + r.height), new Point(r.x, r.y)) ||
                (r.contains(p1) && r.contains(p2));
     }
-
     private static boolean LineIntersectsLine(Point l1p1, Point l1p2, Point l2p1, Point l2p2)
     {
         float q = (l1p1.y - l2p1.y) * (l2p2.x - l2p1.x) - (l1p1.x - l2p1.x) * (l2p2.y - l2p1.y);
         float d = (l1p2.x - l1p1.x) * (l2p2.y - l2p1.y) - (l1p2.y - l1p1.y) * (l2p2.x - l2p1.x);
-
         if( d == 0 )
         {
             return false;
         }
-
         float r = q / d;
-
         q = (l1p1.y - l2p1.y) * (l1p2.x - l1p1.x) - (l1p1.x - l2p1.x) * (l1p2.y - l1p1.y);
         float s = q / d;
-
         if( r < 0 || r > 1 || s < 0 || s > 1 )
         {
             return false;
         }
-
         return true;
     }*/
     
@@ -437,29 +425,6 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
     			}
     		}
     	});
-    	
-    	
-    	addCase.addActionListener(new ActionListener() {
-    		public void actionPerformed(ActionEvent e) {
-    			if(newMouseStroke){
-    				
-    				DraggableRect r = rects.get(getClickedRect(mx, my, rects));
-    				if(r.getType() == 6){
-    					Switch s = (Switch) r;
-	    				s.clicks++;
-	    				s.Contents.add(new Rectangle(s.content.x, s.content.y, 75, 50));   		
-	    				s.ContentVisible.add(true);
-	    				newMouseStroke = false;
-    				}
-				}
-    		}
-    	});
-    	if(getClickedType(mx,my) == 6){
-    		menu.add(addCase);
-    		//System.out.println("Type 2 " + getClickedType(mx,my) );
-    	}else {
-    		menu.remove(addCase);
-    	}
         	menu.add(deleteRect);
     	if(findIfClicked(mx, my, rects)){
     		if(e.isPopupTrigger()){

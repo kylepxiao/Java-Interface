@@ -41,11 +41,11 @@ public class Assignment extends DraggableRect{
 		int midY = (mainHeight/2) - (subHeight/2);
 		//left text box attributes
 		variable.setBounds(t1X, midY, subWidth, subHeight);
-		variable.setText("A");
+		variable.setText("a");
 		variable.setVisible(true);
 		//right text box attributes
 		value.setBounds(t2X, midY, subWidth, subHeight);
-		value.setText("B");
+		value.setText("b");
 		value.setVisible(true);
 		//adding text boxes
 		this.add(variable);
@@ -67,11 +67,11 @@ public class Assignment extends DraggableRect{
 		int midY = (mainHeight/2) - (subHeight/2);
 		//left text box attributes
 		variable.setBounds(t1X, midY, subWidth, subHeight);
-		variable.setText("A");
+		variable.setText("a");
 		variable.setVisible(true);
 		//right text box attributes
 		value.setBounds(t2X, midY, subWidth, subHeight);
-		value.setText("B");
+		value.setText("b");
 		value.setVisible(true);
 		//adding text boxes
 		this.add(variable);
@@ -93,11 +93,11 @@ public class Assignment extends DraggableRect{
 		int midY = (mainHeight/2) - (subHeight/2);
 		//left text box attributes
 		variable.setBounds(t1X, midY, subWidth, subHeight);
-		variable.setText("A");
+		variable.setText("a");
 		variable.setVisible(true);
 		//right text box attributes
 		value.setBounds(t2X, midY, subWidth, subHeight);
-		value.setText("B");
+		value.setText("b");
 		value.setVisible(true);
 		//adding text boxes
 		this.add(variable);
@@ -119,11 +119,11 @@ public class Assignment extends DraggableRect{
 		int midY = (mainHeight/2) - (subHeight/2);
 		//left text box attributes
 		variable.setBounds(t1X, midY, subWidth, subHeight);
-		variable.setText("A");
+		variable.setText("a");
 		variable.setVisible(true);
 		//right text box attributes
 		value.setBounds(t2X, midY, subWidth, subHeight);
-		value.setText("B");
+		value.setText("b");
 		value.setVisible(true);
 		//adding text boxes
 		this.add(variable);
@@ -178,8 +178,8 @@ public class Assignment extends DraggableRect{
 		}
 	}
 	@Override
-	public void draw(Graphics2D g){
-		super.draw(g);
+	public void draw(Graphics2D g, boolean fullscreen){
+		super.draw(g, fullscreen);
 		update();
 		//fills in shadows for hovering
 		if(sub1Visible && objectsHoveringAbove.get(1)){

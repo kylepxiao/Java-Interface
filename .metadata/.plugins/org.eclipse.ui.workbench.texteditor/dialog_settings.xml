@@ -2,37 +2,37 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="" key="selection"/>
+		<item value="update" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="temp = &quot;&quot;;"/>
-			<item value="printTabs"/>
-			<item value="\t"/>
+			<item value="update"/>
+			<item value="f1"/>
+			<item value="gencode"/>
+			<item value="gen"/>
+			<item value="update()"/>
 			<item value="\n"/>
-			<item value="/n"/>
-			<item value="/t"/>
-			<item value="\b"/>
-			<item value="codelabel"/>
+			<item value="\t"/>
+			<item value="codeLabel"/>
 		</list>
 		<list key="replacehistory">
+			<item value="&lt;br&gt;"/>
+			<item value="&amp;nbsp&amp;nbsp&amp;nbsp&amp;nbsp "/>
+			<item value="&amp;nbsp&amp;nbsp&amp;nbsp&amp;nbsp"/>
 			<item value=""/>
 			<item value="temp += getTabs(tabs)"/>
 			<item value="/n"/>
 			<item value="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;"/>
 			<item value="&amp;nbsp"/>
-			<item value="\b\b\b\b"/>
-			<item value="    "/>
-			<item value="width/3.5"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="257" key="DIALOG_WIDTH"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
-		<item value="366" key="DIALOG_HEIGHT"/>
-		<item value="653" key="DIALOG_X_ORIGIN"/>
-		<item value="370" key="DIALOG_Y_ORIGIN"/>
+		<item value="264" key="DIALOG_HEIGHT"/>
+		<item value="916" key="DIALOG_X_ORIGIN"/>
+		<item value="186" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>
