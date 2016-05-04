@@ -19,7 +19,7 @@ public class Controller extends MouseInputAdapter { 	// class DragController tha
 	//class variables
 	private static ArrayList<DraggableRect> rects;
 	private static ArrayList<Integer> ClickNum = new ArrayList<Integer>();
-	private static File file = new File("");
+	//private static File file = new File("");
 	public static boolean newMouseStroke = true;
 	public static boolean fullscreen = false;
 	int a = 10;
